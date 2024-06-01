@@ -3,6 +3,6 @@ export default defineNuxtConfig({
   ssr: false,
 
   devtools: { enabled: true },
-  modules: ["@nuxt/ui"],
+  modules: ["@nuxt/ui", "@pinia/nuxt"],
   components: [{ path: "~/components", pathPrefix: false }],
 });

@@ -12,8 +12,17 @@
         </div>
       </div>
       <div>
-        <UTooltip text="Please login first for apply this job">
-          <UButton color="indigo" class="ml-auto truncate p-4"
+        <UTooltip
+          :text="
+            !isAuthenticated
+              ? 'Please login first for apply this job'
+              : 'Apply this job'
+          "
+        >
+          <UButton
+            color="indigo"
+            class="ml-auto truncate p-4"
+            :disabled="!isAuthenticated"
             >Apply this job</UButton
           >
         </UTooltip>
@@ -62,6 +71,7 @@
 </template>
 
 <script setup>
+import { useAuthStore } from "@/stores/auth";
 defineProps({
   selectedJob: Object,
 });
@@ -69,4 +79,7 @@ defineProps({
 const getCompanyRating = (rating) => {
   return rating + ".0";
 };
+
+const authStore = useAuthStore();
+const isAuthenticated = computed(() => !!authStore.token);
 </script>

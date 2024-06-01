@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="true" class="flex gap-2">
+    <div v-if="!isAuthenticated" class="flex gap-2">
       <nuxt-link to="/login">
         <UButton color="gray" variant="solid">Login</UButton>
       </nuxt-link>
@@ -19,9 +19,12 @@
 
       <template #account="{ item }">
         <div class="text-left">
-          <p>Signed in as</p>
+          <p>
+            Signed in as <b>{{ user.role }}</b>
+          </p>
+
           <p class="truncate font-medium text-gray-900 dark:text-white">
-            {{ item.label }}
+            {{ item.label }}{{ user.email }}
           </p>
         </div>
       </template>
@@ -39,10 +42,14 @@
 </template>
 
 <script setup>
+import { useAuthStore } from "@/stores/auth";
+
+const authStore = useAuthStore();
+
 const items = [
   [
     {
-      label: "user@example.com",
+      label: "",
       slot: "account",
       disabled: true,
     },
@@ -55,12 +62,8 @@ const items = [
   ],
   [
     {
-      label: "Documentation",
-      icon: "i-heroicons-book-open",
-    },
-    {
-      label: "Changelog",
-      icon: "i-heroicons-megaphone",
+      label: "Applied jobs",
+      icon: "i-heroicons-building-office",
     },
     {
       label: "Status",
@@ -71,7 +74,19 @@ const items = [
     {
       label: "Sign out",
       icon: "i-heroicons-arrow-left-on-rectangle",
+      click: () => {
+        logout();
+      },
     },
   ],
 ];
+
+// Computed property to check if user is authenticated
+const isAuthenticated = computed(() => !!authStore.token);
+const user = computed(() => JSON.parse(localStorage.getItem("user")));
+const { $toast } = useNuxtApp();
+
+const logout = async () => {
+  await authStore.logout($toast);
+};
 </script>

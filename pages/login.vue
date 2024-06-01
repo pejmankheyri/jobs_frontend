@@ -1,19 +1,3 @@
-<script setup>
-import { object, string } from "yup";
-
-const schema = object({
-  email: string().email("Invalid email").required("Required"),
-  password: string()
-    .min(8, "Must be at least 8 characters")
-    .required("Required"),
-});
-
-const state = reactive({
-  email: undefined,
-  password: undefined,
-});
-</script>
-
 <template>
   <div class="container mx-auto max-w-md">
     <h1 class="text-2xl font-bold mb-4">Login</h1>
@@ -35,8 +19,41 @@ const state = reactive({
           color="indigo"
         />
       </UFormGroup>
-
-      <UButton type="submit" color="indigo" block> Login </UButton>
+      <div class="pt-4">
+        <UButton type="submit" color="indigo" block>
+          <!-- {{ $t("LOGIN") }} -->
+        </UButton>
+      </div>
     </UForm>
   </div>
 </template>
+
+<script setup>
+import { object, string } from "yup";
+import { reactive } from "vue";
+import { useAuthStore } from "@/stores/auth";
+import { useRouter } from "vue-router";
+const { $toast } = useNuxtApp();
+
+const router = useRouter();
+
+const authStore = useAuthStore();
+
+const schema = object({
+  email: string().email("Invalid email").required("Required"),
+  password: string()
+    .min(8, "Must be at least 8 characters")
+    .required("Required"),
+});
+
+const state = reactive({
+  email: undefined,
+  password: undefined,
+});
+
+const onSubmit = async () => {
+  if (schema.validateSync(state)) {
+    await authStore.login(state.email, state.password, router, $toast);
+  }
+};
+</script>
