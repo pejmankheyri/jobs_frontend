@@ -25,6 +25,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
+const config = useRuntimeConfig();
 
 // Reactive jobs data
 const jobs = ref([]);
@@ -38,7 +39,7 @@ const fetchJobs = async () => {
   try {
     loading.value = true;
     const response = await fetch(
-      `https://jobs-api.pejmanz.com/api/v1/jobs?page=${page.value}`
+      `${config.public.apiBaseUrl}${config.public.apiVersion}/jobs?page=${page.value}`
     );
     const data = await response.json();
     jobs.value = [...jobs.value, ...data.data];

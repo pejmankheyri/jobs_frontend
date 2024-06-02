@@ -20,9 +20,7 @@
         />
       </UFormGroup>
       <div class="pt-4">
-        <UButton type="submit" color="indigo" block>
-          <!-- {{ $t("LOGIN") }} -->
-        </UButton>
+        <UButton type="submit" color="indigo" block> Login </UButton>
       </div>
     </UForm>
   </div>

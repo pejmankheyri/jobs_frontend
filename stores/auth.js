@@ -1,4 +1,7 @@
 import { defineStore } from "pinia";
+import { useRuntimeConfig } from "#app";
+
+const config = useRuntimeConfig();
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
@@ -9,10 +12,13 @@ export const useAuthStore = defineStore("auth", {
   actions: {
     async login(email, password, router, $toast) {
       try {
-        const data = await $fetch("https://jobs-api.pejmanz.com/api/v1/login", {
-          method: "POST",
-          body: { email, password },
-        });
+        const data = await $fetch(
+          `${config.public.apiBaseUrl}${config.public.apiVersion}/login`,
+          {
+            method: "POST",
+            body: { email, password },
+          }
+        );
 
         this.token = data.token;
         this.user = data.user;
@@ -29,12 +35,15 @@ export const useAuthStore = defineStore("auth", {
     },
 
     async logout($toast) {
-      await $fetch("https://jobs-api.pejmanz.com/api/v1/logout", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${this.token}`,
-        },
-      });
+      await $fetch(
+        `${config.public.apiBaseUrl}${config.public.apiVersion}/logout`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+        }
+      );
       this.user = null;
       this.token = null;
       localStorage.removeItem("token");
@@ -53,16 +62,19 @@ export const useAuthStore = defineStore("auth", {
       $toast
     ) {
       try {
-        await $fetch("https://jobs-api.pejmanz.com/api/v1/users", {
-          method: "POST",
-          body: {
-            name: name,
-            email: email,
-            password: password,
-            password_confirmation: password_confirmation,
-            role_id: role === "Company" ? 3 : 2,
-          },
-        });
+        await $fetch(
+          `${config.public.apiBaseUrl}${config.public.apiVersion}/users`,
+          {
+            method: "POST",
+            body: {
+              name: name,
+              email: email,
+              password: password,
+              password_confirmation: password_confirmation,
+              role_id: role === "Company" ? 3 : 2,
+            },
+          }
+        );
 
         $toast.success("Registered successfully");
 
