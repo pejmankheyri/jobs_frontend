@@ -1,28 +1,3 @@
-<template>
-  <div>
-    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 container">
-      <div v-if="jobs.length" class="job-list h-[85%] scrollbar-hide">
-        <JobsList
-          v-for="job in jobs"
-          :key="job.id"
-          :job="job"
-          :loading="loading"
-          :error="error"
-          :selectedJob="selectedJob"
-          @select-job="selectedJob = $event"
-        />
-      </div>
-      <USkeleton v-else-if="loading" class="h-[100px] w-full" />
-      <p v-if="error">{{ error }}</p>
-      <div
-        class="col-span-2 h-[85%] border border-1 rounded-md job-details border-indigo-500 relative"
-      >
-        <JobDetails :selectedJob="selectedJob" />
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup>
 import { ref, onMounted } from "vue";
 const config = useRuntimeConfig();
@@ -77,6 +52,31 @@ onUnmounted(() => {
 // Fetch jobs data when the component is mounted
 onMounted(fetchJobs);
 </script>
+
+<template>
+  <div>
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 container">
+      <div v-if="jobs.length" class="job-list h-[85%] scrollbar-hide">
+        <JobsList
+          v-for="job in jobs"
+          :key="job.id"
+          :job="job"
+          :loading="loading"
+          :error="error"
+          :selectedJob="selectedJob"
+          @select-job="selectedJob = $event"
+        />
+      </div>
+      <USkeleton v-else-if="loading" class="h-[100px] w-full" />
+      <p v-if="error">{{ error }}</p>
+      <div
+        class="col-span-2 h-[85%] border border-1 rounded-md job-details border-indigo-500 relative"
+      >
+        <JobDetails :selectedJob="selectedJob" />
+      </div>
+    </div>
+  </div>
+</template>
 
 <style scoped>
 .container {

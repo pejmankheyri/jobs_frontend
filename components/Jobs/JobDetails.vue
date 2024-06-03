@@ -1,3 +1,57 @@
+<script setup>
+import { computed, ref } from "vue";
+import { useAuthStore } from "@/stores/auth";
+
+const { $toast } = useNuxtApp();
+
+const config = useRuntimeConfig();
+
+const authStore = useAuthStore();
+const isAuthenticated = computed(() => !!authStore.token);
+
+const isApplyBoxOpen = ref(false);
+const loading = ref(false);
+const coverLetter = ref("");
+
+defineProps({
+  selectedJob: Object,
+});
+
+const getCompanyRating = (rating) => {
+  return rating + ".0";
+};
+
+const applyJob = async (id, coverLetter) => {
+  try {
+    loading.value = true;
+    const response = await $fetch(
+      `${config.public.apiBaseUrl}${config.public.apiVersion}/jobs/${id}/apply`,
+      {
+        method: "POST",
+        body: {
+          message: coverLetter,
+        },
+        headers: {
+          Authorization: `Bearer ${authStore.token}`,
+        },
+      }
+    );
+
+    isApplyBoxOpen.value = false;
+
+    $toast.success(response.message);
+  } catch (error) {
+    if (error.response.status === 400 || error.response.status === 404) {
+      $toast.error(error.response._data.message);
+    } else {
+      $toast.error("Error applying job. Please try again later.");
+    }
+  } finally {
+    loading.value = false;
+  }
+};
+</script>
+
 <template>
   <div class="p-8">
     <div class="flex pb-2 justify-between">
@@ -23,9 +77,31 @@
             color="indigo"
             class="ml-auto truncate p-4"
             :disabled="!isAuthenticated"
+            @click="isApplyBoxOpen = true"
             >Apply this job</UButton
           >
         </UTooltip>
+        <UModal v-model="isApplyBoxOpen">
+          <div class="p-4">
+            <UTextarea
+              color="indigo"
+              variant="outline"
+              placeholder="Your cover letter"
+              class="pb-4"
+              v-model="coverLetter"
+            />
+
+            <UButton
+              color="indigo"
+              class="ml-auto truncate p-4"
+              :disabled="!isAuthenticated"
+              :loading="loading"
+              @click="applyJob(selectedJob.id, coverLetter)"
+              block
+              >Apply this job</UButton
+            >
+          </div>
+        </UModal>
       </div>
     </div>
     <div class="flex items-center">
@@ -69,17 +145,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import { useAuthStore } from "@/stores/auth";
-defineProps({
-  selectedJob: Object,
-});
-
-const getCompanyRating = (rating) => {
-  return rating + ".0";
-};
-
-const authStore = useAuthStore();
-const isAuthenticated = computed(() => !!authStore.token);
-</script>

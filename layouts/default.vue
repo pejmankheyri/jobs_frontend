@@ -1,12 +1,3 @@
-<template>
-  <div class="container mx-auto max-w-6xl">
-    <AppHeader />
-    <main class="my-10">
-      <slot />
-    </main>
-  </div>
-</template>
-
 <script setup>
 // Link to Google Fonts
 useHead({
@@ -31,6 +22,15 @@ useHead({
   ],
 });
 </script>
+
+<template>
+  <div class="container mx-auto max-w-6xl">
+    <AppHeader />
+    <main class="my-10">
+      <slot />
+    </main>
+  </div>
+</template>
 
 <style>
 /* Set the background color for the entire site */

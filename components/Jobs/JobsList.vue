@@ -1,3 +1,16 @@
+<script setup>
+defineProps({
+  job: Object,
+  loading: Boolean,
+  error: String,
+  selectedJob: Object,
+});
+
+const getCompanyRating = (rating) => {
+  return rating + ".0";
+};
+</script>
+
 <template>
   <div
     class="border border-1 rounded-md p-4 mb-2 cursor-pointer"
@@ -23,16 +36,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-defineProps({
-  job: Object,
-  loading: Boolean,
-  error: String,
-  selectedJob: Object,
-});
-
-const getCompanyRating = (rating) => {
-  return rating + ".0";
-};
-</script>

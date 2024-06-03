@@ -1,3 +1,63 @@
+<script setup>
+import { useAuthStore } from "@/stores/auth";
+
+// import router
+const router = useRouter();
+
+const authStore = useAuthStore();
+
+const items = [
+  [
+    {
+      label: "",
+      slot: "account",
+      disabled: true,
+    },
+  ],
+  [
+    {
+      label: "Settings",
+      icon: "i-heroicons-cog-8-tooth",
+    },
+  ],
+  [
+    {
+      label: "Applied jobs",
+      icon: "i-heroicons-building-office",
+      click: () => {
+        goToAppliedJobs();
+      },
+    },
+    {
+      label: "Status",
+      icon: "i-heroicons-signal",
+    },
+  ],
+  [
+    {
+      label: "Sign out",
+      icon: "i-heroicons-arrow-left-on-rectangle",
+      click: () => {
+        logout();
+      },
+    },
+  ],
+];
+
+// Computed property to check if user is authenticated
+const isAuthenticated = computed(() => !!authStore.token);
+const user = computed(() => JSON.parse(localStorage.getItem("user")));
+const { $toast } = useNuxtApp();
+
+const logout = async () => {
+  await authStore.logout($toast);
+};
+
+const goToAppliedJobs = () => {
+  router.push("/jobs/applied");
+};
+</script>
+
 <template>
   <div>
     <div v-if="!isAuthenticated" class="flex gap-2">
@@ -40,53 +100,3 @@
     </UDropdown>
   </div>
 </template>
-
-<script setup>
-import { useAuthStore } from "@/stores/auth";
-
-const authStore = useAuthStore();
-
-const items = [
-  [
-    {
-      label: "",
-      slot: "account",
-      disabled: true,
-    },
-  ],
-  [
-    {
-      label: "Settings",
-      icon: "i-heroicons-cog-8-tooth",
-    },
-  ],
-  [
-    {
-      label: "Applied jobs",
-      icon: "i-heroicons-building-office",
-    },
-    {
-      label: "Status",
-      icon: "i-heroicons-signal",
-    },
-  ],
-  [
-    {
-      label: "Sign out",
-      icon: "i-heroicons-arrow-left-on-rectangle",
-      click: () => {
-        logout();
-      },
-    },
-  ],
-];
-
-// Computed property to check if user is authenticated
-const isAuthenticated = computed(() => !!authStore.token);
-const user = computed(() => JSON.parse(localStorage.getItem("user")));
-const { $toast } = useNuxtApp();
-
-const logout = async () => {
-  await authStore.logout($toast);
-};
-</script>
