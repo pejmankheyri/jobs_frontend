@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { useRuntimeConfig } from "#app";
+import useFetch from "@/composables/useFetch";
 
 const config = useRuntimeConfig();
 
@@ -16,13 +17,10 @@ export const useAuthStore = defineStore("auth", {
   actions: {
     async login(email, password, router, $toast) {
       try {
-        const data = await $fetch(
-          `${config.public.apiBaseUrl}${config.public.apiVersion}/login`,
-          {
-            method: "POST",
-            body: { email, password },
-          }
-        );
+        const data = await useFetch(`/login`, {
+          method: "POST",
+          body: { email, password },
+        });
 
         this.token = data.token;
         this.user = data.user;
@@ -39,16 +37,9 @@ export const useAuthStore = defineStore("auth", {
     },
 
     async logout($toast) {
-      await $fetch(
-        `${config.public.apiBaseUrl}${config.public.apiVersion}/logout`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${this.token}`,
-            Accept: "application/json",
-          },
-        }
-      );
+      await useFetch(`/logout`, {
+        method: "POST",
+      });
       this.user = null;
       this.token = null;
       localStorage.removeItem("token");
@@ -69,19 +60,16 @@ export const useAuthStore = defineStore("auth", {
       $toast
     ) {
       try {
-        await $fetch(
-          `${config.public.apiBaseUrl}${config.public.apiVersion}/users`,
-          {
-            method: "POST",
-            body: {
-              name: name,
-              email: email,
-              password: password,
-              password_confirmation: password_confirmation,
-              role_id: role === "Company" ? 3 : 2,
-            },
-          }
-        );
+        await useFetch(`/users`, {
+          method: "POST",
+          body: {
+            name: name,
+            email: email,
+            password: password,
+            password_confirmation: password_confirmation,
+            role_id: role === "Company" ? 3 : 2,
+          },
+        });
 
         $toast.success("Registered successfully");
 
@@ -93,20 +81,12 @@ export const useAuthStore = defineStore("auth", {
 
     async updateProfile(name, $toast) {
       try {
-        const data = await $fetch(
-          `${config.public.apiBaseUrl}${config.public.apiVersion}/users/${
-            JSON.parse(this.user).id
-          }`,
-          {
-            method: "PUT",
-            headers: {
-              Authorization: `Bearer ${this.token}`,
-            },
-            body: {
-              name: name,
-            },
-          }
-        );
+        const data = await useFetch(`/users/${JSON.parse(this.user).id}`, {
+          method: "PUT",
+          body: {
+            name: name,
+          },
+        });
 
         this.user = data.data;
 
@@ -120,22 +100,14 @@ export const useAuthStore = defineStore("auth", {
 
     async updatePassword(vars, $toast) {
       try {
-        await $fetch(
-          `${config.public.apiBaseUrl}${config.public.apiVersion}/users/change-password`,
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${this.token}`,
-              Accept: "application/json",
-              contentType: "application/json",
-            },
-            body: {
-              current_password: vars.oldPassword,
-              new_password: vars.newPassword,
-              new_password_confirmation: vars.confirmPassword,
-            },
-          }
-        );
+        await useFetch(`/users/change-password`, {
+          method: "POST",
+          body: {
+            current_password: vars.oldPassword,
+            new_password: vars.newPassword,
+            new_password_confirmation: vars.confirmPassword,
+          },
+        });
 
         $toast.success("Password updated successfully");
       } catch (e) {
@@ -145,20 +117,10 @@ export const useAuthStore = defineStore("auth", {
 
     async changeAvatar(formData, $toast) {
       try {
-        await $fetch(
-          `${config.public.apiBaseUrl}${config.public.apiVersion}/users/avatar`,
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${authStore.token}`,
-              "content-type": "multipart/form-data",
-              accept: "*/*",
-              "Access-Control-Allow-Origin": "*",
-              "Access-Control-Allow-Headers": "*",
-            },
-            body: formData,
-          }
-        );
+        await useFetch(`/users/avatar`, {
+          method: "POST",
+          body: formData,
+        });
 
         this.user.avatar = avatar;
 

@@ -2,6 +2,9 @@
 definePageMeta({
   middleware: "auth",
 });
+
+import useFetch from "@/composables/useFetch";
+
 // Columns
 const columns = [
   {
@@ -98,13 +101,9 @@ onMounted(() => {
 const getJobs = async () => {
   try {
     loading.value = true;
-    const response = await $fetch(
-      //   `${config.public.apiBaseUrl}${config.public.apiVersion}/users/${user.value.id}/jobs${searchStatus.value}`,
-      `${config.public.apiBaseUrl}${config.public.apiVersion}/users/${user.value.id}/jobs${searchStatus.value}`,
+    const response = await useFetch(
+      `/users/${user.value.id}/jobs${searchStatus.value}`,
       {
-        headers: {
-          Authorization: `Bearer ${authStore.token}`,
-        },
         query: {
           q: search.value,
           page: page.value,

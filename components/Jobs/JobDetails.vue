@@ -1,6 +1,7 @@
 <script setup>
 import { computed, ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
+import useFetch from "@/composables/useFetch";
 
 const { $toast } = useNuxtApp();
 
@@ -24,18 +25,12 @@ const getCompanyRating = (rating) => {
 const applyJob = async (id, coverLetter) => {
   try {
     loading.value = true;
-    const response = await $fetch(
-      `${config.public.apiBaseUrl}${config.public.apiVersion}/jobs/${id}/apply`,
-      {
-        method: "POST",
-        body: {
-          message: coverLetter,
-        },
-        headers: {
-          Authorization: `Bearer ${authStore.token}`,
-        },
-      }
-    );
+    const response = await useFetch(`/jobs/${id}/apply`, {
+      method: "POST",
+      body: {
+        message: coverLetter,
+      },
+    });
 
     isApplyBoxOpen.value = false;
 

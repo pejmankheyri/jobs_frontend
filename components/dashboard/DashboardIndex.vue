@@ -1,5 +1,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
+import useFetch from "@/composables/useFetch";
+
 const config = useRuntimeConfig();
 
 // Reactive jobs data
@@ -13,12 +15,14 @@ const selectedJob = ref(null);
 const fetchJobs = async () => {
   try {
     loading.value = true;
-    const response = await fetch(
-      `${config.public.apiBaseUrl}${config.public.apiVersion}/jobs?page=${page.value}`
-    );
-    const data = await response.json();
-    jobs.value = [...jobs.value, ...data.data];
-    if (!selectedJob.value) selectedJob.value = data.data[0];
+    const { data } = await useFetch(`/jobs`, {
+      params: {
+        page: page.value,
+      },
+    });
+
+    jobs.value = [...jobs.value, ...data];
+    if (!selectedJob.value) selectedJob.value = data[0];
     page.value++;
   } catch (error) {
     console.error("Error fetching jobs:", error);
