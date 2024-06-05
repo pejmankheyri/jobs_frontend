@@ -10,5 +10,8 @@ export default defineNuxtConfig({
       apiBaseUrl: process.env.API_BASE_URL,
       apiVersion: process.env.API_VERSION,
     },
+    // axios: {
+    //   baseURL: process.env.API_BASE_URL,
+    // },
   },
 });

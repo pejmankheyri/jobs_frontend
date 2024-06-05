@@ -55,7 +55,9 @@ onMounted(fetchJobs);
 
 <template>
   <div>
-    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 container">
+    <div
+      class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 container align-middle items-center place-items-center justify-center"
+    >
       <div v-if="jobs.length" class="job-list h-[85%] scrollbar-hide">
         <JobsList
           v-for="job in jobs"
@@ -67,10 +69,10 @@ onMounted(fetchJobs);
           @select-job="selectedJob = $event"
         />
       </div>
-      <USkeleton v-else-if="loading" class="h-[100px] w-full" />
+      <USkeleton v-else-if="loading" class="h-[100px] w-full mb-auto mt-16" />
       <p v-if="error">{{ error }}</p>
       <div
-        class="col-span-2 h-[85%] border border-1 rounded-md job-details border-indigo-500 relative"
+        class="col-span-2 h-[85%] border border-1 rounded-md job-details border-indigo-500 relative hidden md:block"
       >
         <JobDetails :selectedJob="selectedJob" />
       </div>
@@ -84,7 +86,7 @@ onMounted(fetchJobs);
   display: flex;
 }
 .job-list {
-  flex: 0 0 300px; /* Fixed width for the job list */
+  flex: 0 0 380px; /* Fixed width for the job list */
   overflow-y: auto; /* Allow job list to scroll if content overflows */
 }
 

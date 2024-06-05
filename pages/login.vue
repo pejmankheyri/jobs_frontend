@@ -1,13 +1,20 @@
 <script setup>
+definePageMeta({
+  middleware: "guest",
+});
+
 import { object, string } from "yup";
 import { reactive } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "vue-router";
+
 const { $toast } = useNuxtApp();
 
 const router = useRouter();
 
 const authStore = useAuthStore();
+
+const loading = ref(false);
 
 const schema = object({
   email: string().email("Invalid email").required("Required"),
@@ -17,19 +24,24 @@ const schema = object({
 });
 
 const state = reactive({
-  email: undefined,
-  password: undefined,
+  email: "admin@example.com",
+  password: "password",
 });
 
 const onSubmit = async () => {
   if (schema.validateSync(state)) {
-    await authStore.login(state.email, state.password, router, $toast);
+    try {
+      loading.value = true;
+      await authStore.login(state.email, state.password, router, $toast);
+    } finally {
+      loading.value = false;
+    }
   }
 };
 </script>
 
 <template>
-  <div class="container mx-auto max-w-md">
+  <div class="container mx-auto max-w-md my-10">
     <h1 class="text-2xl font-bold mb-4">Login</h1>
 
     <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
@@ -50,7 +62,9 @@ const onSubmit = async () => {
         />
       </UFormGroup>
       <div class="pt-4">
-        <UButton type="submit" color="indigo" block> Login </UButton>
+        <UButton type="submit" color="indigo" :loading="loading" block>
+          Login
+        </UButton>
       </div>
     </UForm>
   </div>

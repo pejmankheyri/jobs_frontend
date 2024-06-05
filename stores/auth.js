@@ -9,6 +9,10 @@ export const useAuthStore = defineStore("auth", {
     token: localStorage.getItem("token") || null,
   }),
 
+  getters: {
+    isLoggedIn: (state) => !!state.user,
+  },
+
   actions: {
     async login(email, password, router, $toast) {
       try {
@@ -28,7 +32,7 @@ export const useAuthStore = defineStore("auth", {
 
         $toast.success("Logged in successfully");
 
-        router.push("/");
+        navigateTo("/");
       } catch (e) {
         $toast.error("Error logging in");
       }
@@ -41,6 +45,7 @@ export const useAuthStore = defineStore("auth", {
           method: "POST",
           headers: {
             Authorization: `Bearer ${this.token}`,
+            Accept: "application/json",
           },
         }
       );
@@ -48,6 +53,8 @@ export const useAuthStore = defineStore("auth", {
       this.token = null;
       localStorage.removeItem("token");
       localStorage.removeItem("user");
+
+      navigateTo("/login");
 
       $toast.success("Logged out successfully");
     },
@@ -81,6 +88,85 @@ export const useAuthStore = defineStore("auth", {
         await this.login(email, password, router, $toast);
       } catch (e) {
         $toast.error("Error registering");
+      }
+    },
+
+    async updateProfile(name, $toast) {
+      try {
+        const data = await $fetch(
+          `${config.public.apiBaseUrl}${config.public.apiVersion}/users/${
+            JSON.parse(this.user).id
+          }`,
+          {
+            method: "PUT",
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+            body: {
+              name: name,
+            },
+          }
+        );
+
+        this.user = data.data;
+
+        localStorage.setItem("user", JSON.stringify(this.user));
+
+        $toast.success("Profile updated successfully");
+      } catch (e) {
+        $toast.error("Error updating profile");
+      }
+    },
+
+    async updatePassword(vars, $toast) {
+      try {
+        await $fetch(
+          `${config.public.apiBaseUrl}${config.public.apiVersion}/users/change-password`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+              Accept: "application/json",
+              contentType: "application/json",
+            },
+            body: {
+              current_password: vars.oldPassword,
+              new_password: vars.newPassword,
+              new_password_confirmation: vars.confirmPassword,
+            },
+          }
+        );
+
+        $toast.success("Password updated successfully");
+      } catch (e) {
+        $toast.error("Error updating password");
+      }
+    },
+
+    async changeAvatar(formData, $toast) {
+      try {
+        await $fetch(
+          `${config.public.apiBaseUrl}${config.public.apiVersion}/users/avatar`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${authStore.token}`,
+              "content-type": "multipart/form-data",
+              accept: "*/*",
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Headers": "*",
+            },
+            body: formData,
+          }
+        );
+
+        this.user.avatar = avatar;
+
+        localStorage.setItem("user", JSON.stringify(this.user));
+
+        $toast.success("Avatar updated successfully");
+      } catch (e) {
+        $toast.error("Error updating avatar");
       }
     },
   },

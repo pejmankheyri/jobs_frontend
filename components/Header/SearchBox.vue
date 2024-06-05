@@ -1,5 +1,5 @@
 <template>
-  <div class="flex">
+  <div class="md:flex hidden">
     <UInput
       icon="i-heroicons-magnifying-glass-20-solid"
       size="lg"

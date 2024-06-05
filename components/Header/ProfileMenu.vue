@@ -1,6 +1,8 @@
 <script setup>
 import { useAuthStore } from "@/stores/auth";
 
+const runtimeConfig = useRuntimeConfig();
+
 // import router
 const router = useRouter();
 
@@ -18,6 +20,9 @@ const items = [
     {
       label: "Settings",
       icon: "i-heroicons-cog-8-tooth",
+      click: () => {
+        goToSettings();
+      },
     },
   ],
   [
@@ -29,8 +34,18 @@ const items = [
       },
     },
     {
-      label: "Status",
+      label: "Change Password",
       icon: "i-heroicons-signal",
+      click: () => {
+        goToChangePassword();
+      },
+    },
+    {
+      label: "Change Avatar",
+      icon: "i-heroicons-signal",
+      click: () => {
+        goToChangeAvatar();
+      },
     },
   ],
   [
@@ -47,6 +62,12 @@ const items = [
 // Computed property to check if user is authenticated
 const isAuthenticated = computed(() => !!authStore.token);
 const user = computed(() => JSON.parse(localStorage.getItem("user")));
+
+// Computed property to get user avatar with env variable
+const userAvatar = computed(() => {
+  return runtimeConfig.public.apiBaseUrl + user.value.avatar;
+});
+
 const { $toast } = useNuxtApp();
 
 const logout = async () => {
@@ -55,6 +76,18 @@ const logout = async () => {
 
 const goToAppliedJobs = () => {
   router.push("/jobs/applied");
+};
+
+const goToSettings = () => {
+  router.push("/user/settings");
+};
+
+const goToChangePassword = () => {
+  router.push("/user/change-password");
+};
+
+const goToChangeAvatar = () => {
+  router.push("/user/change-avatar");
 };
 </script>
 
@@ -83,6 +116,9 @@ const goToAppliedJobs = () => {
             Signed in as <b>{{ user.role }}</b>
           </p>
 
+          <p class="truncate font-medium text-gray-900 dark:text-white">
+            {{ item.label }}{{ user.name }}
+          </p>
           <p class="truncate font-medium text-gray-900 dark:text-white">
             {{ item.label }}{{ user.email }}
           </p>

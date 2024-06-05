@@ -33,7 +33,7 @@ const isOpen = ref(false);
         </template>
         Backend
         <hr class="pb-4" />
-        <div class="grid grid-cols-2">
+        <div class="grid md:grid-cols-2 grid-cols-1">
           <div class="flex items-center gap-2 pb-2">
             <img
               src="https://img.shields.io/badge/-Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white"
@@ -78,7 +78,7 @@ const isOpen = ref(false);
         </div>
         Frontend
         <hr class="pb-4" />
-        <div class="grid grid-cols-2">
+        <div class="grid md:grid-cols-2 grid-cols-1">
           <div class="flex items-center gap-2 pb-2">
             <img
               src="https://img.shields.io/badge/-Nuxt.js-4FC08D?style=for-the-badge&logo=nuxt.js&logoColor=white"
@@ -106,7 +106,7 @@ const isOpen = ref(false);
         </div>
         Source codes
         <hr class="pb-4" />
-        <div class="grid grid-cols-2">
+        <div class="grid md:grid-cols-2 grid-cols-1">
           <div class="flex items-center gap-2 pb-2 cursor-pointer">
             <a href="https://github.com/pejmankheyri/jobs_api" target="_blank">
               <img

@@ -1,11 +1,18 @@
 <script setup>
+definePageMeta({
+  middleware: "guest",
+});
+
 import { object, string } from "yup";
 import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "vue-router";
+
 const { $toast } = useNuxtApp();
 
 const router = useRouter();
 const authStore = useAuthStore();
+
+const loading = ref(false);
 
 const schema = object({
   name: string().required("Required"),
@@ -28,21 +35,27 @@ const roleOptions = ["Company", "Job Seeker"];
 
 const onSubmit = async () => {
   if (schema.validateSync(state)) {
-    await authStore.register(
-      state.name,
-      state.email,
-      state.password,
-      state.password_confirmation,
-      state.role,
-      router,
-      $toast
-    );
+    try {
+      loading.value = true;
+
+      await authStore.register(
+        state.name,
+        state.email,
+        state.password,
+        state.password_confirmation,
+        state.role,
+        router,
+        $toast
+      );
+    } finally {
+      loading.value = false;
+    }
   }
 };
 </script>
 
 <template>
-  <div class="container mx-auto max-w-md">
+  <div class="container mx-auto max-w-md my-10">
     <h1 class="text-2xl font-bold mb-4">Register</h1>
     <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
       <UFormGroup label="Name" name="name">
@@ -80,7 +93,9 @@ const onSubmit = async () => {
         />
       </UFormGroup>
       <div class="pt-4">
-        <UButton type="submit" color="indigo" block> Register </UButton>
+        <UButton type="submit" color="indigo" :loading="loading" block>
+          Register
+        </UButton>
       </div>
     </UForm>
   </div>

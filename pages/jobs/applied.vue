@@ -1,4 +1,7 @@
 <script setup>
+definePageMeta({
+  middleware: "auth",
+});
 // Columns
 const columns = [
   {
@@ -14,11 +17,6 @@ const columns = [
   {
     key: "completed",
     label: "Status",
-    sortable: true,
-  },
-  {
-    key: "actions",
-    label: "Actions",
     sortable: false,
   },
 ];
@@ -40,34 +38,11 @@ function select(row) {
   }
 }
 
-// Actions
-const actions = [
-  [
-    {
-      key: "completed",
-      label: "Completed",
-      icon: "i-heroicons-check",
-    },
-  ],
-  [
-    {
-      key: "uncompleted",
-      label: "In Progress",
-      icon: "i-heroicons-arrow-path",
-    },
-  ],
-];
-
 // Filters
 const todoStatus = [
   {
-    key: "uncompleted",
-    label: "In Progress",
-    value: false,
-  },
-  {
-    key: "completed",
-    label: "Completed",
+    key: "applied",
+    label: "Applied",
     value: true,
   },
 ];
@@ -110,6 +85,11 @@ const pageTo = computed(() =>
   Math.min(page.value * pageCount.value, pageTotal.value)
 );
 
+// watch for query changes
+watch([page, pageCount, sort, search], () => {
+  getJobs();
+});
+
 onMounted(() => {
   getJobs();
 });
@@ -126,14 +106,16 @@ const getJobs = async () => {
           Authorization: `Bearer ${authStore.token}`,
         },
         query: {
-          //   q: search.value,
+          q: search.value,
           page: page.value,
-          //   limit: pageCount.value,
-          //   sort: sort.value.column,
-          //   order: sort.value.direction,
+          per_page: pageCount.value,
+          sort: sort.value.column,
+          order: sort.value.direction,
         },
       }
     );
+
+    pageTotal.value = response.meta.total;
 
     jobs.value = response.data;
   } catch (error) {
@@ -172,6 +154,7 @@ const getJobs = async () => {
       <UInput
         v-model="search"
         icon="i-heroicons-magnifying-glass-20-solid"
+        color="indigo"
         placeholder="Search..."
       />
 
@@ -179,6 +162,7 @@ const getJobs = async () => {
         v-model="selectedStatus"
         :options="todoStatus"
         multiple
+        color="indigo"
         placeholder="Status"
         class="w-40"
       />
@@ -192,42 +176,18 @@ const getJobs = async () => {
         <USelect
           v-model="pageCount"
           :options="[3, 5, 10, 20, 30, 40]"
+          color="indigo"
           class="me-2 w-20"
           size="xs"
         />
       </div>
 
       <div class="flex gap-1.5 items-center">
-        <UDropdown
-          v-if="selectedRows.length > 1"
-          :items="actions"
-          :ui="{ width: 'w-36' }"
-        >
-          <UButton
-            icon="i-heroicons-chevron-down"
-            trailing
-            color="gray"
-            size="xs"
-          >
-            Mark as
-          </UButton>
-        </UDropdown>
-
         <USelectMenu v-model="selectedColumns" :options="columns" multiple>
-          <UButton icon="i-heroicons-view-columns" color="gray" size="xs">
+          <UButton icon="i-heroicons-view-columns" color="indigo" size="xs">
             Columns
           </UButton>
         </USelectMenu>
-
-        <UButton
-          icon="i-heroicons-funnel"
-          color="gray"
-          size="xs"
-          :disabled="search === '' && selectedStatus.length === 0"
-          @click="resetFilters"
-        >
-          Reset
-        </UButton>
       </div>
     </div>
 
@@ -244,39 +204,12 @@ const getJobs = async () => {
       class="w-full"
       :ui="{
         td: { base: 'max-w-[0] truncate' },
-        default: { checkbox: { color: 'gray' } },
+        default: { checkbox: { color: 'indigo' } },
       }"
       @select="select"
     >
-      <template #completed-data="{ row }">
-        <UBadge
-          size="xs"
-          :label="row.completed ? 'Completed' : 'In Progress'"
-          :color="row.completed ? 'emerald' : 'orange'"
-          variant="subtle"
-        />
-      </template>
-
-      <template #actions-data="{ row }">
-        <UButton
-          v-if="!row.completed"
-          icon="i-heroicons-check"
-          size="2xs"
-          color="emerald"
-          variant="outline"
-          :ui="{ rounded: 'rounded-full' }"
-          square
-        />
-
-        <UButton
-          v-else
-          icon="i-heroicons-arrow-path"
-          size="2xs"
-          color="orange"
-          variant="outline"
-          :ui="{ rounded: 'rounded-full' }"
-          square
-        />
+      <template #completed-data="{}">
+        <UBadge size="xs" label="Applied" color="emerald" variant="subtle" />
       </template>
     </UTable>
 
@@ -305,6 +238,7 @@ const getJobs = async () => {
             default: {
               activeButton: {
                 variant: 'outline',
+                color: 'indigo',
               },
             },
           }"
