@@ -37,7 +37,7 @@ const getCompanyRating = (rating) => {
         >{{ job.company.location[0].state }},
         {{ job.company.location[0].country }}</small
       >
-      <small>{{ job.create_dates.created_at_human }}</small>
+      <small class="truncate">{{ job.create_dates.created_at_human }}</small>
     </div>
   </div>
 </template>

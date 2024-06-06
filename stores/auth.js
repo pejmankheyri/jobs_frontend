@@ -6,15 +6,28 @@ const config = useRuntimeConfig();
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
-    user: localStorage.getItem("user") || null,
     token: localStorage.getItem("token") || null,
+    user: JSON.parse(localStorage.getItem("user")) || null,
   }),
 
   getters: {
     isLoggedIn: (state) => !!state.user,
+    isAdmin: (state) => state.user && state.user.role === "admin",
+    isCompany: (state) => state.user && state.user.role === "company",
+    isUser: (state) => state.user && state.user.role === "user",
+    userMe: (state) => JSON.parse(state.user),
+    userRole: (state) => (state.user ? state.user.role : null),
   },
 
   actions: {
+    setToken(token) {
+      this.token = token;
+      localStorage.setItem("token", token);
+    },
+    setUser(user) {
+      this.user = user;
+      localStorage.setItem("user", JSON.stringify(user));
+    },
     async login(email, password, router, $toast) {
       try {
         const data = await useFetch(`/login`, {
@@ -22,11 +35,19 @@ export const useAuthStore = defineStore("auth", {
           body: { email, password },
         });
 
-        this.token = data.token;
-        this.user = data.user;
+        this.setToken(data.token);
+        this.setUser(data.user);
 
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user));
+        switch (data.user.role) {
+          case "admin":
+          // return navigateTo("/admin/dashboard");
+          case "company":
+          // return navigateTo("/company/dashboard");
+          case "user":
+          // return navigateTo("/user/dashboard");
+          default:
+          // return navigateTo("/");
+        }
 
         $toast.success("Logged in successfully");
 
@@ -40,8 +61,8 @@ export const useAuthStore = defineStore("auth", {
       await useFetch(`/logout`, {
         method: "POST",
       });
-      this.user = null;
       this.token = null;
+      this.user = null;
       localStorage.removeItem("token");
       localStorage.removeItem("user");
 
@@ -79,9 +100,19 @@ export const useAuthStore = defineStore("auth", {
       }
     },
 
+    async fetchUser() {
+      try {
+        const { data } = await useFetch(`/users/me`);
+
+        this.setUser(data);
+      } catch (e) {
+        this.logout();
+      }
+    },
+
     async updateProfile(name, phone, $toast) {
       try {
-        const data = await useFetch(`/users/${JSON.parse(this.user).id}`, {
+        const { data } = await useFetch(`/users/${JSON.parse(this.user).id}`, {
           method: "PUT",
           body: {
             name: name,
@@ -89,9 +120,7 @@ export const useAuthStore = defineStore("auth", {
           },
         });
 
-        this.user = data.data;
-
-        localStorage.setItem("user", JSON.stringify(this.user));
+        this.setUser(data);
 
         $toast.success("Profile updated successfully");
       } catch (e) {
