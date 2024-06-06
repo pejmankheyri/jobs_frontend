@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineEmits } from "vue";
+import { ref } from "vue";
 
 const props = defineProps({
   placeholder: String,
@@ -16,6 +16,9 @@ const onInput = () => {
 </script>
 <template>
   <div class="flex place-items-center">
+    <div class="ml-3 absolute">
+      <Search />
+    </div>
     <input
       v-model="query"
       @input="onInput"
@@ -24,7 +27,7 @@ const onInput = () => {
       @click="onInput"
       type="text"
       :placeholder="placeholder"
-      class="search-input-field w-full p-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-indigo-400 transition duration-300 ease-in-out"
+      class="pl-10 w-full p-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-indigo-400 transition duration-300 ease-in-out"
       :class="classItems"
     />
   </div>

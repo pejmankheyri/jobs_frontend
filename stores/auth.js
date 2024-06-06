@@ -79,12 +79,13 @@ export const useAuthStore = defineStore("auth", {
       }
     },
 
-    async updateProfile(name, $toast) {
+    async updateProfile(name, phone, $toast) {
       try {
         const data = await useFetch(`/users/${JSON.parse(this.user).id}`, {
           method: "PUT",
           body: {
             name: name,
+            phone: phone,
           },
         });
 
@@ -117,7 +118,7 @@ export const useAuthStore = defineStore("auth", {
 
     async changeAvatar(formData, $toast) {
       try {
-        await useFetch(`/users/avatar`, {
+        const { avatar } = await useFetch(`/users/avatar`, {
           method: "POST",
           body: formData,
         });
@@ -129,6 +130,23 @@ export const useAuthStore = defineStore("auth", {
         $toast.success("Avatar updated successfully");
       } catch (e) {
         $toast.error("Error updating avatar");
+      }
+    },
+
+    async changeCV(formData, $toast) {
+      try {
+        const { cv } = await useFetch(`/users/cv`, {
+          method: "POST",
+          body: formData,
+        });
+
+        this.user.cv = cv;
+
+        localStorage.setItem("user", JSON.stringify(this.user));
+
+        $toast.success("CV updated successfully");
+      } catch (e) {
+        $toast.error("Error updating CV");
       }
     },
   },

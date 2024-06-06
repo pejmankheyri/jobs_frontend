@@ -3,8 +3,6 @@ definePageMeta({
   middleware: "auth",
 });
 
-import useFetch from "@/composables/useFetch";
-
 // Columns
 const columns = [
   {

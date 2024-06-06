@@ -16,12 +16,14 @@ const roleOptions = ["admin", "company", "user"];
 
 const schema = object({
   name: string().required("Required"),
+  phone: string().required("Required"),
 });
 
 const state = reactive({
   id: user?.value?.id,
   name: user?.value?.name,
   email: user?.value?.email,
+  phone: user?.value?.phone,
   role: user?.value?.role,
 });
 
@@ -29,7 +31,7 @@ const onSubmit = async () => {
   if (schema.validateSync(state)) {
     try {
       loading.value = true;
-      await authStore.updateProfile(state.name, $toast);
+      await authStore.updateProfile(state.name, state.phone, $toast);
     } finally {
       loading.value = false;
     }
@@ -47,6 +49,10 @@ const onSubmit = async () => {
 
       <UFormGroup label="Email" name="email">
         <UInput v-model="state.email" icon="i-heroicons-envelope" disabled />
+      </UFormGroup>
+
+      <UFormGroup label="Phone" name="phone">
+        <UInput v-model="state.phone" color="indigo" icon="i-heroicons-phone" />
       </UFormGroup>
 
       <UFormGroup label="User type" name="role">

@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import useFetch from "@/composables/useFetch";
+const route = useRoute();
 
 const config = useRuntimeConfig();
 
@@ -18,6 +18,7 @@ const fetchJobs = async () => {
     const { data } = await useFetch(`/jobs`, {
       params: {
         page: page.value,
+        q: route.params.title,
       },
     });
 

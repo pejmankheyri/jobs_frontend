@@ -58,18 +58,18 @@ onBeforeUnmount(() => {
     <SearchInput
       v-model:query="keyword"
       placeholder="Find your job"
-      classItems="w-full"
+      classItems="!w-[450px]"
       @update:query="performSearch"
     />
     <!-- <SearchInput v-model:query="location" placeholder="Location" /> -->
-    <UButton
+    <!-- <UButton
       @click="performSearch"
       :loading="loading"
       :disabled="loading"
       size="lg"
       color="indigo"
       >Search</UButton
-    >
+    > -->
 
     <SearchResults
       :results="results"

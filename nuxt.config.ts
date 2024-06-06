@@ -11,4 +11,5 @@ export default defineNuxtConfig({
       apiVersion: process.env.API_VERSION,
     },
   },
+  css: ["~/assets/css/main.scss"],
 });

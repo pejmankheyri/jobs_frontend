@@ -31,10 +31,3 @@ useHead({
     </main>
   </div>
 </template>
-
-<style>
-/* Set the background color for the entire site */
-body {
-  @apply dark:bg-gray-900 bg-white;
-}
-</style>

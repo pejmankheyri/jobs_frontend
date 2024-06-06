@@ -8,6 +8,10 @@ const props = defineProps({
 });
 
 const resultsBox = ref(null);
+
+const goToJobs = (title) => {
+  navigateTo(`/jobs/${title}`);
+};
 </script>
 <template>
   <div
@@ -22,6 +26,7 @@ const resultsBox = ref(null);
       v-for="result in results"
       :key="result.id"
       class="border-b-2 py-4 px-2 cursor-pointer hover:bg-slate-200"
+      @click="goToJobs(result.title)"
     >
       <h3>{{ result.title }}</h3>
     </div>

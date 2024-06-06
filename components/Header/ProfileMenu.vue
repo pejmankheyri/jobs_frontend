@@ -35,16 +35,23 @@ const items = [
     },
     {
       label: "Change Password",
-      icon: "i-heroicons-signal",
+      icon: "i-heroicons-key",
       click: () => {
         goToChangePassword();
       },
     },
     {
       label: "Change Avatar",
-      icon: "i-heroicons-signal",
+      icon: "i-heroicons-photo",
       click: () => {
         goToChangeAvatar();
+      },
+    },
+    {
+      label: "Your CV",
+      icon: "i-heroicons-square-3-stack-3d",
+      click: () => {
+        goToCV();
       },
     },
   ],
@@ -75,7 +82,7 @@ const logout = async () => {
 };
 
 const goToAppliedJobs = () => {
-  router.push("/jobs/applied");
+  router.push("/user/applied");
 };
 
 const goToSettings = () => {
@@ -89,10 +96,14 @@ const goToChangePassword = () => {
 const goToChangeAvatar = () => {
   router.push("/user/change-avatar");
 };
+
+const goToCV = () => {
+  router.push("/user/cv");
+};
 </script>
 
 <template>
-  <div>
+  <div class="place-items-center items-center flex">
     <div v-if="!isAuthenticated" class="flex gap-2">
       <nuxt-link to="/login">
         <UButton color="gray" variant="solid">Login</UButton>
@@ -108,7 +119,7 @@ const goToChangeAvatar = () => {
       :ui="{ item: { disabled: 'cursor-text select-text' } }"
       :popper="{ placement: 'bottom-end' }"
     >
-      <UAvatar src="https://avatars.githubusercontent.com/u/3329008?v=4" />
+      <UAvatar :src="userAvatar" />
 
       <template #account="{ item }">
         <div class="text-left">
