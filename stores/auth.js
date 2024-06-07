@@ -1,8 +1,5 @@
 import { defineStore } from "pinia";
-import { useRuntimeConfig } from "#app";
 import useFetch from "@/composables/useFetch";
-
-const config = useRuntimeConfig();
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
@@ -42,6 +39,8 @@ export const useAuthStore = defineStore("auth", {
           case "admin":
           // return navigateTo("/admin/dashboard");
           case "company":
+          // await this.fetchUser();
+
           // return navigateTo("/company/dashboard");
           case "user":
           // return navigateTo("/user/dashboard");

@@ -60,26 +60,10 @@ const dropdownItemsArray = computed(() => [
       isActive: isUser.value,
     },
     {
-      label: "Jobs",
+      label: "Companies",
       icon: "i-heroicons-building-office",
       click: () => {
-        router.push("/company/jobs");
-      },
-      isActive: isCompany.value,
-    },
-    {
-      label: "Images",
-      icon: "i-heroicons-camera",
-      click: () => {
-        router.push("/company/images");
-      },
-      isActive: isCompany.value,
-    },
-    {
-      label: "Company Logo",
-      icon: "i-heroicons-building-storefront",
-      click: () => {
-        router.push("/company/logo");
+        router.push("/company/list");
       },
       isActive: isCompany.value,
     },

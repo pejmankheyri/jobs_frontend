@@ -38,6 +38,27 @@ const onSubmit = async () => {
     }
   }
 };
+
+const submitAsAdmin = () => {
+  state.email = "admin@example.com";
+  state.password = "password";
+
+  onSubmit();
+};
+
+const submitAsUser = () => {
+  state.email = "user@example.com";
+  state.password = "password";
+
+  onSubmit();
+};
+
+const submitAsCompany = () => {
+  state.email = "company@example.com";
+  state.password = "password";
+
+  onSubmit();
+};
 </script>
 
 <template>
@@ -67,5 +88,25 @@ const onSubmit = async () => {
         </UButton>
       </div>
     </UForm>
+
+    <div class="grid grid-cols-3 gap-4 mt-8">
+      <UButton
+        label="Login As Admin"
+        size="lg"
+        class="truncate text-center"
+        color="red"
+        @click="submitAsAdmin"
+      >
+      </UButton>
+      <UButton label="Login As User" color="blue" @click="submitAsUser">
+      </UButton>
+      <UButton
+        label="Login As Company"
+        class="truncate"
+        color="green"
+        @click="submitAsCompany"
+      >
+      </UButton>
+    </div>
   </div>
 </template>

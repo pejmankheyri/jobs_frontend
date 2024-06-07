@@ -58,7 +58,6 @@ const userAvatar = computed(() => {
           icon="i-heroicons-folder"
           @change="onFileChange"
         />
-        <!-- <input type="file" @change="onFileChange" /> -->
       </UFormGroup>
       <div class="pt-4">
         <UButton type="submit" color="indigo" :loading="loading" block>

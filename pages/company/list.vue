@@ -1,7 +1,7 @@
 <script setup>
 definePageMeta({
   middleware: "auth",
-  role: "user",
+  role: "company",
 });
 
 // Columns
@@ -17,8 +17,34 @@ const columns = [
     sortable: true,
   },
   {
-    key: "completed",
-    label: "Status",
+    key: "description",
+    label: "Description",
+    sortable: false,
+  },
+  {
+    key: "rating",
+    label: "Rating",
+    sortable: true,
+  },
+  {
+    key: "employes",
+    label: "Employees",
+    sortable: true,
+  },
+  {
+    key: "location",
+    label: "Location",
+    sortable: false,
+  },
+  {
+    key: "create_dates",
+    label: "Created At",
+    sortable: true,
+  },
+  ,
+  {
+    key: "actions",
+    label: "Actions",
     sortable: false,
   },
 ];
@@ -28,42 +54,36 @@ const columnsTable = computed(() =>
   columns.filter((column) => selectedColumns.value.includes(column))
 );
 
-// Selected Rows
-const selectedRows = ref([]);
-
-function select(row) {
-  const index = selectedRows.value.findIndex((item) => item.id === row.id);
-  if (index === -1) {
-    selectedRows.value.push(row);
-  } else {
-    selectedRows.value.splice(index, 1);
-  }
-}
-
-// Filters
-const statusOptions = [
+// Actions
+const actions = [
   {
-    key: "applied",
-    label: "Applied",
-    value: true,
+    key: "edit",
+    label: "Edit",
+    icon: "i-heroicons-check",
+  },
+
+  {
+    key: "view",
+    label: "View",
+    icon: "i-heroicons-arrow-path",
+  },
+
+  {
+    key: "delete",
+    label: "Delete",
+    icon: "i-heroicons-trash",
   },
 ];
 
 const search = ref("");
 const selectedStatus = ref([]);
 const loading = ref(false);
-const jobs = ref([]);
+const companies = ref([]);
 
 const searchStatus = computed(() => {
   if (selectedStatus.value?.length === 0) {
     return "";
   }
-
-  if (selectedStatus?.value?.length > 1) {
-    return `?completed=${selectedStatus.value[0].value}&completed=${selectedStatus.value[1].value}`;
-  }
-
-  return `?completed=${selectedStatus.value[0].value}`;
 });
 
 const resetFilters = () => {
@@ -72,6 +92,8 @@ const resetFilters = () => {
 };
 import { useAuthStore } from "@/stores/auth";
 const authStore = useAuthStore();
+
+const router = useRouter();
 
 const user = computed(() => JSON.parse(localStorage.getItem("user")));
 
@@ -89,18 +111,30 @@ const pageTo = computed(() =>
 
 // watch for query changes
 watch([page, pageCount, sort, search], () => {
-  getJobs();
+  getCompanies();
 });
 
 onMounted(() => {
-  getJobs();
+  getCompanies();
 });
 
-// Data
-const getJobs = async () => {
+const deleteCompany = async (id) => {
   try {
     loading.value = true;
-    const response = await useFetch(`/users/jobs${searchStatus.value}`, {
+    await authStore.deleteCompany(id);
+    getCompanies();
+  } catch (error) {
+    console.error("Error deleting company:", error);
+  } finally {
+    loading.value = false;
+  }
+};
+
+// Data
+const getCompanies = async () => {
+  try {
+    loading.value = true;
+    const response = await useFetch(`/users/companies${searchStatus.value}`, {
       query: {
         q: search.value,
         page: page.value,
@@ -112,9 +146,9 @@ const getJobs = async () => {
 
     pageTotal.value = response.meta.total;
 
-    jobs.value = response.data;
+    companies.value = response.data;
   } catch (error) {
-    console.error("Error fetching jobs:", error);
+    console.error("Error fetching companies:", error);
   } finally {
     loading.value = false;
   }
@@ -140,7 +174,7 @@ const getJobs = async () => {
       <h2
         class="font-semibold text-xl text-gray-900 dark:text-white leading-tight"
       >
-        My Applied Jobs
+        Companies List
       </h2>
     </template>
 
@@ -151,15 +185,6 @@ const getJobs = async () => {
         icon="i-heroicons-magnifying-glass-20-solid"
         color="indigo"
         placeholder="Search..."
-      />
-
-      <USelectMenu
-        v-model="selectedStatus"
-        :options="statusOptions"
-        multiple
-        color="indigo"
-        placeholder="Status"
-        class="w-40"
       />
     </div>
 
@@ -176,21 +201,12 @@ const getJobs = async () => {
           size="xs"
         />
       </div>
-
-      <div class="flex gap-1.5 items-center">
-        <USelectMenu v-model="selectedColumns" :options="columns" multiple>
-          <UButton icon="i-heroicons-view-columns" color="indigo" size="xs">
-            Columns
-          </UButton>
-        </USelectMenu>
-      </div>
     </div>
 
     <!-- Table -->
     <UTable
-      v-model="selectedRows"
       v-model:sort="sort"
-      :rows="jobs"
+      :rows="companies"
       :columns="columnsTable"
       :loading="loading"
       sort-asc-icon="i-heroicons-arrow-up"
@@ -201,10 +217,70 @@ const getJobs = async () => {
         td: { base: 'max-w-[0] truncate' },
         default: { checkbox: { color: 'indigo' } },
       }"
-      @select="select"
     >
-      <template #completed-data="{}">
-        <UBadge size="xs" label="Applied" color="emerald" variant="subtle" />
+      <template #location-data="{ row }">
+        <div v-for="value in row.location" :key="value.id">
+          <UTooltip
+            :text="value.country + ',' + value.state + ',' + value.city"
+          >
+            <span>{{
+              value.country + "," + value.state + "," + value.city
+            }}</span>
+          </UTooltip>
+        </div>
+      </template>
+
+      <template #create_dates-data="{ row }">
+        {{ row.create_dates.created_at_human }}
+      </template>
+
+      <template #actions-data="{ row }">
+        <div class="grid grid-cols-2 gap-4">
+          <UTooltip text="Edit Company">
+            <UButton
+              icon="i-heroicons-pencil-square"
+              size="2xs"
+              color="orange"
+              variant="outline"
+              :ui="{ rounded: 'rounded-full' }"
+              @click="router.push(`/company/${row.id}/edit`)"
+              square
+            />
+          </UTooltip>
+          <UTooltip text="Company Images">
+            <UButton
+              icon="i-heroicons-photo"
+              size="2xs"
+              color="green"
+              variant="outline"
+              :ui="{ rounded: 'rounded-full' }"
+              @click="router.push(`/company/${row.id}/images`)"
+              square
+            />
+          </UTooltip>
+          <UTooltip text="Company Logo">
+            <UButton
+              icon="i-heroicons-building-storefront"
+              size="2xs"
+              color="blue"
+              variant="outline"
+              :ui="{ rounded: 'rounded-full' }"
+              @click="router.push(`/company/${row.id}/logo`)"
+              square
+            />
+          </UTooltip>
+          <UTooltip text="Remove Company">
+            <UButton
+              icon="i-heroicons-trash"
+              size="2xs"
+              color="red"
+              variant="outline"
+              :ui="{ rounded: 'rounded-full' }"
+              @click="deleteCompany(row.id)"
+              square
+            />
+          </UTooltip>
+        </div>
       </template>
     </UTable>
 
