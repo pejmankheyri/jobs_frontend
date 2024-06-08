@@ -5,6 +5,7 @@ import { useAuthStore } from "@/stores/auth";
 const { $toast } = useNuxtApp();
 const config = useRuntimeConfig();
 const authStore = useAuthStore();
+const colorMode = useColorMode();
 const { t } = useI18n();
 
 const isAuthenticated = computed(() => !!authStore.token);
@@ -15,6 +16,10 @@ const coverLetter = ref("");
 
 const props = defineProps({
   selectedJob: Object,
+});
+
+const starIconColor = computed(() => {
+  return colorMode.preference === "light" ? "#000000" : "#ffffff";
 });
 
 const getCompanyRating = (rating) => {
@@ -65,7 +70,7 @@ const companyLogoSrc = computed(() => {
 
         <div class="flex font-thin text-sm items-center gap-1">
           {{ getCompanyRating(selectedJob?.company?.rating) }}
-          <Star class="" />
+          <Star class="" :color="starIconColor" />
         </div>
       </div>
       <div>
@@ -129,7 +134,7 @@ const companyLogoSrc = computed(() => {
       </div>
     </div>
   </div>
-  <div class="absolute bottom-0 border-t-2">
+  <div class="absolute bottom-0 border-t-2 w-full">
     <div class="p-8">
       <h2 class="text-2xl">{{ $t("COMPANY_DESCRIPTION") }}</h2>
       <div class="grid grid-cols-2 py-6">

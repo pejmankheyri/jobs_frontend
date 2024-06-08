@@ -3,13 +3,16 @@ export default defineNuxtConfig({
   ssr: false,
 
   devtools: { enabled: true },
-  modules: ["@nuxt/ui", "@pinia/nuxt", "@nuxtjs/i18n"],
+  modules: ["@nuxt/ui", "@pinia/nuxt", "@nuxtjs/i18n", "@nuxtjs/color-mode"],
   components: [{ path: "~/components", pathPrefix: false }],
   runtimeConfig: {
     public: {
       apiBaseUrl: process.env.API_BASE_URL,
       apiVersion: process.env.API_VERSION,
     },
+  },
+  colorMode: {
+    classSuffix: "",
   },
   css: ["~/assets/css/main.scss"],
   plugins: [],

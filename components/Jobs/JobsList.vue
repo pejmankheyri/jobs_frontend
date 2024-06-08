@@ -7,10 +7,15 @@ const props = defineProps({
 });
 
 const runtimeConfig = useRuntimeConfig();
+const colorMode = useColorMode();
 
 const getCompanyRating = (rating) => {
   return rating + ".0";
 };
+
+const starIconColor = computed(() => {
+  return colorMode.preference === "light" ? "#000000" : "#ffffff";
+});
 
 const companyLogoSrc = computed(() => {
   return runtimeConfig.public.apiBaseUrl + props.job.company.logo;
@@ -34,7 +39,8 @@ const companyLogoSrc = computed(() => {
       </div>
 
       <div class="flex font-thin text-sm items-center gap-1">
-        {{ getCompanyRating(job.company.rating) }} <Star class="" />
+        {{ getCompanyRating(job.company.rating) }}
+        <Star class="" :color="starIconColor" />
       </div>
     </div>
     <p class="font-semibold">{{ job.title }}</p>

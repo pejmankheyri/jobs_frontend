@@ -9,6 +9,9 @@ const isAuthenticated = computed(() => !!authStore.token);
 
 <template>
   <div class="place-items-center items-center flex gap-3">
+    <ClientOnly>
+      <ColorModeSelector />
+    </ClientOnly>
     <LanguageSwitcher />
 
     <div v-if="!isAuthenticated" class="flex gap-2">

@@ -95,5 +95,6 @@
   "CV_UPDATED_SUCCESSFULLY": "CV updated successfully",
   "CV_UPDATED_ERROR": "Error updating CV",
   "LOGO_UPDATED_SUCCESSFULLY": "Logo updated successfully",
-  "LOGO_UPDATED_ERROR": "Error updating logo"
+  "LOGO_UPDATED_ERROR": "Error updating logo",
+  "CHANGE_MODE_TO": "Change mode to"
 }

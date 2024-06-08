@@ -1,3 +1,9 @@
+<script setup>
+const props = defineProps({
+  color: String,
+});
+</script>
+
 <template>
   <svg
     width="12"
@@ -9,7 +15,7 @@
   >
     <path
       d="m6 1.5 1.18 3.82H11L7.91 7.68l1.18 3.82L6 9.14 2.91 11.5l1.18-3.82L1 5.32h3.82L6 1.5Z"
-      fill="#ffffff"
+      :fill="color"
     ></path>
   </svg>
 </template>

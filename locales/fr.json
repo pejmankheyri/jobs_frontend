@@ -95,5 +95,6 @@
   "CV_UPDATED_SUCCESSFULLY": "CV mis à jour avec succès",
   "CV_UPDATED_ERROR": "Erreur lors de la mise à jour du CV",
   "LOGO_UPDATED_SUCCESSFULLY": "Logo mis à jour avec succès",
-  "LOGO_UPDATED_ERROR": "Erreur lors de la mise à jour du logo"
+  "LOGO_UPDATED_ERROR": "Erreur lors de la mise à jour du logo",
+  "CHANGE_MODE_TO": "Changer le mode en"
 }
