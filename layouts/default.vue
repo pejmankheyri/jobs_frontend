@@ -28,7 +28,7 @@ useHead({
 <template>
   <div class="container mx-auto max-w-6xl">
     <AppHeader />
-    <main class="">
+    <main class="px-4">
       <slot />
     </main>
   </div>

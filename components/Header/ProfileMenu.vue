@@ -4,6 +4,8 @@ import { useAuthStore } from "@/stores/auth";
 
 const authStore = useAuthStore();
 
+const { isMobile, isDesktop } = useDevice();
+
 const isAuthenticated = computed(() => !!authStore.token);
 </script>
 
@@ -16,10 +18,23 @@ const isAuthenticated = computed(() => !!authStore.token);
 
     <div v-if="!isAuthenticated" class="flex gap-2">
       <nuxt-link :to="localePath('/login')">
-        <UButton color="gray" variant="solid">{{ $t("LOGIN") }}</UButton>
+        <UButton color="gray" variant="solid">
+          <UIcon
+            name="i-heroicons-arrow-right-end-on-rectangle"
+            class="px-2 py-3"
+          />
+          <span v-if="$device.isDesktop">
+            {{ $t("LOGIN") }}
+          </span>
+        </UButton>
       </nuxt-link>
       <nuxt-link :to="localePath('/register')">
-        <UButton color="gray" variant="solid">{{ $t("REGISTER") }}</UButton>
+        <UButton color="gray" variant="solid">
+          <UIcon name="i-heroicons-user-plus" class="px-2 py-3" />
+          <span v-if="$device.isDesktop">
+            {{ $t("REGISTER") }}
+          </span>
+        </UButton>
       </nuxt-link>
     </div>
     <ProfileMenuDropdowns v-else />

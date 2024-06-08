@@ -3,7 +3,13 @@ export default defineNuxtConfig({
   ssr: false,
 
   devtools: { enabled: true },
-  modules: ["@nuxt/ui", "@pinia/nuxt", "@nuxtjs/i18n", "@nuxtjs/color-mode"],
+  modules: [
+    "@nuxt/ui",
+    "@pinia/nuxt",
+    "@nuxtjs/i18n",
+    "@nuxtjs/color-mode",
+    "@nuxtjs/device",
+  ],
   components: [{ path: "~/components", pathPrefix: false }],
   runtimeConfig: {
     public: {
