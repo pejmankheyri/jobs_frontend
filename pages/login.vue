@@ -9,18 +9,20 @@ import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "vue-router";
 
 const { $toast } = useNuxtApp();
-
 const router = useRouter();
-
 const authStore = useAuthStore();
+const { t } = useI18n();
+const localeRoute = useLocaleRoute();
 
 const loading = ref(false);
 
 const schema = object({
-  email: string().email("Invalid email").required("Required"),
+  email: string()
+    .email(t("THIS_FIELD_MUST_BE_AN_EMAIL"))
+    .required(t("THIS_FIELD_IS_REQUIRED")),
   password: string()
-    .min(8, "Must be at least 8 characters")
-    .required("Required"),
+    .min(8, t("THIS_FIELD_MUST_BE_AT_LEAST_8_CHARACTERS"))
+    .required(t("THIS_FIELD_IS_REQUIRED")),
 });
 
 const state = reactive({
@@ -32,7 +34,14 @@ const onSubmit = async () => {
   if (schema.validateSync(state)) {
     try {
       loading.value = true;
-      await authStore.login(state.email, state.password, router, $toast);
+      await authStore.login(
+        state.email,
+        state.password,
+        router,
+        $toast,
+        t,
+        localeRoute
+      );
     } finally {
       loading.value = false;
     }
@@ -63,10 +72,10 @@ const submitAsCompany = () => {
 
 <template>
   <div class="container mx-auto max-w-md my-10">
-    <h1 class="text-2xl font-bold mb-4">Login</h1>
+    <h1 class="text-2xl font-bold mb-4">{{ $t("LOGIN") }}</h1>
 
     <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
-      <UFormGroup label="Email" name="email">
+      <UFormGroup :label="$t('EMAIL')" name="email">
         <UInput
           v-model="state.email"
           icon="i-heroicons-envelope"
@@ -74,7 +83,7 @@ const submitAsCompany = () => {
         />
       </UFormGroup>
 
-      <UFormGroup label="Password" name="password">
+      <UFormGroup :label="$t('PASSWORD')" name="password">
         <UInput
           v-model="state.password"
           type="password"
@@ -84,29 +93,41 @@ const submitAsCompany = () => {
       </UFormGroup>
       <div class="pt-4">
         <UButton type="submit" color="indigo" :loading="loading" block>
-          Login
+          {{ $t("LOGIN") }}
         </UButton>
       </div>
     </UForm>
 
-    <div class="grid grid-cols-3 gap-4 mt-8">
-      <UButton
-        label="Login As Admin"
-        size="lg"
-        class="truncate text-center"
-        color="red"
+    <UDivider label="OR" orientation="vertical" type="dashed" class="py-4" />
+
+    <div class="grid grid-cols-1 gap-4">
+      <UAlert
+        icon="i-heroicons-arrow-right-end-on-rectangle"
+        class="cursor-pointer"
+        color="blue"
+        variant="solid"
+        :title="$t('LOGIN_AS_ADMIN')"
+        :description="$t('LOGIN_AS_ADMIN_DESC')"
         @click="submitAsAdmin"
-      >
-      </UButton>
-      <UButton label="Login As User" color="blue" @click="submitAsUser">
-      </UButton>
-      <UButton
-        label="Login As Company"
-        class="truncate"
-        color="green"
+      />
+      <UAlert
+        icon="i-heroicons-arrow-right-end-on-rectangle"
+        class="cursor-pointer"
+        color="teal"
+        variant="solid"
+        :title="$t('LOGIN_AS_COMPANY')"
+        :description="$t('LOGIN_AS_COMPANY_DESC')"
         @click="submitAsCompany"
-      >
-      </UButton>
+      />
+      <UAlert
+        icon="i-heroicons-arrow-right-end-on-rectangle"
+        class="cursor-pointer"
+        color="purple"
+        variant="solid"
+        :title="$t('LOGIN_AS_USER')"
+        :description="$t('LOGIN_AS_USER_DESC')"
+        @click="submitAsUser"
+      />
     </div>
   </div>
 </template>

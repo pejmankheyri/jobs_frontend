@@ -57,7 +57,7 @@ onBeforeUnmount(() => {
   >
     <SearchInput
       v-model:query="keyword"
-      placeholder="Find your job"
+      :placeholder="$t('SEARCH_FOR_JOBS')"
       classItems="!w-[450px]"
       @update:query="performSearch"
     />

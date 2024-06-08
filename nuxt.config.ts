@@ -3,7 +3,7 @@ export default defineNuxtConfig({
   ssr: false,
 
   devtools: { enabled: true },
-  modules: ["@nuxt/ui", "@pinia/nuxt"],
+  modules: ["@nuxt/ui", "@pinia/nuxt", "@nuxtjs/i18n"],
   components: [{ path: "~/components", pathPrefix: false }],
   runtimeConfig: {
     public: {
@@ -13,4 +13,14 @@ export default defineNuxtConfig({
   },
   css: ["~/assets/css/main.scss"],
   plugins: [],
+  i18n: {
+    vueI18n: "./i18n.config.ts",
+    locales: [
+      { code: "en", iso: "en-US", name: "English", file: "en.json" },
+      { code: "fr", iso: "fr-FR", name: "French", file: "fr.json" },
+    ],
+    defaultLocale: "en",
+    lazy: true,
+    langDir: "locales/",
+  },
 });

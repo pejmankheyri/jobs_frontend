@@ -3,10 +3,10 @@ import { computed, ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
 
 const { $toast } = useNuxtApp();
-
 const config = useRuntimeConfig();
-
 const authStore = useAuthStore();
+const { t } = useI18n();
+
 const isAuthenticated = computed(() => !!authStore.token);
 
 const isApplyBoxOpen = ref(false);
@@ -38,7 +38,7 @@ const applyJob = async (id, coverLetter) => {
     if (error.response.status === 400 || error.response.status === 404) {
       $toast.error(error.response._data.message);
     } else {
-      $toast.error("Error applying job. Please try again later.");
+      $toast.error(t("ERROR_APPLYING_JOB"));
     }
   } finally {
     loading.value = false;
@@ -72,8 +72,8 @@ const companyLogoSrc = computed(() => {
         <UTooltip
           :text="
             !isAuthenticated
-              ? 'Please login first for apply this job'
-              : 'Apply this job'
+              ? $t('LOGIN_TO_APPLY_JOB')
+              : $t('CLICK_TO_APPLY_JOB')
           "
         >
           <UButton
@@ -81,7 +81,7 @@ const companyLogoSrc = computed(() => {
             class="ml-auto truncate p-4"
             :disabled="!isAuthenticated"
             @click="isApplyBoxOpen = true"
-            >Apply this job</UButton
+            >{{ $t("APPLY_THIS_JOB") }}</UButton
           >
         </UTooltip>
         <UModal v-model="isApplyBoxOpen">
@@ -101,7 +101,7 @@ const companyLogoSrc = computed(() => {
               :loading="loading"
               @click="applyJob(selectedJob.id, coverLetter)"
               block
-              >Apply this job</UButton
+              >{{ $t("APPLY_THIS_JOB") }}</UButton
             >
           </div>
         </UModal>
@@ -131,11 +131,14 @@ const companyLogoSrc = computed(() => {
   </div>
   <div class="absolute bottom-0 border-t-2">
     <div class="p-8">
-      <h2 class="text-2xl">Company Description</h2>
+      <h2 class="text-2xl">{{ $t("COMPANY_DESCRIPTION") }}</h2>
       <div class="grid grid-cols-2 py-6">
-        <p>Size: {{ selectedJob?.company?.employes }} employees</p>
         <p>
-          Website:
+          {{ $t("SIZE") }}: {{ selectedJob?.company?.employes }}
+          {{ $t("EMPLOYEE") }}
+        </p>
+        <p>
+          {{ $t("WEBSITE") }}:
           <a
             :href="selectedJob?.company?.website"
             target="_blank"

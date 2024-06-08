@@ -8,13 +8,15 @@ const isAuthenticated = computed(() => !!authStore.token);
 </script>
 
 <template>
-  <div class="place-items-center items-center flex">
+  <div class="place-items-center items-center flex gap-3">
+    <LanguageSwitcher />
+
     <div v-if="!isAuthenticated" class="flex gap-2">
-      <nuxt-link to="/login">
-        <UButton color="gray" variant="solid">Login</UButton>
+      <nuxt-link :to="localePath('/login')">
+        <UButton color="gray" variant="solid">{{ $t("LOGIN") }}</UButton>
       </nuxt-link>
-      <nuxt-link to="/register">
-        <UButton color="gray" variant="solid">Register</UButton>
+      <nuxt-link :to="localePath('/register')">
+        <UButton color="gray" variant="solid">{{ $t("REGISTER") }}</UButton>
       </nuxt-link>
     </div>
     <ProfileMenuDropdowns v-else />

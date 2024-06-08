@@ -14,6 +14,7 @@ const config = useRuntimeConfig();
 const { $toast } = useNuxtApp();
 const authStore = useAuthStore();
 const companyStore = useCompanyStore();
+const { t } = useI18n();
 
 const loading = ref(false);
 const file = ref(null);
@@ -37,7 +38,8 @@ const onSubmit = async () => {
     companyObject.value = await companyStore.changeLogo(
       formData,
       companyId,
-      $toast
+      $toast,
+      t
     );
   } finally {
     loading.value = false;
@@ -67,11 +69,11 @@ const companyLogoSrc = computed(() => {
 
 <template>
   <div class="container mx-auto max-w-md my-10">
-    <h1 class="text-2xl font-bold mb-4">Company Logo</h1>
+    <h1 class="text-2xl font-bold mb-4">{{ $t("COMPANY_LOGO") }}</h1>
     <UAvatar :src="companyLogoSrc" size="3xl" />
 
     <UForm :state="state" class="space-y-4" @submit="onSubmit">
-      <UFormGroup label="Logo" name="logo">
+      <UFormGroup :label="$t('LOGO')" name="logo">
         <UInput
           v-model="state.logo"
           color="indigo"
@@ -83,7 +85,7 @@ const companyLogoSrc = computed(() => {
       </UFormGroup>
       <div class="pt-4">
         <UButton type="submit" color="indigo" :loading="loading" block>
-          Change Logo
+          {{ $t("CHANGE_LOGO") }}
         </UButton>
       </div>
     </UForm>

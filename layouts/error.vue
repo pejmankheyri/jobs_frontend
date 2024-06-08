@@ -1,7 +1,9 @@
 <script setup>
+const { t } = useI18n();
+
 // Link to Google Fonts
 useHead({
-  title: "Error - Jobs Board",
+  title: t("ERROR") + " " + t("JOB_BOARD"),
   htmlAttrs: {
     lang: "en",
   },

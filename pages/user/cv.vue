@@ -5,8 +5,8 @@ definePageMeta({
 });
 
 const { $toast } = useNuxtApp();
-
 const authStore = useAuthStore();
+const { t } = useI18n();
 
 const loading = ref(false);
 const file = ref(null);
@@ -29,7 +29,7 @@ const onSubmit = async () => {
     const formData = new FormData();
     formData.append("cv", file.value);
 
-    await authStore.changeCV(formData, $toast);
+    await authStore.changeCV(formData, $toast, t);
   } finally {
     loading.value = false;
   }
@@ -38,13 +38,13 @@ const onSubmit = async () => {
 
 <template>
   <div class="container mx-auto max-w-md my-10">
-    <h1 class="text-2xl font-bold mb-4">Change CV</h1>
+    <h1 class="text-2xl font-bold mb-4">{{ $t("CHANGE_CV") }}</h1>
     <div v-if="user.cv">
       <a
         :href="`${config.public.apiBaseUrl}${user.cv}`"
         target="_blank"
         class="text-indigo-600"
-        >Download CV</a
+        >{{ $t("DOWNLOAD_CV") }}</a
       >
     </div>
     <embed
@@ -57,7 +57,7 @@ const onSubmit = async () => {
     />
 
     <UForm :state="state" class="space-y-4 mt-10" @submit="onSubmit">
-      <UFormGroup label="Upload new CV" name="cv">
+      <UFormGroup :label="$t('UPLOAD_NEW_CV')" name="cv">
         <UInput
           v-model="state.cv"
           color="indigo"
@@ -66,11 +66,10 @@ const onSubmit = async () => {
           icon="i-heroicons-folder"
           @change="onFileChange"
         />
-        <!-- <input type="file" @change="onFileChange" /> -->
       </UFormGroup>
       <div class="pt-4">
         <UButton type="submit" color="indigo" :loading="loading" block>
-          Change CV
+          {{ $t("CHANGE_CV") }}
         </UButton>
       </div>
     </UForm>

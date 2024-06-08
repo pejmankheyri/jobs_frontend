@@ -4,10 +4,9 @@ definePageMeta({
 });
 
 const runtimeConfig = useRuntimeConfig();
-
 const { $toast } = useNuxtApp();
-
 const authStore = useAuthStore();
+const { t } = useI18n();
 
 const loading = ref(false);
 const file = ref(null);
@@ -28,7 +27,7 @@ const onSubmit = async () => {
     const formData = new FormData();
     formData.append("avatar", file.value);
 
-    await authStore.changeAvatar(formData, $toast);
+    await authStore.changeAvatar(formData, $toast, t);
   } finally {
     loading.value = false;
   }
@@ -44,12 +43,12 @@ const userAvatar = computed(() => {
 
 <template>
   <div class="container mx-auto max-w-md my-10">
-    <h1 class="text-2xl font-bold mb-4">Change Avatar</h1>
+    <h1 class="text-2xl font-bold mb-4">{{ $t("CHANGE_AVATAR") }}</h1>
 
     <UAvatar :src="userAvatar" size="3xl" />
 
     <UForm :state="state" class="space-y-4" @submit="onSubmit">
-      <UFormGroup label="Avatar" name="avatar">
+      <UFormGroup :label="$t('AVATAR')" name="avatar">
         <UInput
           v-model="state.avatar"
           color="indigo"
@@ -61,7 +60,7 @@ const userAvatar = computed(() => {
       </UFormGroup>
       <div class="pt-4">
         <UButton type="submit" color="indigo" :loading="loading" block>
-          Change Avatar
+          {{ $t("CHANGE_AVATAR") }}
         </UButton>
       </div>
     </UForm>

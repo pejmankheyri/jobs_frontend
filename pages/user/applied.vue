@@ -4,6 +4,8 @@ definePageMeta({
   role: "user",
 });
 
+const { t } = useI18n();
+
 // Columns
 const columns = [
   {
@@ -13,12 +15,12 @@ const columns = [
   },
   {
     key: "title",
-    label: "Title",
+    label: t("TITLE"),
     sortable: true,
   },
   {
     key: "completed",
-    label: "Status",
+    label: t("STATUS"),
     sortable: false,
   },
 ];
@@ -44,7 +46,7 @@ function select(row) {
 const statusOptions = [
   {
     key: "applied",
-    label: "Applied",
+    label: t("APPLIED"),
     value: true,
   },
 ];
@@ -114,7 +116,7 @@ const getJobs = async () => {
 
     jobs.value = response.data;
   } catch (error) {
-    console.error("Error fetching jobs:", error);
+    console.error(t("ERROR_FETCHING_JOBS") + ":", error);
   } finally {
     loading.value = false;
   }
@@ -140,7 +142,7 @@ const getJobs = async () => {
       <h2
         class="font-semibold text-xl text-gray-900 dark:text-white leading-tight"
       >
-        My Applied Jobs
+        {{ $t("APPLIED_JOBS") }}
       </h2>
     </template>
 
@@ -166,7 +168,7 @@ const getJobs = async () => {
     <!-- Header and Action buttons -->
     <div class="flex justify-between items-center w-full px-4 py-3">
       <div class="flex items-center gap-1.5">
-        <span class="text-sm leading-5">Rows per page:</span>
+        <span class="text-sm leading-5">{{ $t("ROWS_PER_PAGE") }}:</span>
 
         <USelect
           v-model="pageCount"
@@ -180,7 +182,7 @@ const getJobs = async () => {
       <div class="flex gap-1.5 items-center">
         <USelectMenu v-model="selectedColumns" :options="columns" multiple>
           <UButton icon="i-heroicons-view-columns" color="indigo" size="xs">
-            Columns
+            {{ $t("COLUMNS") }}
           </UButton>
         </USelectMenu>
       </div>
@@ -204,7 +206,12 @@ const getJobs = async () => {
       @select="select"
     >
       <template #completed-data="{}">
-        <UBadge size="xs" label="Applied" color="emerald" variant="subtle" />
+        <UBadge
+          size="xs"
+          :label="$t('APPLIED')"
+          color="emerald"
+          variant="subtle"
+        />
       </template>
     </UTable>
 
@@ -213,13 +220,13 @@ const getJobs = async () => {
       <div class="flex flex-wrap justify-between items-center">
         <div>
           <span class="text-sm leading-5">
-            Showing
+            {{ $t("SHOWING") }}
             <span class="font-medium">{{ pageFrom }}</span>
-            to
+            {{ $t("TO") }}
             <span class="font-medium">{{ pageTo }}</span>
-            of
+            {{ $t("OF") }}
             <span class="font-medium">{{ pageTotal }}</span>
-            results
+            {{ $t("ENTRIES") }}
           </span>
         </div>
 

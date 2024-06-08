@@ -25,7 +25,7 @@ export const useAuthStore = defineStore("auth", {
       this.user = user;
       localStorage.setItem("user", JSON.stringify(user));
     },
-    async login(email, password, router, $toast) {
+    async login(email, password, router, $toast, t, localeRoute) {
       try {
         const data = await useFetch(`/login`, {
           method: "POST",
@@ -48,15 +48,15 @@ export const useAuthStore = defineStore("auth", {
           // return navigateTo("/");
         }
 
-        $toast.success("Logged in successfully");
+        $toast.success(t("LOGIN_SUCCESS"));
 
-        navigateTo("/");
+        navigateTo(localeRoute("index").fullPath);
       } catch (e) {
-        $toast.error("Error logging in");
+        $toast.error(t("LOGIN_ERROR"));
       }
     },
 
-    async logout($toast) {
+    async logout($toast, t, localeRoute) {
       await useFetch(`/logout`, {
         method: "POST",
       });
@@ -65,9 +65,9 @@ export const useAuthStore = defineStore("auth", {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
 
-      navigateTo("/login");
+      navigateTo(localeRoute({ name: "login" }).fullPath);
 
-      $toast.success("Logged out successfully");
+      $toast.success(t("LOGOUT_SUCCESS"));
     },
 
     async register(
@@ -77,7 +77,8 @@ export const useAuthStore = defineStore("auth", {
       password_confirmation,
       role,
       router,
-      $toast
+      $toast,
+      t
     ) {
       try {
         await useFetch(`/users`, {
@@ -91,11 +92,11 @@ export const useAuthStore = defineStore("auth", {
           },
         });
 
-        $toast.success("Registered successfully");
+        $toast.success(t("REGISTER_SUCCESS"));
 
         await this.login(email, password, router, $toast);
       } catch (e) {
-        $toast.error("Error registering");
+        $toast.error(t("REGISTER_ERROR"));
       }
     },
 
@@ -109,7 +110,7 @@ export const useAuthStore = defineStore("auth", {
       }
     },
 
-    async updateProfile(name, phone, $toast) {
+    async updateProfile(name, phone, $toast, t) {
       try {
         const { data } = await useFetch(`/users/${JSON.parse(this.user).id}`, {
           method: "PUT",
@@ -121,13 +122,13 @@ export const useAuthStore = defineStore("auth", {
 
         this.setUser(data);
 
-        $toast.success("Profile updated successfully");
+        $toast.success(t("PROFILE_UPDATED_SUCCESSFULLY"));
       } catch (e) {
-        $toast.error("Error updating profile");
+        $toast.error(t("PROFILE_UPDATED_ERROR"));
       }
     },
 
-    async updatePassword(vars, $toast) {
+    async updatePassword(vars, $toast, t) {
       try {
         await useFetch(`/users/change-password`, {
           method: "POST",
@@ -138,13 +139,13 @@ export const useAuthStore = defineStore("auth", {
           },
         });
 
-        $toast.success("Password updated successfully");
+        $toast.success(t("PASSWORD_UPDATED_SUCCESSFULLY"));
       } catch (e) {
-        $toast.error("Error updating password");
+        $toast.error(t("PASSWORD_UPDATED_ERROR"));
       }
     },
 
-    async changeAvatar(formData, $toast) {
+    async changeAvatar(formData, $toast, t) {
       try {
         const { avatar } = await useFetch(`/users/avatar`, {
           method: "POST",
@@ -155,13 +156,13 @@ export const useAuthStore = defineStore("auth", {
 
         localStorage.setItem("user", JSON.stringify(this.user));
 
-        $toast.success("Avatar updated successfully");
+        $toast.success(t("AVATAR_UPDATED_SUCCESSFULLY"));
       } catch (e) {
-        $toast.error("Error updating avatar");
+        $toast.error(t("AVATAR_UPDATED_ERROR"));
       }
     },
 
-    async changeCV(formData, $toast) {
+    async changeCV(formData, $toast, t) {
       try {
         const { cv } = await useFetch(`/users/cv`, {
           method: "POST",
@@ -172,9 +173,9 @@ export const useAuthStore = defineStore("auth", {
 
         localStorage.setItem("user", JSON.stringify(this.user));
 
-        $toast.success("CV updated successfully");
+        $toast.success(t("CV_UPDATED_SUCCESSFULLY"));
       } catch (e) {
-        $toast.error("Error updating CV");
+        $toast.error(t("CV_UPDATED_ERROR"));
       }
     },
   },

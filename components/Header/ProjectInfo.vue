@@ -4,7 +4,7 @@ const isOpen = ref(false);
 
 <template>
   <div>
-    <UTooltip text="Click to see project technical details">
+    <UTooltip :text="$t('CLICK_TO_SEE_PROJECT_DETAILS')">
       <Info @click="isOpen = true" class="cursor-pointer" color="red" />
     </UTooltip>
 
@@ -20,7 +20,7 @@ const isOpen = ref(false);
             <h3
               class="text-base font-semibold leading-6 text-gray-900 dark:text-white"
             >
-              Project Technical Details
+              {{ $t("PROJECT_TECHNICAL_DETAILS") }}
             </h3>
             <UButton
               color="gray"
@@ -31,7 +31,7 @@ const isOpen = ref(false);
             />
           </div>
         </template>
-        Backend
+        {{ $t("BACKEND") }}
         <hr class="pb-4" />
         <div class="grid md:grid-cols-2 grid-cols-1">
           <div class="flex items-center gap-2 pb-2">
@@ -76,7 +76,7 @@ const isOpen = ref(false);
             <img src="https://img.shields.io/badge/package-v1.18.0-009900" />
           </div>
         </div>
-        Frontend
+        {{ $t("FRONTEND") }}
         <hr class="pb-4" />
         <div class="grid md:grid-cols-2 grid-cols-1">
           <div class="flex items-center gap-2 pb-2">
@@ -104,7 +104,7 @@ const isOpen = ref(false);
             <img src="https://img.shields.io/badge/package-v3.4.3-3abdf7" />
           </div>
         </div>
-        Source codes
+        {{ $t("SOURCE_CODES") }}
         <hr class="pb-4" />
         <div class="grid md:grid-cols-2 grid-cols-1">
           <div class="flex items-center gap-2 pb-2 cursor-pointer">

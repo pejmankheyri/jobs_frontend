@@ -4,6 +4,12 @@ definePageMeta({
   role: "company",
 });
 
+const { t } = useI18n();
+const authStore = useAuthStore();
+const config = useRuntimeConfig();
+const router = useRouter();
+const localeRoute = useLocaleRoute();
+
 // Columns
 const columns = [
   {
@@ -13,38 +19,38 @@ const columns = [
   },
   {
     key: "title",
-    label: "Title",
+    label: t("TITLE"),
     sortable: true,
   },
   {
     key: "description",
-    label: "Description",
+    label: t("DESCRIPTION"),
     sortable: false,
   },
   {
     key: "rating",
-    label: "Rating",
+    label: t("RATING"),
     sortable: true,
   },
   {
     key: "employes",
-    label: "Employees",
+    label: t("EMPLOYEES"),
     sortable: true,
   },
   {
     key: "location",
-    label: "Location",
+    label: t("LOCATION"),
     sortable: false,
   },
   {
     key: "create_dates",
-    label: "Created At",
+    label: t("CREATED_AT"),
     sortable: true,
   },
   ,
   {
     key: "actions",
-    label: "Actions",
+    label: t("ACTIONS"),
     sortable: false,
   },
 ];
@@ -58,19 +64,19 @@ const columnsTable = computed(() =>
 const actions = [
   {
     key: "edit",
-    label: "Edit",
+    label: t("EDIT"),
     icon: "i-heroicons-check",
   },
 
   {
     key: "view",
-    label: "View",
+    label: t("VIEW"),
     icon: "i-heroicons-arrow-path",
   },
 
   {
     key: "delete",
-    label: "Delete",
+    label: t("DELETE"),
     icon: "i-heroicons-trash",
   },
 ];
@@ -91,13 +97,8 @@ const resetFilters = () => {
   selectedStatus.value = [];
 };
 import { useAuthStore } from "@/stores/auth";
-const authStore = useAuthStore();
-
-const router = useRouter();
 
 const user = computed(() => JSON.parse(localStorage.getItem("user")));
-
-const config = useRuntimeConfig();
 
 // Pagination
 const sort = ref({ column: "id", direction: "asc" });
@@ -124,10 +125,25 @@ const deleteCompany = async (id) => {
     await authStore.deleteCompany(id);
     getCompanies();
   } catch (error) {
-    console.error("Error deleting company:", error);
+    console.error(t("ERROR_REMOVING_COMPANY") + ":", error);
   } finally {
     loading.value = false;
   }
+};
+
+const editCompanyLink = (id) => {
+  const route = localeRoute({ name: "company-id-edit", params: { id } });
+  navigateTo(route.fullPath);
+};
+
+const companyImagesLink = (id) => {
+  const route = localeRoute({ name: "company-id-images", params: { id } });
+  navigateTo(route.fullPath);
+};
+
+const companyLogoLink = (id) => {
+  const route = localeRoute({ name: "company-id-logo", params: { id } });
+  navigateTo(route.fullPath);
 };
 
 // Data
@@ -148,7 +164,7 @@ const getCompanies = async () => {
 
     companies.value = response.data;
   } catch (error) {
-    console.error("Error fetching companies:", error);
+    console.error(t("ERROR_FETCHING_COMPANIES") + ":", error);
   } finally {
     loading.value = false;
   }
@@ -174,7 +190,7 @@ const getCompanies = async () => {
       <h2
         class="font-semibold text-xl text-gray-900 dark:text-white leading-tight"
       >
-        Companies List
+        {{ $t("COMPANIES_LIST") }}
       </h2>
     </template>
 
@@ -184,14 +200,14 @@ const getCompanies = async () => {
         v-model="search"
         icon="i-heroicons-magnifying-glass-20-solid"
         color="indigo"
-        placeholder="Search..."
+        :placeholder="$t('SEARCH') + '...'"
       />
     </div>
 
     <!-- Header and Action buttons -->
     <div class="flex justify-between items-center w-full px-4 py-3">
       <div class="flex items-center gap-1.5">
-        <span class="text-sm leading-5">Rows per page:</span>
+        <span class="text-sm leading-5">{{ $t("ROWS_PER_PAGE") }}:</span>
 
         <USelect
           v-model="pageCount"
@@ -243,7 +259,7 @@ const getCompanies = async () => {
               color="orange"
               variant="outline"
               :ui="{ rounded: 'rounded-full' }"
-              @click="router.push(`/company/${row.id}/edit`)"
+              @click="editCompanyLink(row.id)"
               square
             />
           </UTooltip>
@@ -254,7 +270,7 @@ const getCompanies = async () => {
               color="green"
               variant="outline"
               :ui="{ rounded: 'rounded-full' }"
-              @click="router.push(`/company/${row.id}/images`)"
+              @click="companyImagesLink(row.id)"
               square
             />
           </UTooltip>
@@ -265,7 +281,7 @@ const getCompanies = async () => {
               color="blue"
               variant="outline"
               :ui="{ rounded: 'rounded-full' }"
-              @click="router.push(`/company/${row.id}/logo`)"
+              @click="companyLogoLink(row.id)"
               square
             />
           </UTooltip>
@@ -289,13 +305,13 @@ const getCompanies = async () => {
       <div class="flex flex-wrap justify-between items-center">
         <div>
           <span class="text-sm leading-5">
-            Showing
+            {{ $t("SHOWING") }}
             <span class="font-medium">{{ pageFrom }}</span>
-            to
+            {{ $t("TO") }}
             <span class="font-medium">{{ pageTo }}</span>
-            of
+            {{ $t("OF") }}
             <span class="font-medium">{{ pageTotal }}</span>
-            results
+            {{ $t("ENTRIES") }}
           </span>
         </div>
 

@@ -8,19 +8,21 @@ import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "vue-router";
 
 const { $toast } = useNuxtApp();
-
+const { t } = useI18n();
 const router = useRouter();
 const authStore = useAuthStore();
 
 const loading = ref(false);
 
 const schema = object({
-  name: string().required("Required"),
-  email: string().email("Invalid email").required("Required"),
+  name: string().required(t("THIS_FIELD_IS_REQUIRED")),
+  email: string()
+    .email("THIS_FIELD_MUST_BE_AN_EMAIL")
+    .required(t("THIS_FIELD_IS_REQUIRED")),
   password: string()
-    .min(8, "Must be at least 8 characters")
-    .required("Required"),
-  password_confirmation: string().required("Required"),
+    .min(8, t("THIS_FIELD_MUST_BE_AT_LEAST_8_CHARACTERS"))
+    .required(t("THIS_FIELD_IS_REQUIRED")),
+  password_confirmation: string().required(t("THIS_FIELD_IS_REQUIRED")),
 });
 
 const state = reactive({
@@ -31,7 +33,7 @@ const state = reactive({
   role: undefined,
 });
 
-const roleOptions = ["Company", "Job Seeker"];
+const roleOptions = ["Company", "User"];
 
 const onSubmit = async () => {
   if (schema.validateSync(state)) {
@@ -45,7 +47,8 @@ const onSubmit = async () => {
         state.password_confirmation,
         state.role,
         router,
-        $toast
+        $toast,
+        t
       );
     } finally {
       loading.value = false;
@@ -56,17 +59,17 @@ const onSubmit = async () => {
 
 <template>
   <div class="container mx-auto max-w-md my-10">
-    <h1 class="text-2xl font-bold mb-4">Register</h1>
+    <h1 class="text-2xl font-bold mb-4">{{ $t("REGISTER") }}</h1>
     <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
-      <UFormGroup label="Name" name="name">
+      <UFormGroup :label="$t('NAME')" name="name">
         <UInput v-model="state.name" color="indigo" icon="i-heroicons-user" />
       </UFormGroup>
 
-      <UFormGroup label="Email" name="email">
+      <UFormGroup :label="$t('EMAIL')" name="email">
         <UInput v-model="state.email" icon="i-heroicons-envelope" />
       </UFormGroup>
 
-      <UFormGroup label="Password" name="password">
+      <UFormGroup :label="$t('PASSWORD')" name="password">
         <UInput
           v-model="state.password"
           type="password"
@@ -74,7 +77,10 @@ const onSubmit = async () => {
           color="indigo"
         />
       </UFormGroup>
-      <UFormGroup label="Password confirmation" name="password_confirmation">
+      <UFormGroup
+        :label="$t('PASSWORD_CONFIRMATION')"
+        name="password_confirmation"
+      >
         <UInput
           v-model="state.password_confirmation"
           type="password"
@@ -83,7 +89,7 @@ const onSubmit = async () => {
         />
       </UFormGroup>
 
-      <UFormGroup label="User type" name="role">
+      <UFormGroup :label="$t('USER_ROLE')" name="role">
         <USelect
           icon="i-heroicons-users"
           :options="roleOptions"
@@ -94,7 +100,7 @@ const onSubmit = async () => {
       </UFormGroup>
       <div class="pt-4">
         <UButton type="submit" color="indigo" :loading="loading" block>
-          Register
+          {{ $t("REGISTER") }}
         </UButton>
       </div>
     </UForm>

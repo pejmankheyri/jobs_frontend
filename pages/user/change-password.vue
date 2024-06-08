@@ -6,19 +6,17 @@ import { object, string } from "yup";
 import { reactive, ref, isProxy, toRaw } from "vue";
 
 import { useRouter } from "vue-router";
-
 const { $toast } = useNuxtApp();
-
 const authStore = useAuthStore();
-
 const router = useRouter();
+const { t } = useI18n();
 
 const schema = object({
-  oldPassword: string().required("Required"),
+  oldPassword: string().required(t("THIS_FIELD_IS_REQUIRED")),
   newPassword: string()
-    .min(8, "Must be at least 8 characters")
-    .required("Required"),
-  confirmPassword: string().required("Required"),
+    .min(8, t("THIS_FIELD_MUST_BE_AT_LEAST_8_CHARACTERS"))
+    .required(t("THIS_FIELD_IS_REQUIRED")),
+  confirmPassword: string().required(t("THIS_FIELD_IS_REQUIRED")),
 });
 
 const loading = ref(false);
@@ -32,7 +30,7 @@ const onSubmit = async () => {
   try {
     loading.value = true;
 
-    await authStore.updatePassword(toRaw(state), $toast);
+    await authStore.updatePassword(toRaw(state), $toast, t);
 
     state.oldPassword = "";
     state.newPassword = "";
@@ -46,14 +44,14 @@ const onSubmit = async () => {
 <template>
   <div>
     <div class="container mx-auto max-w-md my-10">
-      <h1 class="text-2xl font-bold mb-4">Change Password</h1>
+      <h1 class="text-2xl font-bold mb-4">{{ $t("CHANGE_PASSWORD") }}</h1>
       <UForm
         :state="state"
         :schema="schema"
         class="space-y-4"
         @submit="onSubmit"
       >
-        <UFormGroup label="Old Password" name="oldPassword">
+        <UFormGroup :label="$t('OLD_PASSWORD')" name="oldPassword">
           <UInput
             v-model="state.oldPassword"
             color="indigo"
@@ -62,7 +60,7 @@ const onSubmit = async () => {
             icon="i-heroicons-lock-closed"
           />
         </UFormGroup>
-        <UFormGroup label="New Password" name="newPassword">
+        <UFormGroup :label="$t('NEW_PASSWORD')" name="newPassword">
           <UInput
             v-model="state.newPassword"
             color="indigo"
@@ -71,7 +69,10 @@ const onSubmit = async () => {
             icon="i-heroicons-lock-closed"
           />
         </UFormGroup>
-        <UFormGroup label="Confirm Password" name="confirmPassword">
+        <UFormGroup
+          :label="$t('NEW_PASSWORD_CONFIRMATION')"
+          name="confirmPassword"
+        >
           <UInput
             v-model="state.confirmPassword"
             color="indigo"
@@ -82,7 +83,7 @@ const onSubmit = async () => {
         </UFormGroup>
         <div class="pt-4">
           <UButton type="submit" color="indigo" :loading="loading" block>
-            Change Password
+            {{ $t("CHANGE_PASSWORD") }}
           </UButton>
         </div>
       </UForm>
