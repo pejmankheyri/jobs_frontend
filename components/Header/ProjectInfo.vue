@@ -33,7 +33,7 @@ const isOpen = ref(false);
         </template>
         {{ $t("BACKEND") }}
         <hr class="pb-4" />
-        <div class="grid md:grid-cols-2 grid-cols-1">
+        <div class="grid grid-cols-1 md:grid-cols-2">
           <div class="flex items-center gap-2 pb-2">
             <img
               src="https://img.shields.io/badge/-Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white"
@@ -75,10 +75,18 @@ const isOpen = ref(false);
             />
             <img src="https://img.shields.io/badge/package-v1.18.0-009900" />
           </div>
+          <div class="flex items-center gap-2 pb-2">
+            <img
+              src="https://img.shields.io/badge/-Redis-ff4437?style=for-the-badge&logo=redis&logoColor=white"
+              alt="Redis"
+              class="rounded"
+            />
+            <img src="https://img.shields.io/badge/package-v7.2.3-ff4437" />
+          </div>
         </div>
         {{ $t("FRONTEND") }}
         <hr class="pb-4" />
-        <div class="grid md:grid-cols-2 grid-cols-1">
+        <div class="grid grid-cols-1 md:grid-cols-2">
           <div class="flex items-center gap-2 pb-2">
             <img
               src="https://img.shields.io/badge/-Nuxt.js-4FC08D?style=for-the-badge&logo=nuxt.js&logoColor=white"
@@ -106,7 +114,7 @@ const isOpen = ref(false);
         </div>
         {{ $t("SOURCE_CODES") }}
         <hr class="pb-4" />
-        <div class="grid md:grid-cols-2 grid-cols-1">
+        <div class="grid grid-cols-1 md:grid-cols-2">
           <div class="flex items-center gap-2 pb-2 cursor-pointer">
             <a href="https://github.com/pejmankheyri/jobs_api" target="_blank">
               <img
