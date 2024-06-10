@@ -73,6 +73,7 @@ export const useAuthStore = defineStore("auth", {
     async register(
       name,
       email,
+      phone,
       password,
       password_confirmation,
       role,
@@ -86,6 +87,7 @@ export const useAuthStore = defineStore("auth", {
           body: {
             name: name,
             email: email,
+            phone: phone,
             password: password,
             password_confirmation: password_confirmation,
             role_id: role === "Company" ? 3 : 2,

@@ -19,6 +19,7 @@ const schema = object({
   email: string()
     .email("THIS_FIELD_MUST_BE_AN_EMAIL")
     .required(t("THIS_FIELD_IS_REQUIRED")),
+  phone: string().required(t("THIS_FIELD_IS_REQUIRED")),
   password: string()
     .min(8, t("THIS_FIELD_MUST_BE_AT_LEAST_8_CHARACTERS"))
     .required(t("THIS_FIELD_IS_REQUIRED")),
@@ -28,6 +29,7 @@ const schema = object({
 const state = reactive({
   name: undefined,
   email: undefined,
+  phone: undefined,
   password: undefined,
   password_confirmation: undefined,
   role: undefined,
@@ -43,6 +45,7 @@ const onSubmit = async () => {
       await authStore.register(
         state.name,
         state.email,
+        state.phone,
         state.password,
         state.password_confirmation,
         state.role,
@@ -58,8 +61,8 @@ const onSubmit = async () => {
 </script>
 
 <template>
-  <div class="container mx-auto max-w-md my-10">
-    <h1 class="text-2xl font-bold mb-4">{{ $t("REGISTER") }}</h1>
+  <div class="container max-w-md mx-auto my-10">
+    <h1 class="mb-4 text-2xl font-bold">{{ $t("REGISTER") }}</h1>
     <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
       <UFormGroup :label="$t('NAME')" name="name">
         <UInput v-model="state.name" color="indigo" icon="i-heroicons-user" />
@@ -67,6 +70,10 @@ const onSubmit = async () => {
 
       <UFormGroup :label="$t('EMAIL')" name="email">
         <UInput v-model="state.email" icon="i-heroicons-envelope" />
+      </UFormGroup>
+
+      <UFormGroup :label="$t('PHONE')" name="phone">
+        <UInput v-model="state.phone" icon="i-heroicons-phone" />
       </UFormGroup>
 
       <UFormGroup :label="$t('PASSWORD')" name="password">
