@@ -79,7 +79,8 @@ export const useAuthStore = defineStore("auth", {
       role,
       router,
       $toast,
-      t
+      t,
+      localeRoute
     ) {
       try {
         await useFetch(`/users`, {
@@ -96,7 +97,7 @@ export const useAuthStore = defineStore("auth", {
 
         $toast.success(t("REGISTER_SUCCESS"));
 
-        await this.login(email, password, router, $toast);
+        await this.login(email, password, router, $toast, t, localeRoute);
       } catch (e) {
         $toast.error(t("REGISTER_ERROR"));
       }

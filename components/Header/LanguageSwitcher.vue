@@ -6,7 +6,6 @@ const lang = ref("en");
 const langOptions = [
   { label: "EN", value: "en" },
   { label: "FR", value: "fr" },
-  { label: "DE", value: "de" },
 ];
 
 onMounted(() => {

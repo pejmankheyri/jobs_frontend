@@ -11,6 +11,7 @@ const { $toast } = useNuxtApp();
 const { t } = useI18n();
 const router = useRouter();
 const authStore = useAuthStore();
+const localeRoute = useLocaleRoute();
 
 const loading = ref(false);
 
@@ -51,7 +52,8 @@ const onSubmit = async () => {
         state.role,
         router,
         $toast,
-        t
+        t,
+        localeRoute
       );
     } finally {
       loading.value = false;
