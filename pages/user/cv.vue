@@ -4,9 +4,9 @@ definePageMeta({
   role: "user",
 });
 
-const { $toast } = useNuxtApp();
 const authStore = useAuthStore();
 const { t } = useI18n();
+const appToast = useAppToast();
 
 const loading = ref(false);
 const file = ref(null);
@@ -29,7 +29,7 @@ const onSubmit = async () => {
     const formData = new FormData();
     formData.append("cv", file.value);
 
-    await authStore.changeCV(formData, $toast, t);
+    await authStore.changeCV(formData, t, appToast);
   } finally {
     loading.value = false;
   }
@@ -37,8 +37,8 @@ const onSubmit = async () => {
 </script>
 
 <template>
-  <div class="container mx-auto max-w-md my-10">
-    <h1 class="text-2xl font-bold mb-4">{{ $t("CHANGE_CV") }}</h1>
+  <div class="container max-w-md mx-auto my-10">
+    <h1 class="mb-4 text-2xl font-bold">{{ $t("CHANGE_CV") }}</h1>
     <div v-if="user.cv">
       <a
         :href="`${config.public.apiBaseUrl}${user.cv}`"
@@ -56,7 +56,7 @@ const onSubmit = async () => {
       scrolling="auto"
     />
 
-    <UForm :state="state" class="space-y-4 mt-10" @submit="onSubmit">
+    <UForm :state="state" class="mt-10 space-y-4" @submit="onSubmit">
       <UFormGroup :label="$t('UPLOAD_NEW_CV')" name="cv">
         <UInput
           v-model="state.cv"

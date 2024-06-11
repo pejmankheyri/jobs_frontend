@@ -5,8 +5,8 @@ definePageMeta({
 import { object, string } from "yup";
 
 const authStore = useAuthStore();
-const { $toast } = useNuxtApp();
 const { t } = useI18n();
+const appToast = useAppToast();
 
 const user = computed(() => JSON.parse(localStorage.getItem("user")));
 
@@ -31,7 +31,7 @@ const onSubmit = async () => {
   if (schema.validateSync(state)) {
     try {
       loading.value = true;
-      await authStore.updateProfile(state.name, state.phone, $toast, t);
+      await authStore.updateProfile(state.name, state.phone, t, appToast);
     } finally {
       loading.value = false;
     }
@@ -40,8 +40,8 @@ const onSubmit = async () => {
 </script>
 
 <template>
-  <div class="container mx-auto max-w-md my-10">
-    <h1 class="text-2xl font-bold mb-4">{{ $t("SETTINGS") }}</h1>
+  <div class="container max-w-md mx-auto my-10">
+    <h1 class="mb-4 text-2xl font-bold">{{ $t("SETTINGS") }}</h1>
     <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
       <UFormGroup :label="$t('NAME')" name="name">
         <UInput v-model="state.name" color="indigo" icon="i-heroicons-user" />

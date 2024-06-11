@@ -25,7 +25,7 @@ export const useAuthStore = defineStore("auth", {
       this.user = user;
       localStorage.setItem("user", JSON.stringify(user));
     },
-    async login(email, password, router, $toast, t, localeRoute) {
+    async login(email, password, t, localeRoute, appToast) {
       try {
         const data = await useFetch(`/login`, {
           method: "POST",
@@ -48,15 +48,21 @@ export const useAuthStore = defineStore("auth", {
           // return navigateTo("/");
         }
 
-        $toast.success(t("LOGIN_SUCCESS"));
+        appToast.toastSuccess({
+          title: t("LOGIN_SUCCESS"),
+          description: t("LOGIN_SUCCESS_DESCRIPTION"),
+        });
 
         navigateTo(localeRoute("index").fullPath);
       } catch (e) {
-        $toast.error(t("LOGIN_ERROR"));
+        appToast.toastError({
+          title: t("LOGIN_ERROR"),
+          description: t("LOGIN_ERROR_DESCRIPTION"),
+        });
       }
     },
 
-    async logout($toast, t, localeRoute) {
+    async logout(t, localeRoute, appToast) {
       await useFetch(`/logout`, {
         method: "POST",
       });
@@ -67,7 +73,10 @@ export const useAuthStore = defineStore("auth", {
 
       navigateTo(localeRoute({ name: "login" }).fullPath);
 
-      $toast.success(t("LOGOUT_SUCCESS"));
+      appToast.toastSuccess({
+        title: t("LOGOUT_SUCCESS"),
+        description: t("LOGOUT_SUCCESS_DESCRIPTION"),
+      });
     },
 
     async register(
@@ -77,10 +86,9 @@ export const useAuthStore = defineStore("auth", {
       password,
       password_confirmation,
       role,
-      router,
-      $toast,
       t,
-      localeRoute
+      localeRoute,
+      appToast
     ) {
       try {
         await useFetch(`/users`, {
@@ -95,11 +103,17 @@ export const useAuthStore = defineStore("auth", {
           },
         });
 
-        $toast.success(t("REGISTER_SUCCESS"));
+        appToast.toastSuccess({
+          title: t("REGISTER_SUCCESS"),
+          description: t("REGISTER_SUCCESS_DESCRIPTION"),
+        });
 
-        await this.login(email, password, router, $toast, t, localeRoute);
+        await this.login(email, password, t, localeRoute, appToast);
       } catch (e) {
-        $toast.error(t("REGISTER_ERROR"));
+        appToast.toastError({
+          title: t("REGISTER_ERROR"),
+          description: t("REGISTER_ERROR_DESCRIPTION"),
+        });
       }
     },
 
@@ -113,7 +127,7 @@ export const useAuthStore = defineStore("auth", {
       }
     },
 
-    async updateProfile(name, phone, $toast, t) {
+    async updateProfile(name, phone, t, appToast) {
       try {
         const { data } = await useFetch(`/users/${JSON.parse(this.user).id}`, {
           method: "PUT",
@@ -125,13 +139,19 @@ export const useAuthStore = defineStore("auth", {
 
         this.setUser(data);
 
-        $toast.success(t("PROFILE_UPDATED_SUCCESSFULLY"));
+        appToast.toastSuccess({
+          title: t("PROFILE_UPDATED_SUCCESSFULLY"),
+          description: t("PROFILE_UPDATED_SUCCESSFULLY_DESCRIPTION"),
+        });
       } catch (e) {
-        $toast.error(t("PROFILE_UPDATED_ERROR"));
+        appToast.toastError({
+          title: t("PROFILE_UPDATED_ERROR"),
+          description: t("PROFILE_UPDATED_ERROR_DESCRIPTION"),
+        });
       }
     },
 
-    async updatePassword(vars, $toast, t) {
+    async updatePassword(vars, t, appToast) {
       try {
         await useFetch(`/users/change-password`, {
           method: "POST",
@@ -142,13 +162,19 @@ export const useAuthStore = defineStore("auth", {
           },
         });
 
-        $toast.success(t("PASSWORD_UPDATED_SUCCESSFULLY"));
+        appToast.toastSuccess({
+          title: t("PASSWORD_UPDATED_SUCCESSFULLY"),
+          description: t("PASSWORD_UPDATED_SUCCESSFULLY_DESCRIPTION"),
+        });
       } catch (e) {
-        $toast.error(t("PASSWORD_UPDATED_ERROR"));
+        appToast.toastError({
+          title: t("PASSWORD_UPDATED_ERROR"),
+          description: t("PASSWORD_UPDATED_ERROR_DESCRIPTION"),
+        });
       }
     },
 
-    async changeAvatar(formData, $toast, t) {
+    async changeAvatar(formData, t, appToast) {
       try {
         const { avatar } = await useFetch(`/users/avatar`, {
           method: "POST",
@@ -159,13 +185,19 @@ export const useAuthStore = defineStore("auth", {
 
         localStorage.setItem("user", JSON.stringify(this.user));
 
-        $toast.success(t("AVATAR_UPDATED_SUCCESSFULLY"));
+        appToast.toastSuccess({
+          title: t("AVATAR_UPDATED_SUCCESSFULLY"),
+          description: t("AVATAR_UPDATED_SUCCESSFULLY_DESCRIPTION"),
+        });
       } catch (e) {
-        $toast.error(t("AVATAR_UPDATED_ERROR"));
+        appToast.toastError({
+          title: t("AVATAR_UPDATED_ERROR"),
+          description: t("AVATAR_UPDATED_ERROR_DESCRIPTION"),
+        });
       }
     },
 
-    async changeCV(formData, $toast, t) {
+    async changeCV(formData, t, appToast) {
       try {
         const { cv } = await useFetch(`/users/cv`, {
           method: "POST",
@@ -176,9 +208,15 @@ export const useAuthStore = defineStore("auth", {
 
         localStorage.setItem("user", JSON.stringify(this.user));
 
-        $toast.success(t("CV_UPDATED_SUCCESSFULLY"));
+        appToast.toastSuccess({
+          title: t("CV_UPDATED_SUCCESSFULLY"),
+          description: t("CV_UPDATED_SUCCESSFULLY_DESCRIPTION"),
+        });
       } catch (e) {
-        $toast.error(t("CV_UPDATED_ERROR"));
+        appToast.toastError({
+          title: t("CV_UPDATED_ERROR"),
+          description: t("CV_UPDATED_ERROR_DESCRIPTION"),
+        });
       }
     },
   },

@@ -5,13 +5,11 @@ definePageMeta({
 
 import { object, string } from "yup";
 import { useAuthStore } from "@/stores/auth";
-import { useRouter } from "vue-router";
 
-const { $toast } = useNuxtApp();
 const { t } = useI18n();
-const router = useRouter();
 const authStore = useAuthStore();
 const localeRoute = useLocaleRoute();
+const appToast = useAppToast();
 
 const loading = ref(false);
 
@@ -50,10 +48,9 @@ const onSubmit = async () => {
         state.password,
         state.password_confirmation,
         state.role,
-        router,
-        $toast,
         t,
-        localeRoute
+        localeRoute,
+        appToast
       );
     } finally {
       loading.value = false;

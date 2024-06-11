@@ -6,7 +6,7 @@ export const useCompanyStore = defineStore("company", {
   getters: {},
 
   actions: {
-    async changeLogo(formData, id, $toast, t) {
+    async changeLogo(formData, id, t, appToast) {
       try {
         const { data } = await useFetch(`/companies/${id.value}/logo`, {
           method: "POST",
@@ -15,11 +15,17 @@ export const useCompanyStore = defineStore("company", {
 
         this.fetchCompany(id);
 
-        $toast.success(t("LOGO_UPDATED_SUCCESSFULLY"));
+        appToast.toastSuccess({
+          title: t("LOGO_UPDATED_SUCCESSFULLY"),
+          description: t("LOGO_UPDATED_SUCCESSFULLY_DESCRIPTION"),
+        });
 
         return data;
       } catch (e) {
-        $toast.error(t("LOGO_UPDATED_ERROR"));
+        appToast.toastError({
+          title: t("LOGO_UPDATED_ERROR"),
+          description: t("LOGO_UPDATED_ERROR_DESCRIPTION"),
+        });
       }
     },
 

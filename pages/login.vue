@@ -8,11 +8,11 @@ import { reactive } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "vue-router";
 
-const { $toast } = useNuxtApp();
 const router = useRouter();
 const authStore = useAuthStore();
 const { t } = useI18n();
 const localeRoute = useLocaleRoute();
+const appToast = useAppToast();
 
 const loading = ref(false);
 
@@ -37,10 +37,9 @@ const onSubmit = async () => {
       await authStore.login(
         state.email,
         state.password,
-        router,
-        $toast,
         t,
-        localeRoute
+        localeRoute,
+        appToast
       );
     } finally {
       loading.value = false;
@@ -71,8 +70,8 @@ const submitAsCompany = () => {
 </script>
 
 <template>
-  <div class="container mx-auto max-w-md my-10">
-    <h1 class="text-2xl font-bold mb-4">{{ $t("LOGIN") }}</h1>
+  <div class="container max-w-md mx-auto my-10">
+    <h1 class="mb-4 text-2xl font-bold">{{ $t("LOGIN") }}</h1>
 
     <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
       <UFormGroup :label="$t('EMAIL')" name="email">

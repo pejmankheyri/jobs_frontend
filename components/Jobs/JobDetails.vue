@@ -2,11 +2,11 @@
 import { computed, ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
 
-const { $toast } = useNuxtApp();
 const config = useRuntimeConfig();
 const authStore = useAuthStore();
 const colorMode = useColorMode();
 const { t } = useI18n();
+const appToast = useAppToast();
 
 const isAuthenticated = computed(() => !!authStore.token);
 
@@ -38,12 +38,21 @@ const applyJob = async (id, coverLetter) => {
 
     isApplyBoxOpen.value = false;
 
-    $toast.success(response.message);
+    appToast.toastSuccess({
+      title: t("SUCCESS"),
+      description: t("JOB_APPLIED_SUCCESSFULLY"),
+    });
   } catch (error) {
     if (error.response.status === 400 || error.response.status === 404) {
-      $toast.error(error.response._data.message);
+      appToast.toastError({
+        title: t("ERROR"),
+        description: error.response._data.message,
+      });
     } else {
-      $toast.error(t("ERROR_APPLYING_JOB"));
+      appToast.toastError({
+        title: t("ERROR"),
+        description: t("ERROR_APPLYING_JOB"),
+      });
     }
   } finally {
     loading.value = false;
@@ -57,9 +66,9 @@ const companyLogoSrc = computed(() => {
 
 <template>
   <div class="p-8">
-    <div class="flex pb-2 justify-between">
+    <div class="flex justify-between pb-2">
       <div class="flex">
-        <div class="text-xl pr-3 place-items-center flex gap-2">
+        <div class="flex gap-2 pr-3 text-xl place-items-center">
           <img
             :src="companyLogoSrc"
             alt="company logo"
@@ -68,7 +77,7 @@ const companyLogoSrc = computed(() => {
           {{ selectedJob?.company?.title }}
         </div>
 
-        <div class="flex font-thin text-sm items-center gap-1">
+        <div class="flex items-center gap-1 text-sm font-thin">
           {{ getCompanyRating(selectedJob?.company?.rating) }}
           <Star class="" :color="starIconColor" />
         </div>
@@ -83,7 +92,7 @@ const companyLogoSrc = computed(() => {
         >
           <UButton
             color="indigo"
-            class="ml-auto truncate p-4"
+            class="p-4 ml-auto truncate"
             :disabled="!isAuthenticated"
             @click="isApplyBoxOpen = true"
             >{{ $t("APPLY_THIS_JOB") }}</UButton
@@ -101,7 +110,7 @@ const companyLogoSrc = computed(() => {
 
             <UButton
               color="indigo"
-              class="ml-auto truncate p-4"
+              class="p-4 ml-auto truncate"
               :disabled="!isAuthenticated"
               :loading="loading"
               @click="applyJob(selectedJob.id, coverLetter)"
@@ -134,7 +143,7 @@ const companyLogoSrc = computed(() => {
       </div>
     </div>
   </div>
-  <div class="absolute bottom-0 border-t-2 w-full">
+  <div class="absolute bottom-0 w-full border-t-2">
     <div class="p-8">
       <h2 class="text-2xl">{{ $t("COMPANY_DESCRIPTION") }}</h2>
       <div class="grid grid-cols-2 py-6">

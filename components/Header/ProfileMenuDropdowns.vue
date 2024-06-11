@@ -7,7 +7,7 @@ const runtimeConfig = useRuntimeConfig();
 const router = useRouter();
 const authStore = useAuthStore();
 const localeRoute = useLocaleRoute();
-const { $toast } = useNuxtApp();
+const appToast = useAppToast();
 
 const dropdownItemsArray = computed(() => [
   [
@@ -82,7 +82,7 @@ const dropdownItemsArray = computed(() => [
       label: t("LOGOUT"),
       icon: "i-heroicons-arrow-left-on-rectangle",
       click: async () => {
-        await authStore.logout($toast, t, localeRoute);
+        await authStore.logout(t, localeRoute, appToast);
       },
       isActive: true,
     },
@@ -124,10 +124,10 @@ const userAvatar = computed(() => {
           {{ $t("SIGNED_IN_AS") }} <b>{{ user.role }}</b>
         </p>
 
-        <p class="truncate font-medium text-gray-900 dark:text-white">
+        <p class="font-medium text-gray-900 truncate dark:text-white">
           {{ item.label }}{{ user.name }}
         </p>
-        <p class="truncate font-medium text-gray-900 dark:text-white">
+        <p class="font-medium text-gray-900 truncate dark:text-white">
           {{ item.label }}{{ user.email }}
         </p>
       </div>
@@ -137,7 +137,7 @@ const userAvatar = computed(() => {
       <span class="truncate">{{ item.label }}</span>
       <UIcon
         :name="item.icon"
-        class="flex-shrink-0 h-4 w-4 text-gray-400 dark:text-gray-500 ms-auto"
+        class="flex-shrink-0 w-4 h-4 text-gray-400 dark:text-gray-500 ms-auto"
       />
     </template>
   </UDropdown>
