@@ -115,5 +115,16 @@
   "LOGO_UPDATED_ERROR_DESCRIPTION": "Error updating logo",
   "CHANGE_MODE_TO": "Change mode to",
   "JOB_APPLIED_SUCCESSFULLY": "Job applied successfully",
-  "SUCCESS": "Success"
+  "SUCCESS": "Success",
+  "FORGOT_PASSWORD_SUCCESS": "Forgot password success",
+  "FORGOT_PASSWORD_SUCCESS_DESCRIPTION": "We have sent you an email to reset your password",
+  "FORGOT_PASSWORD_ERROR": "Forgot password error",
+  "FORGOT_PASSWORD_ERROR_DESCRIPTION": "Error sending email to reset your password",
+  "RESET_PASSWORD_SUCCESS": "Reset password success",
+  "RESET_PASSWORD_SUCCESS_DESCRIPTION": "You have successfully reset your password",
+  "RESET_PASSWORD_ERROR": "Reset password error",
+  "RESET_PASSWORD_ERROR_DESCRIPTION": "Error resetting your password",
+  "FORGOT_PASSWORD": "Forgot Password",
+  "RESET_PASSWORD": "Reset Password",
+  "SEND_RESET_LINK": "Send Reset Link"
 }

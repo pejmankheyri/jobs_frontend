@@ -95,6 +95,11 @@ const submitAsCompany = () => {
           {{ $t("LOGIN") }}
         </UButton>
       </div>
+      <div class="">
+        <ULink :to="localePath('/forgot-password')" color="indigo">
+          {{ $t("FORGOT_PASSWORD") }}
+        </ULink>
+      </div>
     </UForm>
 
     <UDivider label="OR" orientation="vertical" type="dashed" class="py-4" />

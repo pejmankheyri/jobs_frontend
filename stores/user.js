@@ -25,7 +25,6 @@ export const useUserStore = defineStore("user", {
       localStorage.setItem("jobs", JSON.stringify(jobs));
     },
     async updateProfile(name, phone, t, appToast) {
-      console.log("updateProfile");
       try {
         const { data } = await useFetch(`/users`, {
           method: "PUT",
@@ -96,7 +95,6 @@ export const useUserStore = defineStore("user", {
     },
 
     async fetchAppliedJobs() {
-      console.log("fetchAppliedJobs");
       try {
         const { data } = await useFetch(`/users/jobs?per_page=50`, {
           method: "GET",

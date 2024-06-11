@@ -46,7 +46,6 @@ export const useAuthStore = defineStore("auth", {
           // return navigateTo("/company/dashboard");
           case "user":
             // return navigateTo("/user/dashboard");
-            // console.log(userStore);
             const userStore = useUserStore();
             await userStore.fetchAppliedJobs();
           default:
@@ -88,8 +87,7 @@ export const useAuthStore = defineStore("auth", {
 
     async register(state, t, localeRoute, appToast) {
       try {
-        console.log(state);
-        await useFetch(`/users`, {
+        await useFetch(`/register`, {
           method: "POST",
           body: {
             name: state.name,
@@ -144,6 +142,54 @@ export const useAuthStore = defineStore("auth", {
         appToast.toastError({
           title: t("PASSWORD_UPDATED_ERROR"),
           description: t("PASSWORD_UPDATED_ERROR_DESCRIPTION"),
+        });
+      }
+    },
+
+    async forgotPassword(state, t, locale, appToast) {
+      try {
+        await useFetch(`/forgot-password`, {
+          method: "POST",
+          body: {
+            email: state.email,
+            locale: locale,
+          },
+        });
+
+        appToast.toastSuccess({
+          title: t("FORGOT_PASSWORD_SUCCESS"),
+          description: t("FORGOT_PASSWORD_SUCCESS_DESCRIPTION"),
+        });
+      } catch (e) {
+        appToast.toastError({
+          title: t("FORGOT_PASSWORD_ERROR"),
+          description: t("FORGOT_PASSWORD_ERROR_DESCRIPTION"),
+        });
+      }
+    },
+
+    async resetPassword(vars, t, localeRoute, appToast) {
+      try {
+        await useFetch(`/reset-password`, {
+          method: "POST",
+          body: {
+            email: vars.email,
+            token: vars.token,
+            password: vars.password,
+            password_confirmation: vars.confirmPassword,
+          },
+        });
+
+        appToast.toastSuccess({
+          title: t("RESET_PASSWORD_SUCCESS"),
+          description: t("RESET_PASSWORD_SUCCESS_DESCRIPTION"),
+        });
+
+        navigateTo(localeRoute({ name: "login" }).fullPath);
+      } catch (e) {
+        appToast.toastError({
+          title: t("RESET_PASSWORD_ERROR"),
+          description: t("RESET_PASSWORD_ERROR_DESCRIPTION"),
         });
       }
     },
