@@ -62,12 +62,12 @@ const applyJob = async (id, coverLetter) => {
 // get job ids from local storage jobs array
 const jobIds = computed(() => {
   const jobs = JSON.parse(localStorage.getItem("jobs"));
-  return jobs.map((job) => job.id);
+  return jobs?.map((job) => job.id);
 });
 
 // check if job is already applied
 const isJobApplied = computed(() => {
-  return jobIds.value.includes(props.selectedJob?.id);
+  return jobIds.value?.includes(props.selectedJob?.id);
 });
 
 const isJobOwner = computed(() => {
