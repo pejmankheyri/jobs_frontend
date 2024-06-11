@@ -4,7 +4,7 @@ definePageMeta({
   role: "user",
 });
 
-const authStore = useAuthStore();
+const userStore = useUserStore();
 const { t } = useI18n();
 const appToast = useAppToast();
 
@@ -29,7 +29,7 @@ const onSubmit = async () => {
     const formData = new FormData();
     formData.append("cv", file.value);
 
-    await authStore.changeCV(formData, t, appToast);
+    await userStore.changeCV(formData, t, appToast);
   } finally {
     loading.value = false;
   }

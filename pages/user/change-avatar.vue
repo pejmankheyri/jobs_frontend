@@ -4,7 +4,7 @@ definePageMeta({
 });
 
 const runtimeConfig = useRuntimeConfig();
-const authStore = useAuthStore();
+const userStore = useUserStore();
 const { t } = useI18n();
 const appToast = useAppToast();
 
@@ -27,7 +27,9 @@ const onSubmit = async () => {
     const formData = new FormData();
     formData.append("avatar", file.value);
 
-    await authStore.changeAvatar(formData, t, appToast);
+    await userStore.changeAvatar(formData, t, appToast);
+
+    state.avatar = undefined;
   } finally {
     loading.value = false;
   }

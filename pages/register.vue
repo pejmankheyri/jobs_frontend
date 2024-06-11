@@ -41,17 +41,7 @@ const onSubmit = async () => {
     try {
       loading.value = true;
 
-      await authStore.register(
-        state.name,
-        state.email,
-        state.phone,
-        state.password,
-        state.password_confirmation,
-        state.role,
-        t,
-        localeRoute,
-        appToast
-      );
+      await authStore.register(state, t, localeRoute, appToast);
     } finally {
       loading.value = false;
     }

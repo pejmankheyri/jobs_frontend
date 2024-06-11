@@ -56,6 +56,8 @@
   "LOADING": "Loading...",
   "ERROR_APPLYING_JOB": "Error applying job. Please try again later.",
   "LOGIN_TO_APPLY_JOB": "Login to apply job",
+  "YOU_OWN_THIS_JOB": "You own this job",
+  "JOB_ALREADY_APPLIED_TO_THIS_JOB": "You have already applied to this job",
   "CLICK_TO_APPLY_JOB": "Click to apply job",
   "APPLY_THIS_JOB": "Apply this job",
   "COMPANY_DESCRIPTION": "Company Description",

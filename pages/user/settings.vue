@@ -4,7 +4,7 @@ definePageMeta({
 });
 import { object, string } from "yup";
 
-const authStore = useAuthStore();
+const userStore = useUserStore();
 const { t } = useI18n();
 const appToast = useAppToast();
 
@@ -31,7 +31,7 @@ const onSubmit = async () => {
   if (schema.validateSync(state)) {
     try {
       loading.value = true;
-      await authStore.updateProfile(state.name, state.phone, t, appToast);
+      await userStore.updateProfile(state.name, state.phone, t, appToast);
     } finally {
       loading.value = false;
     }

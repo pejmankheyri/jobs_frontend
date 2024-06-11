@@ -56,6 +56,8 @@
   "LOADING": "Chargement...",
   "ERROR_APPLYING_JOB": "Erreur lors de l'application du poste. Veuillez réessayer plus tard.",
   "LOGIN_TO_APPLY_JOB": "Connectez-vous pour postuler à un emploi",
+  "YOU_OWN_THIS_JOB": "Vous possédez cet emploi",
+  "JOB_ALREADY_APPLIED_TO_THIS_JOB": "Vous avez déjà postulé à cet emploi",
   "CLICK_TO_APPLY_JOB": "Cliquez pour postuler à un emploi",
   "APPLY_THIS_JOB": "Postuler à cet emploi",
   "COMPANY_DESCRIPTION": "Description de l'entreprise",

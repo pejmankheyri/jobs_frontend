@@ -1,10 +1,12 @@
 import { defineStore } from "pinia";
 import useFetch from "@/composables/useFetch";
+import { useUserStore } from "@/stores/user";
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
     token: localStorage.getItem("token") || null,
     user: JSON.parse(localStorage.getItem("user")) || null,
+    jobs: JSON.parse(localStorage.getItem("jobs")) || null,
   }),
 
   getters: {
@@ -43,7 +45,10 @@ export const useAuthStore = defineStore("auth", {
 
           // return navigateTo("/company/dashboard");
           case "user":
-          // return navigateTo("/user/dashboard");
+            // return navigateTo("/user/dashboard");
+            // console.log(userStore);
+            const userStore = useUserStore();
+            await userStore.fetchAppliedJobs();
           default:
           // return navigateTo("/");
         }
@@ -68,8 +73,10 @@ export const useAuthStore = defineStore("auth", {
       });
       this.token = null;
       this.user = null;
+      this.jobs = null;
       localStorage.removeItem("token");
       localStorage.removeItem("user");
+      localStorage.removeItem("jobs");
 
       navigateTo(localeRoute({ name: "login" }).fullPath);
 
@@ -79,27 +86,18 @@ export const useAuthStore = defineStore("auth", {
       });
     },
 
-    async register(
-      name,
-      email,
-      phone,
-      password,
-      password_confirmation,
-      role,
-      t,
-      localeRoute,
-      appToast
-    ) {
+    async register(state, t, localeRoute, appToast) {
       try {
+        console.log(state);
         await useFetch(`/users`, {
           method: "POST",
           body: {
-            name: name,
-            email: email,
-            phone: phone,
-            password: password,
-            password_confirmation: password_confirmation,
-            role_id: role === "Company" ? 3 : 2,
+            name: state.name,
+            email: state.email,
+            phone: state.phone,
+            password: state.password,
+            password_confirmation: state.password_confirmation,
+            role_id: state.role === "Company" ? 3 : 2,
           },
         });
 
@@ -108,7 +106,7 @@ export const useAuthStore = defineStore("auth", {
           description: t("REGISTER_SUCCESS_DESCRIPTION"),
         });
 
-        await this.login(email, password, t, localeRoute, appToast);
+        await this.login(state.email, state.password, t, localeRoute, appToast);
       } catch (e) {
         appToast.toastError({
           title: t("REGISTER_ERROR"),
@@ -124,30 +122,6 @@ export const useAuthStore = defineStore("auth", {
         this.setUser(data);
       } catch (e) {
         this.logout();
-      }
-    },
-
-    async updateProfile(name, phone, t, appToast) {
-      try {
-        const { data } = await useFetch(`/users/${JSON.parse(this.user).id}`, {
-          method: "PUT",
-          body: {
-            name: name,
-            phone: phone,
-          },
-        });
-
-        this.setUser(data);
-
-        appToast.toastSuccess({
-          title: t("PROFILE_UPDATED_SUCCESSFULLY"),
-          description: t("PROFILE_UPDATED_SUCCESSFULLY_DESCRIPTION"),
-        });
-      } catch (e) {
-        appToast.toastError({
-          title: t("PROFILE_UPDATED_ERROR"),
-          description: t("PROFILE_UPDATED_ERROR_DESCRIPTION"),
-        });
       }
     },
 
@@ -170,52 +144,6 @@ export const useAuthStore = defineStore("auth", {
         appToast.toastError({
           title: t("PASSWORD_UPDATED_ERROR"),
           description: t("PASSWORD_UPDATED_ERROR_DESCRIPTION"),
-        });
-      }
-    },
-
-    async changeAvatar(formData, t, appToast) {
-      try {
-        const { avatar } = await useFetch(`/users/avatar`, {
-          method: "POST",
-          body: formData,
-        });
-
-        this.user.avatar = avatar;
-
-        localStorage.setItem("user", JSON.stringify(this.user));
-
-        appToast.toastSuccess({
-          title: t("AVATAR_UPDATED_SUCCESSFULLY"),
-          description: t("AVATAR_UPDATED_SUCCESSFULLY_DESCRIPTION"),
-        });
-      } catch (e) {
-        appToast.toastError({
-          title: t("AVATAR_UPDATED_ERROR"),
-          description: t("AVATAR_UPDATED_ERROR_DESCRIPTION"),
-        });
-      }
-    },
-
-    async changeCV(formData, t, appToast) {
-      try {
-        const { cv } = await useFetch(`/users/cv`, {
-          method: "POST",
-          body: formData,
-        });
-
-        this.user.cv = cv;
-
-        localStorage.setItem("user", JSON.stringify(this.user));
-
-        appToast.toastSuccess({
-          title: t("CV_UPDATED_SUCCESSFULLY"),
-          description: t("CV_UPDATED_SUCCESSFULLY_DESCRIPTION"),
-        });
-      } catch (e) {
-        appToast.toastError({
-          title: t("CV_UPDATED_ERROR"),
-          description: t("CV_UPDATED_ERROR_DESCRIPTION"),
         });
       }
     },

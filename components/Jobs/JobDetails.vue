@@ -59,8 +59,39 @@ const applyJob = async (id, coverLetter) => {
   }
 };
 
+// get job ids from local storage jobs array
+const jobIds = computed(() => {
+  const jobs = JSON.parse(localStorage.getItem("jobs"));
+  return jobs.map((job) => job.id);
+});
+
+// check if job is already applied
+const isJobApplied = computed(() => {
+  return jobIds.value.includes(props.selectedJob?.id);
+});
+
+const isJobOwner = computed(() => {
+  return authStore.user?.id === props.selectedJob?.company?.user?.id;
+});
+
+const isJobApplyDisabled = computed(() => {
+  return isJobApplied.value || isJobOwner.value || !isAuthenticated.value;
+});
+
 const companyLogoSrc = computed(() => {
   return config.public.apiBaseUrl + props.selectedJob?.company.logo;
+});
+
+const applyJobButtonTitle = computed(() => {
+  if (isJobOwner.value) {
+    return t("YOU_OWN_THIS_JOB");
+  } else if (isJobApplied.value) {
+    return t("JOB_ALREADY_APPLIED_TO_THIS_JOB");
+  } else if (!isAuthenticated.value) {
+    return t("LOGIN_TO_APPLY_JOB");
+  } else {
+    return t("CLICK_TO_APPLY_JOB");
+  }
 });
 </script>
 
@@ -83,17 +114,11 @@ const companyLogoSrc = computed(() => {
         </div>
       </div>
       <div>
-        <UTooltip
-          :text="
-            !isAuthenticated
-              ? $t('LOGIN_TO_APPLY_JOB')
-              : $t('CLICK_TO_APPLY_JOB')
-          "
-        >
+        <UTooltip :text="applyJobButtonTitle">
           <UButton
             color="indigo"
             class="p-4 ml-auto truncate"
-            :disabled="!isAuthenticated"
+            :disabled="isJobApplyDisabled"
             @click="isApplyBoxOpen = true"
             >{{ $t("APPLY_THIS_JOB") }}</UButton
           >
