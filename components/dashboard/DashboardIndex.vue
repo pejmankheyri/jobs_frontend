@@ -74,7 +74,7 @@ onMounted(fetchJobs);
   <div
     class="container grid items-center justify-center grid-cols-1 gap-4 align-middle sm:grid-cols-2 lg:grid-cols-3 place-items-center"
   >
-    <div v-if="jobs.length" class="job-list h-[85%] scrollbar-hide">
+    <div v-if="jobs.length" class="job-list h-[85%] scrollbar-hide px-4">
       <JobsList
         v-for="job in jobs"
         :key="job.id"

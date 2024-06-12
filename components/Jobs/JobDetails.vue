@@ -7,6 +7,7 @@ const authStore = useAuthStore();
 const colorMode = useColorMode();
 const { t } = useI18n();
 const appToast = useAppToast();
+const { isMobile, isDesktop } = useDevice();
 
 const isAuthenticated = computed(() => !!authStore.token);
 
@@ -96,8 +97,17 @@ const applyJobButtonTitle = computed(() => {
 </script>
 
 <template>
-  <div class="p-8">
-    <div class="flex justify-between pb-2">
+  <div class="relative block p-8">
+    <div class="block pb-2 lg:flex lg:justify-between">
+      <UButton
+        v-if="isMobile"
+        color="indigo"
+        class="p-4 my-4 ml-auto truncate"
+        :disabled="isJobApplyDisabled"
+        block
+        @click="isApplyBoxOpen = true"
+        >{{ $t("APPLY_THIS_JOB") }}</UButton
+      >
       <div class="flex">
         <div class="flex gap-2 pr-3 text-xl place-items-center">
           <img
@@ -116,6 +126,7 @@ const applyJobButtonTitle = computed(() => {
       <div>
         <UTooltip :text="applyJobButtonTitle">
           <UButton
+            v-if="isDesktop"
             color="indigo"
             class="p-4 ml-auto truncate"
             :disabled="isJobApplyDisabled"
@@ -162,16 +173,16 @@ const applyJobButtonTitle = computed(() => {
     <p class="pb-8">{{ selectedJob?.description }}</p>
     <br />
 
-    <div class="flex gap-2">
+    <div class="grid gap-2 overflow-hidden lg:flex">
       <div v-for="tag in selectedJob?.tags" :key="tag.id" class="">
         <UBadge variant="subtle" color="indigo">{{ tag.name }}</UBadge>
       </div>
     </div>
   </div>
-  <div class="absolute bottom-0 w-full border-t-2">
+  <div class="bottom-0 block w-full border-t-2 lg:absolute">
     <div class="p-8">
       <h2 class="text-2xl">{{ $t("COMPANY_DESCRIPTION") }}</h2>
-      <div class="grid grid-cols-2 py-6">
+      <div class="grid grid-cols-1 py-6 lg:grid-cols-2">
         <p>
           {{ $t("SIZE") }}: {{ selectedJob?.company?.employes }}
           {{ $t("EMPLOYEE") }}

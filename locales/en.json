@@ -126,5 +126,6 @@
   "RESET_PASSWORD_ERROR_DESCRIPTION": "Error resetting your password",
   "FORGOT_PASSWORD": "Forgot Password",
   "RESET_PASSWORD": "Reset Password",
-  "SEND_RESET_LINK": "Send Reset Link"
+  "SEND_RESET_LINK": "Send Reset Link",
+  "BACK": "Back"
 }

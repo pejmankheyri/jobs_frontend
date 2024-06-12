@@ -126,5 +126,6 @@
   "RESET_PASSWORD_ERROR_DESCRIPTION": "Veuillez vérifier vos informations de réinitialisation de mot de passe et réessayer.",
   "FORGOT_PASSWORD": "Mot de passe oublié",
   "RESET_PASSWORD": "Réinitialiser le mot de passe",
-  "SEND_RESET_LINK": "Envoyer le lien de réinitialisation"
+  "SEND_RESET_LINK": "Envoyer le lien de réinitialisation",
+  "BACK": "Retour"
 }

@@ -6,8 +6,12 @@ const props = defineProps({
   selectedJob: Object,
 });
 
+const emit = defineEmits(["selectJob"]);
+
 const runtimeConfig = useRuntimeConfig();
 const colorMode = useColorMode();
+const { isMobile, isDesktop } = useDevice();
+const router = useRouter();
 
 const getCompanyRating = (rating) => {
   return rating + ".0";
@@ -20,16 +24,26 @@ const starIconColor = computed(() => {
 const companyLogoSrc = computed(() => {
   return runtimeConfig.public.apiBaseUrl + props.job.company.logo;
 });
+
+const selectJob = () => {
+  if (isDesktop) {
+    emit("selectJob", props.job);
+  } else {
+    router.push({
+      path: `/jobs/${props.job.id}`,
+    });
+  }
+};
 </script>
 
 <template>
   <div
-    class="border border-1 rounded-md p-4 mb-2 cursor-pointer"
+    class="p-4 mb-2 border rounded-md cursor-pointer border-1"
     :class="{ 'border-indigo-500': selectedJob === job }"
-    @click="$emit('select-job', job)"
+    @click="selectJob"
   >
-    <div class="flex place-items-center mb-2">
-      <div class="font-thin text-sm pr-3 flex gap-2 place-items-center">
+    <div class="flex mb-2 place-items-center">
+      <div class="flex gap-2 pr-3 text-sm font-thin place-items-center">
         <img
           :src="companyLogoSrc"
           alt="company logo"
@@ -38,13 +52,13 @@ const companyLogoSrc = computed(() => {
         {{ job.company.title }}
       </div>
 
-      <div class="flex font-thin text-sm items-center gap-1">
+      <div class="flex items-center gap-1 text-sm font-thin">
         {{ getCompanyRating(job.company.rating) }}
         <Star class="" :color="starIconColor" />
       </div>
     </div>
     <p class="font-semibold">{{ job.title }}</p>
-    <div class="justify-between flex">
+    <div class="flex justify-between">
       <small
         >{{ job.company.location[0].state }},
         {{ job.company.location[0].country }}</small
