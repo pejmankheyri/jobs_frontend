@@ -4,10 +4,20 @@ import { ref } from "vue";
 const props = defineProps({
   placeholder: String,
   classItems: String,
+  type: String,
+  selectedValue: String,
 });
 const emit = defineEmits(["update:query"]);
 
 const query = ref("");
+
+// watch selectedValue prop and update query value
+watch(
+  () => props.selectedValue,
+  (value) => {
+    query.value = value;
+  }
+);
 
 const onInput = () => {
   if (query.value.trim().length < 3) return;
@@ -16,8 +26,9 @@ const onInput = () => {
 </script>
 <template>
   <div class="flex place-items-center">
-    <div class="ml-3 absolute">
-      <Search />
+    <div class="absolute ml-3">
+      <Search v-if="type === 'jobs'" />
+      <Location v-else />
     </div>
     <input
       v-model="query"
@@ -27,8 +38,12 @@ const onInput = () => {
       @click="onInput"
       type="text"
       :placeholder="placeholder"
-      class="pl-10 w-full p-2 border-2 border-indigo-500 rounded-lg focus:outline-none focus:border-indigo-400 transition duration-300 ease-in-out"
-      :class="classItems"
+      class="w-full p-2 pl-10 transition duration-300 ease-in-out border-2 border-indigo-500 focus:outline-none focus:border-indigo-400"
+      :class="
+        classItems +
+        ' ' +
+        (type === 'jobs' ? 'rounded-l-full' : 'rounded-r-full')
+      "
     />
   </div>
 </template>

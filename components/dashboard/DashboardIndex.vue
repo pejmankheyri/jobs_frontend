@@ -19,7 +19,8 @@ const fetchJobs = async () => {
     const { data } = await useFetch(`/jobs`, {
       params: {
         page: page.value,
-        q: route.params.title,
+        q: route.query.q,
+        location: route.query.location,
       },
     });
 
@@ -32,6 +33,17 @@ const fetchJobs = async () => {
     loading.value = false;
   }
 };
+
+// watch route params and fetch jobs data
+watch(
+  () => route.params,
+  () => {
+    jobs.value = [];
+    page.value = 1;
+    fetchJobs();
+  },
+  { immediate: true }
+);
 
 // Detect scroll event and load more jobs if the user reaches the bottom of the page
 const handleScroll = () => {
@@ -60,7 +72,7 @@ onMounted(fetchJobs);
 
 <template>
   <div
-    class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 container align-middle items-center place-items-center justify-center"
+    class="container grid items-center justify-center grid-cols-1 gap-4 align-middle sm:grid-cols-2 lg:grid-cols-3 place-items-center"
   >
     <div v-if="jobs.length" class="job-list h-[85%] scrollbar-hide">
       <JobsList

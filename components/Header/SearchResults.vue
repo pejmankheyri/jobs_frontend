@@ -9,31 +9,40 @@ const props = defineProps({
   results: Array,
   visible: Boolean,
   loading: Boolean,
+  type: String,
 });
 
-const resultsBox = ref(null);
+const emit = defineEmits(["selectedValue"]);
 
-const goToJobs = (title) => {
-  const route = localeRoute({ name: "jobs-title", params: { title: title } });
-  navigateTo(route.fullPath);
-};
+const resultsBox = ref(null);
 </script>
 <template>
   <div
     v-if="results.length > 0 && visible"
-    class="mt-11 absolute bg-slate-100 text-black top-0 z-10 border rounded w-full"
+    class="absolute top-0 z-10 text-black border rounded mt-11 bg-slate-100"
+    :class="
+      type === 'jobs'
+        ? 'w-[320px] ml-[30px]'
+        : 'w-[220px] mr-[30px] float-right'
+    "
   >
-    <div v-if="loading" class="py-4 px-2 cursor-pointer hover:bg-slate-200">
+    <div v-if="loading" class="px-2 py-4 cursor-pointer hover:bg-slate-200">
       <h3>{{ $t("LOADING") }}</h3>
     </div>
 
     <div
       v-for="result in results"
       :key="result.id"
-      class="border-b-2 py-4 px-2 cursor-pointer hover:bg-slate-200"
-      @click="goToJobs(result.title)"
+      class="px-2 py-4 border-b-2 cursor-pointer hover:bg-slate-200"
+      @click="emit('selectedValue', { type, result })"
     >
-      <h3>{{ result.title }}</h3>
+      <h3>
+        {{
+          type === "jobs"
+            ? result.title
+            : result.country + ", " + result.state + ", " + result.city
+        }}
+      </h3>
     </div>
   </div>
 </template>
