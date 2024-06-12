@@ -93,10 +93,29 @@ const handleItemClick = (result) => {
   }
 };
 
+const removeSelectedJob = () => {
+  selectedJob.value = "";
+  selectedLocation.value = "";
+  router.push({
+    query: {},
+  });
+};
+
+const removeSelectedLocation = () => {
+  selectedLocation.value = "";
+  router.push({
+    query: {
+      q: selectedJob.value,
+      location: "",
+    },
+  });
+};
+
 const handleClickOutside = (event) => {
   const searchContainer = document.querySelector(".search-container");
   if (!searchContainer.contains(event.target)) {
     showJobResults.value = false;
+    showLocationResults.value = false;
   }
 };
 
@@ -113,7 +132,14 @@ onBeforeUnmount(() => {
   <div
     class="hidden md:flex md:gap-0.5 md:relative md:align-middle md:items-center md:place-items-center search-container"
   >
-    <div>
+    <div class="relative">
+      <div
+        v-if="selectedJob"
+        class="absolute right-0 content-center float-right h-full pr-2 align-middle cursor-pointer"
+        @click="removeSelectedJob"
+      >
+        <Close />
+      </div>
       <SearchInput
         v-model:query="job"
         :placeholder="$t('SEARCH_FOR_JOBS')"
@@ -131,6 +157,13 @@ onBeforeUnmount(() => {
       />
     </div>
     <div>
+      <div
+        v-if="selectedLocation"
+        class="absolute right-0 content-center float-right h-full pr-2 align-middle cursor-pointer"
+        @click="removeSelectedLocation"
+      >
+        <Close />
+      </div>
       <SearchInput
         v-model:query="location"
         :placeholder="$t('LOCATION')"
