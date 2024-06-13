@@ -37,17 +37,17 @@ const onSubmit = async () => {
 
     companyObject.value = await companyStore.changeLogo(
       formData,
-      companyId,
+      route.params.id,
       t,
       appToast
     );
+    state.logo = undefined;
   } finally {
     loading.value = false;
   }
 };
 
 const route = useRoute();
-const companyId = computed(() => Number(route.params.id));
 
 onMounted(() => {
   fetchCompany();
@@ -56,7 +56,7 @@ onMounted(() => {
 const fetchCompany = async () => {
   try {
     loading.value = true;
-    companyObject.value = await companyStore.fetchCompany(companyId);
+    companyObject.value = await companyStore.fetchCompany(route.params.id);
   } finally {
     loading.value = false;
   }
@@ -69,6 +69,21 @@ const companyLogoSrc = computed(() => {
 
 <template>
   <div class="container max-w-md mx-auto my-10">
+    <UButton
+      @click="
+        navigateTo(
+          localePath({
+            name: 'company-list',
+          })
+        )
+      "
+      color="indigo"
+      variant="outline"
+      icon="i-heroicons-arrow-left"
+      class="mb-4"
+    >
+      {{ $t("BACK") }}
+    </UButton>
     <h1 class="mb-4 text-2xl font-bold">{{ $t("COMPANY_LOGO") }}</h1>
     <UAvatar :src="companyLogoSrc" size="3xl" />
 

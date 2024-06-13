@@ -2,7 +2,7 @@
 import { ref, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
-import { useCompanyStore } from "@/stores/company";
+import { useAuthStore } from "@/stores/auth";
 
 definePageMeta({
   middleware: "auth",
@@ -10,12 +10,11 @@ definePageMeta({
 });
 
 const { t } = useI18n();
-const companyStore = useCompanyStore();
+const authStore = useAuthStore();
 const config = useRuntimeConfig();
 const router = useRouter();
 const localeRoute = useLocaleRoute();
 const route = useRoute();
-const appToast = useAppToast();
 
 const sort = ref({ column: "id", direction: "asc" });
 
@@ -27,24 +26,40 @@ const columns = [
     sortable: true,
   },
   {
-    key: "title",
-    label: t("TITLE"),
+    key: "useravatar",
+    label: t("AVATAR"),
+    sortable: false,
+  },
+  {
+    key: "message",
+    label: t("MESSAGE"),
     sortable: true,
   },
   {
-    key: "description",
-    label: t("DESCRIPTION"),
+    key: "username",
+    label: t("NAME"),
+    sortable: true,
+  },
+  {
+    key: "useremail",
+    label: t("EMAIL"),
+    sortable: true,
+  },
+  {
+    key: "userphone",
+    label: t("PHONE"),
     sortable: false,
   },
+
   {
     key: "create_dates",
     label: t("CREATED_AT"),
     sortable: true,
   },
   {
-    key: "actions",
-    label: t("ACTIONS"),
-    sortable: false,
+    key: "usercv",
+    label: t("CV"),
+    sortable: true,
   },
 ];
 
@@ -54,27 +69,15 @@ const columnsTable = computed(() =>
 );
 
 const loading = ref(false);
-const companies = ref([]);
+const applications = ref([]);
 
 const user = computed(() => JSON.parse(localStorage.getItem("user")));
 
 // Pagination
 
 onMounted(() => {
-  getCompanyJobs();
+  getJobApplications();
 });
-
-const deleteJob = async (id) => {
-  try {
-    loading.value = true;
-    await companyStore.deleteJob(id, t, appToast);
-    getCompanyJobs();
-  } catch (error) {
-    console.error(t("JOB_DELETED_ERROR") + ":", error);
-  } finally {
-    loading.value = false;
-  }
-};
 
 const editJobLink = (id) => {
   const newRoute = localeRoute({
@@ -95,10 +98,7 @@ const editJobLink = (id) => {
 const companyJobsApplications = (id) => {
   const newRoute = localeRoute({
     name: "company-id-jobs-jobid-applications",
-    params: {
-      id: route.params.id,
-      jobid: id,
-    },
+    params: { id },
   });
 
   if (newRoute && newRoute.fullPath) {
@@ -109,17 +109,24 @@ const companyJobsApplications = (id) => {
 };
 
 // Data
-const getCompanyJobs = async () => {
+const getJobApplications = async () => {
   try {
     loading.value = true;
-    const response = await useFetch(`/companies/${route.params.id}`, {});
+    const response = await useFetch(
+      `/jobs/${route.params.jobid}/applicants`,
+      {}
+    );
 
-    companies.value = response.data.jobs;
+    applications.value = response.data;
   } catch (error) {
     console.error(t("ERROR_FETCHING_COMPANIES") + ":", error);
   } finally {
     loading.value = false;
   }
+};
+
+const getUserAvatar = (avatar) => {
+  return config.public.apiBaseUrl + avatar;
 };
 </script>
 
@@ -129,7 +136,10 @@ const getCompanyJobs = async () => {
       @click="
         navigateTo(
           localePath({
-            name: 'company-list',
+            name: 'company-id-jobs',
+            params: {
+              id: route.params.id,
+            },
           })
         )
       "
@@ -159,14 +169,14 @@ const getCompanyJobs = async () => {
         <h2
           class="text-xl font-semibold leading-tight text-gray-900 dark:text-white"
         >
-          {{ $t("JOBS_LIST") }}
+          {{ $t("JOBS_APPLICATIONS") }}
         </h2>
       </template>
 
       <!-- Table -->
       <UTable
         v-model:sort="sort"
-        :rows="companies"
+        :rows="applications"
         :columns="columnsTable"
         :loading="loading"
         sort-asc-icon="i-heroicons-arrow-up"
@@ -190,47 +200,29 @@ const getCompanyJobs = async () => {
           </div>
         </template>
 
+        <template #useravatar-data="{ row }">
+          <UAvatar :src="getUserAvatar(row.user.avatar)" size="md" />
+        </template>
+        <template #username-data="{ row }">
+          {{ row.user.name }}
+        </template>
+        <template #useremail-data="{ row }">
+          {{ row.user.email }}
+        </template>
+        <template #userphone-data="{ row }">
+          {{ row.user.phone }}
+        </template>
+
         <template #create_dates-data="{ row }">
           {{ row.create_dates.created_at_human }}
         </template>
-
-        <template #actions-data="{ row }">
-          <div class="grid grid-cols-3 gap-4">
-            <UTooltip text="Applicants">
-              <UButton
-                icon="i-heroicons-briefcase"
-                size="2xs"
-                color="indigo"
-                variant="outline"
-                :ui="{ rounded: 'rounded-full' }"
-                @click="companyJobsApplications(row.id)"
-                square
-              />
-            </UTooltip>
-            <UTooltip text="Edit Job">
-              <UButton
-                icon="i-heroicons-pencil-square"
-                size="2xs"
-                color="orange"
-                variant="outline"
-                :ui="{ rounded: 'rounded-full' }"
-                @click="editJobLink(row.id)"
-                square
-              />
-            </UTooltip>
-
-            <UTooltip text="Remove Job">
-              <UButton
-                icon="i-heroicons-trash"
-                size="2xs"
-                color="red"
-                variant="outline"
-                :ui="{ rounded: 'rounded-full' }"
-                @click="deleteJob(row.id)"
-                square
-              />
-            </UTooltip>
-          </div>
+        <template #usercv-data="{ row }">
+          <a
+            :href="`${config.public.apiBaseUrl}${row.user.cv}`"
+            target="_blank"
+            class="text-indigo-600"
+            >{{ $t("DOWNLOAD_CV") }}</a
+          >
         </template>
       </UTable>
     </UCard>

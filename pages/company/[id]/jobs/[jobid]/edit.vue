@@ -19,7 +19,7 @@ const localeRoute = useLocaleRoute();
 const appToast = useAppToast();
 
 const loadingSave = ref(false);
-const loadingCompany = ref(false);
+const loadingJob = ref(false);
 const selectedTags = ref([]);
 const newTag = ref("");
 
@@ -31,48 +31,57 @@ const schema = object({
 const state = reactive({
   title: "",
   description: "",
-  rating: 0,
-  website: "",
-  employes: "",
+  tags: "",
 });
-
-const ratingOptions = [
-  { label: "1", value: 1 },
-  { label: "2", value: 2 },
-  { label: "3", value: 3 },
-  { label: "4", value: 4 },
-  { label: "5", value: 5 },
-];
 
 const onSubmit = async () => {
   if (schema.validateSync(state)) {
     try {
       loadingSave.value = true;
-
-      await companyStore.updateCompany(state, route.params.id, t, appToast);
+      state.tags = selectedTags.value.map((tag) => tag.name);
+      await companyStore.editJob(
+        state,
+        route.params.jobid,
+        t,
+        localeRoute,
+        appToast
+      );
     } finally {
       loadingSave.value = false;
     }
   }
 };
 
-const fetchCompany = async () => {
+const fetchJob = async () => {
   try {
-    loadingCompany.value = true;
-    const response = await companyStore.fetchCompany(route.params.id);
+    loadingJob.value = true;
+    const job = await companyStore.getJob(route.params.jobid);
+    state.title = job.title;
+    state.description = job.description;
 
-    state.title = response.title;
-    state.description = response.description;
-    state.rating = response.rating;
-    state.website = response.website;
-    state.employes = response.employes;
+    selectedTags.value = job.tags;
   } finally {
-    loadingCompany.value = false;
+    loadingJob.value = false;
   }
 };
 
+const addTag = (event) => {
+  if (!selectedTags.value.find((t) => t.title === event.target.value)) {
+    selectedTags.value.push({
+      id: event.target.value.id,
+      name: event.target.value,
+    });
+    newTag.value = "";
+  }
+};
+
+const removeTag = (tag) => {
+  selectedTags.value = selectedTags.value.filter((t) => t.id !== tag.id);
+  onSubmit();
+};
+
 onMounted(() => {
-  fetchCompany();
+  fetchJob();
 });
 </script>
 <template>
@@ -81,7 +90,8 @@ onMounted(() => {
       @click="
         navigateTo(
           localePath({
-            name: 'company-list',
+            name: 'company-id-jobs',
+            params: { id: route.params.id },
           })
         )
       "
@@ -92,9 +102,9 @@ onMounted(() => {
     >
       {{ $t("BACK") }}
     </UButton>
-    <h1 class="mb-4 text-2xl font-bold">{{ $t("EDIT_COMPANY") }}</h1>
+    <h1 class="mb-4 text-2xl font-bold">{{ $t("EDIT_JOB") }}</h1>
 
-    <USkeleton v-if="loadingCompany" class="h-[100px] w-full mb-auto mt-16" />
+    <USkeleton v-if="loadingJob" class="h-[100px] w-full mb-auto mt-16" />
 
     <UForm
       v-else
@@ -117,27 +127,28 @@ onMounted(() => {
           color="indigo"
         />
       </UFormGroup>
-      <UFormGroup :label="$t('RATING')" name="rating">
-        <USelect
-          v-model="state.rating"
-          color="indigo"
-          :options="ratingOptions"
-        />
-      </UFormGroup>
-      <UFormGroup :label="$t('WEBSITE')" name="website">
-        <UInput
-          v-model="state.website"
-          icon="i-heroicons-cursor-arrow-ripple"
-          color="indigo"
-        />
-      </UFormGroup>
-      <UFormGroup :label="$t('EMPLOYEES')" name="employes">
-        <UInput
-          v-model="state.employes"
-          icon="i-heroicons-users"
-          color="indigo"
-        />
-      </UFormGroup>
+
+      <UInput
+        v-model="newTag"
+        icon="i-heroicons-tag"
+        color="indigo"
+        @keydown.enter="addTag"
+        :placeholder="$t('ADD_NEW_TAG_AND_HIT_ENTER')"
+      />
+      <div class="mt-4">
+        <h2 class="mb-2">{{ $t("SELECTED_TAGS") }}:</h2>
+        <ul class="grid grid-cols-2 gap-2">
+          <li v-for="tag in selectedTags" :key="tag.id">
+            <UBadge
+              variant="subtle"
+              color="indigo"
+              class="cursor-pointer"
+              @click="removeTag(tag)"
+              ><Close />{{ tag.name }}</UBadge
+            >
+          </li>
+        </ul>
+      </div>
 
       <div class="pt-4">
         <UButton type="submit" color="indigo" :loading="loadingSave" block>

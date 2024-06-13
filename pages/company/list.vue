@@ -5,10 +5,11 @@ definePageMeta({
 });
 
 const { t } = useI18n();
-const authStore = useAuthStore();
+const companyStore = useCompanyStore();
 const config = useRuntimeConfig();
 const router = useRouter();
 const localeRoute = useLocaleRoute();
+const appToast = useAppToast();
 
 // Columns
 const columns = [
@@ -96,7 +97,6 @@ const resetFilters = () => {
   search.value = "";
   selectedStatus.value = [];
 };
-import { useAuthStore } from "@/stores/auth";
 
 const user = computed(() => JSON.parse(localStorage.getItem("user")));
 
@@ -122,7 +122,7 @@ onMounted(() => {
 const deleteCompany = async (id) => {
   try {
     loading.value = true;
-    await authStore.deleteCompany(id);
+    await companyStore.deleteCompany(id, t, appToast);
     getCompanies();
   } catch (error) {
     console.error(t("ERROR_REMOVING_COMPANY") + ":", error);
@@ -257,7 +257,7 @@ const getCompanies = async () => {
 
       <template #actions-data="{ row }">
         <div class="grid grid-cols-3 gap-4">
-          <UTooltip text="Jobs">
+          <UTooltip :text="$t('COMPANY_JOBS')">
             <UButton
               icon="i-heroicons-briefcase"
               size="2xs"
@@ -268,7 +268,7 @@ const getCompanies = async () => {
               square
             />
           </UTooltip>
-          <UTooltip text="Edit Company">
+          <UTooltip :text="$t('EDIT_COMPANY')">
             <UButton
               icon="i-heroicons-pencil-square"
               size="2xs"
@@ -279,7 +279,7 @@ const getCompanies = async () => {
               square
             />
           </UTooltip>
-          <UTooltip text="Company Images">
+          <UTooltip :text="$t('COMPANY_IMAGES')">
             <UButton
               icon="i-heroicons-photo"
               size="2xs"
@@ -290,7 +290,7 @@ const getCompanies = async () => {
               square
             />
           </UTooltip>
-          <UTooltip text="Company Logo">
+          <UTooltip :text="$t('COMPANY_LOGO')">
             <UButton
               icon="i-heroicons-building-storefront"
               size="2xs"
@@ -301,7 +301,7 @@ const getCompanies = async () => {
               square
             />
           </UTooltip>
-          <UTooltip text="Remove Company">
+          <UTooltip :text="$t('DELETE_COMPANY')">
             <UButton
               icon="i-heroicons-trash"
               size="2xs"

@@ -178,6 +178,16 @@ const applyJobButtonTitle = computed(() => {
         <UBadge variant="subtle" color="indigo">{{ tag.name }}</UBadge>
       </div>
     </div>
+
+    <div class="grid grid-cols-3 gap-2 py-4">
+      <div v-for="image in selectedJob?.company?.images" :key="image.id">
+        <img
+          :src="config.public.apiBaseUrl + image.path"
+          alt="company image"
+          class="object-cover w-full"
+        />
+      </div>
+    </div>
   </div>
   <div class="bottom-0 block w-full border-t-2 lg:absolute">
     <div class="p-8">
