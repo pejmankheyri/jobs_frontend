@@ -146,6 +146,11 @@ const companyLogoLink = (id) => {
   navigateTo(route.fullPath);
 };
 
+const companyJobsLink = (id) => {
+  const route = localeRoute({ name: "company-id-jobs", params: { id } });
+  navigateTo(route.fullPath);
+};
+
 // Data
 const getCompanies = async () => {
   try {
@@ -188,7 +193,7 @@ const getCompanies = async () => {
   >
     <template #header>
       <h2
-        class="font-semibold text-xl text-gray-900 dark:text-white leading-tight"
+        class="text-xl font-semibold leading-tight text-gray-900 dark:text-white"
       >
         {{ $t("COMPANIES_LIST") }}
       </h2>
@@ -205,7 +210,7 @@ const getCompanies = async () => {
     </div>
 
     <!-- Header and Action buttons -->
-    <div class="flex justify-between items-center w-full px-4 py-3">
+    <div class="flex items-center justify-between w-full px-4 py-3">
       <div class="flex items-center gap-1.5">
         <span class="text-sm leading-5">{{ $t("ROWS_PER_PAGE") }}:</span>
 
@@ -213,7 +218,7 @@ const getCompanies = async () => {
           v-model="pageCount"
           :options="[3, 5, 10, 20, 30, 40]"
           color="indigo"
-          class="me-2 w-20"
+          class="w-20 me-2"
           size="xs"
         />
       </div>
@@ -251,7 +256,18 @@ const getCompanies = async () => {
       </template>
 
       <template #actions-data="{ row }">
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid grid-cols-3 gap-4">
+          <UTooltip text="Jobs">
+            <UButton
+              icon="i-heroicons-briefcase"
+              size="2xs"
+              color="indigo"
+              variant="outline"
+              :ui="{ rounded: 'rounded-full' }"
+              @click="companyJobsLink(row.id)"
+              square
+            />
+          </UTooltip>
           <UTooltip text="Edit Company">
             <UButton
               icon="i-heroicons-pencil-square"
@@ -302,7 +318,7 @@ const getCompanies = async () => {
 
     <!-- Number of rows & Pagination -->
     <template #footer>
-      <div class="flex flex-wrap justify-between items-center">
+      <div class="flex flex-wrap items-center justify-between">
         <div>
           <span class="text-sm leading-5">
             {{ $t("SHOWING") }}

@@ -67,9 +67,6 @@ export const useAuthStore = defineStore("auth", {
     },
 
     async logout(t, localeRoute, appToast) {
-      await useFetch(`/logout`, {
-        method: "POST",
-      });
       this.token = null;
       this.user = null;
       this.jobs = null;
