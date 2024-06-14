@@ -122,7 +122,7 @@ export const useAuthStore = defineStore("auth", {
 
     async updatePassword(vars, t, appToast) {
       try {
-        await useFetch(`/users/change-password`, {
+        await useFetch(`/change-password`, {
           method: "POST",
           body: {
             current_password: vars.oldPassword,
