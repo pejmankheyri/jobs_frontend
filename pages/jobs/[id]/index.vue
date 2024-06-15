@@ -3,6 +3,8 @@ import { ref, onMounted } from "vue";
 const route = useRoute();
 const { t, localePath } = useI18n();
 const router = useRouter();
+const { isMobile, isDesktop } = useDevice();
+const localeRoute = useLocaleRoute();
 
 const config = useRuntimeConfig();
 
@@ -24,8 +26,13 @@ const fetchJob = async () => {
   }
 };
 
-// Fetch jobs data when the component is mounted
-onMounted(fetchJob);
+onMounted(() => {
+  if (isDesktop) {
+    const route = localeRoute("/");
+    navigateTo(route.fullPath);
+  }
+  fetchJob();
+});
 </script>
 
 <template>

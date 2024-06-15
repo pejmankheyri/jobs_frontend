@@ -14,6 +14,8 @@ const isAuthenticated = computed(() => !!authStore.token);
 const isApplyBoxOpen = ref(false);
 const loading = ref(false);
 const coverLetter = ref("");
+const isOpen = ref(false);
+const imageSrc = ref("");
 
 const props = defineProps({
   selectedJob: Object,
@@ -169,9 +171,7 @@ const applyJobButtonTitle = computed(() => {
       </div>
     </div>
 
-    <br />
-    <p class="pb-8">{{ selectedJob?.description }}</p>
-    <br />
+    <p class="py-4">{{ selectedJob?.description }}</p>
 
     <div class="grid gap-2 overflow-hidden lg:flex">
       <div v-for="tag in selectedJob?.tags" :key="tag.id" class="">
@@ -179,14 +179,12 @@ const applyJobButtonTitle = computed(() => {
       </div>
     </div>
 
-    <div class="grid grid-cols-3 gap-2 py-4">
-      <div v-for="image in selectedJob?.company?.images" :key="image.id">
-        <img
-          :src="config.public.apiBaseUrl + image.path"
-          alt="company image"
-          class="object-cover w-full"
-        />
-      </div>
+    <div class="grid grid-cols-1 gap-2 py-4 lg:grid-cols-3">
+      <CompanyImage
+        v-for="image in selectedJob?.company?.images"
+        :key="image.id"
+        :image="image"
+      />
     </div>
   </div>
   <div class="bottom-0 block w-full border-t-2 lg:absolute">
