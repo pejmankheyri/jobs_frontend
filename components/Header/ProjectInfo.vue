@@ -1,5 +1,12 @@
 <script setup>
 const isOpen = ref(false);
+
+const downloadJSON = () => {
+  const link = document.createElement("a");
+  link.href = "/Jobs RESTful API.postman_collection.json"; // Path to the JSON file in the static folder
+  link.download = "jobs.postman.json"; // Name of the downloaded file
+  link.click();
+};
 </script>
 
 <template>
@@ -135,6 +142,18 @@ const isOpen = ref(false);
                 class="rounded"
               />
             </a>
+          </div>
+        </div>
+        {{ $t("API_COLLECTIONS") }}
+        <hr class="pb-4" />
+        <div>
+          <div class="flex items-center gap-2 pb-2 cursor-pointer">
+            <img
+              src="https://img.shields.io/badge/-Postman Collection-ff6c37?style=for-the-badge&logo=postman&logoColor=white"
+              alt="Postman Collection"
+              class="rounded"
+              @click="downloadJSON"
+            />
           </div>
         </div>
       </UCard>

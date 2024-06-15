@@ -157,5 +157,6 @@
   "IMAGE_ADDED_SUCCESSFULLY": "Image added successfully",
   "IMAGE_ADDED_SUCCESSFULLY_DESCRIPTION": "You have successfully added the image",
   "IMAGE_ADDED_ERROR": "Error adding image",
-  "IMAGE_ADDED_ERROR_DESCRIPTION": "Error adding image"
+  "IMAGE_ADDED_ERROR_DESCRIPTION": "Error adding image",
+  "API_COLLECTIONS": "API Collections"
 }
