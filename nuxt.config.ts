@@ -15,6 +15,7 @@ export default defineNuxtConfig({
     public: {
       apiBaseUrl: process.env.API_BASE_URL,
       apiVersion: process.env.API_VERSION,
+      gtagId: process.env.GTAG_ID,
     },
   },
   colorMode: {
