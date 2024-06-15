@@ -158,5 +158,8 @@
   "IMAGE_ADDED_SUCCESSFULLY_DESCRIPTION": "L'image a été ajoutée avec succès.",
   "IMAGE_ADDED_ERROR": "Erreur lors de l'ajout de l'image",
   "IMAGE_ADDED_ERROR_DESCRIPTION": "Veuillez vérifier l'image et réessayer.",
-  "API_COLLECTIONS": "Collections API"
+  "API_COLLECTIONS": "Collections API",
+  "ALLOW_COOKIES": "Autorise les cookies",
+  "LEARN_MORE": "En savoir plus",
+  "THIS_WEBSITE_USES_COOKIES": "Ce site Web utilise des cookies pour garantir que vous obtenez la meilleure expérience sur notre site Web."
 }
