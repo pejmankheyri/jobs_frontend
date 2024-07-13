@@ -18,6 +18,12 @@ export default defineNuxtConfig({
       gtagId: process.env.GTAG_ID,
     },
   },
+  nitro: {
+    prerender: {
+      concurrency: 250,
+      interval: 100,
+    },
+  },
   colorMode: {
     classSuffix: "",
   },
