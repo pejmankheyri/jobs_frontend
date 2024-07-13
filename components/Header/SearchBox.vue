@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import SearchInput from "@/components/Header/SearchInput.vue";
-import useFetch from "@/composables/useFetch";
+import useCustomFetch from "@/composables/useCustomFetch";
 
 const router = useRouter();
 
@@ -24,7 +24,7 @@ const performJobSearch = async () => {
   errorJob.value = null;
 
   try {
-    const { data, error: fetchError } = await useFetch("/search/jobs", {
+    const { data, error: fetchError } = await useCustomFetch("/search/jobs", {
       params: {
         q: job.value,
         location: location.value,
@@ -49,11 +49,14 @@ const performLocationSearch = async () => {
   errorLocation.value = null;
 
   try {
-    const { data, error: fetchError } = await useFetch("/search/locations", {
-      params: {
-        q: location.value,
-      },
-    });
+    const { data, error: fetchError } = await useCustomFetch(
+      "/search/locations",
+      {
+        params: {
+          q: location.value,
+        },
+      }
+    );
 
     if (fetchError) {
       errorLocation.value = fetchError.message;

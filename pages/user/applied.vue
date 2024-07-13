@@ -102,7 +102,7 @@ onMounted(() => {
 const getJobs = async () => {
   try {
     loading.value = true;
-    const response = await useFetch(`/users/jobs${searchStatus.value}`, {
+    const response = await useCustomFetch(`/users/jobs${searchStatus.value}`, {
       query: {
         q: search.value,
         page: page.value,
@@ -140,7 +140,7 @@ const getJobs = async () => {
   >
     <template #header>
       <h2
-        class="font-semibold text-xl text-gray-900 dark:text-white leading-tight"
+        class="text-xl font-semibold leading-tight text-gray-900 dark:text-white"
       >
         {{ $t("APPLIED_JOBS") }}
       </h2>
@@ -166,7 +166,7 @@ const getJobs = async () => {
     </div>
 
     <!-- Header and Action buttons -->
-    <div class="flex justify-between items-center w-full px-4 py-3">
+    <div class="flex items-center justify-between w-full px-4 py-3">
       <div class="flex items-center gap-1.5">
         <span class="text-sm leading-5">{{ $t("ROWS_PER_PAGE") }}:</span>
 
@@ -174,7 +174,7 @@ const getJobs = async () => {
           v-model="pageCount"
           :options="[3, 5, 10, 20, 30, 40]"
           color="indigo"
-          class="me-2 w-20"
+          class="w-20 me-2"
           size="xs"
         />
       </div>
@@ -217,7 +217,7 @@ const getJobs = async () => {
 
     <!-- Number of rows & Pagination -->
     <template #footer>
-      <div class="flex flex-wrap justify-between items-center">
+      <div class="flex flex-wrap items-center justify-between">
         <div>
           <span class="text-sm leading-5">
             {{ $t("SHOWING") }}

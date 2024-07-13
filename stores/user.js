@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import useFetch from "@/composables/useFetch";
+import useCustomFetch from "@/composables/useCustomFetch";
 import { useAuthStore } from "@/stores/auth";
 
 export const useUserStore = defineStore("user", {
@@ -26,7 +26,7 @@ export const useUserStore = defineStore("user", {
     },
     async updateProfile(name, phone, t, appToast) {
       try {
-        const { data } = await useFetch(`/users`, {
+        const { data } = await useCustomFetch(`/users`, {
           method: "PUT",
           body: {
             name: name,
@@ -50,7 +50,7 @@ export const useUserStore = defineStore("user", {
 
     async changeAvatar(formData, t, appToast) {
       try {
-        const { avatar } = await useFetch(`/users/avatar`, {
+        const { avatar } = await useCustomFetch(`/users/avatar`, {
           method: "POST",
           body: formData,
         });
@@ -73,7 +73,7 @@ export const useUserStore = defineStore("user", {
 
     async changeCV(formData, t, appToast) {
       try {
-        const { cv } = await useFetch(`/users/cv`, {
+        const { cv } = await useCustomFetch(`/users/cv`, {
           method: "POST",
           body: formData,
         });
@@ -96,7 +96,7 @@ export const useUserStore = defineStore("user", {
 
     async fetchAppliedJobs() {
       try {
-        const { data } = await useFetch(`/users/jobs?per_page=50`, {
+        const { data } = await useCustomFetch(`/users/jobs?per_page=50`, {
           method: "GET",
         });
 

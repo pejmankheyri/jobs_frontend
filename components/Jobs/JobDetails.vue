@@ -32,7 +32,7 @@ const getCompanyRating = (rating) => {
 const applyJob = async (id, coverLetter) => {
   try {
     loading.value = true;
-    const response = await useFetch(`/jobs/${id}/apply`, {
+    const response = await useCustomFetch(`/jobs/${id}/apply`, {
       method: "POST",
       body: {
         message: coverLetter,

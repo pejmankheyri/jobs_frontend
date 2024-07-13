@@ -16,7 +16,7 @@ const selectedJob = ref(null);
 const fetchJob = async () => {
   try {
     loading.value = true;
-    const { data } = await useFetch(`/jobs/${route.params.id}`);
+    const { data } = await useCustomFetch(`/jobs/${route.params.id}`);
 
     selectedJob.value = data;
   } catch (error) {

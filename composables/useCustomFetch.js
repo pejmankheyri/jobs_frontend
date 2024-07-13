@@ -1,6 +1,6 @@
 import { useAuthStore } from "~/stores/auth";
 
-export default function useFetch(url, options = {}) {
+export default function useCustomFetch(url, options = {}) {
   const config = useRuntimeConfig();
   const authStore = useAuthStore();
 

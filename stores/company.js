@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import useFetch from "@/composables/useFetch";
+import useCustomFetch from "@/composables/useCustomFetch";
 import { useAuthStore } from "@/stores/auth";
 
 export const useCompanyStore = defineStore("company", {
@@ -8,7 +8,7 @@ export const useCompanyStore = defineStore("company", {
   actions: {
     async changeLogo(formData, id, t, appToast) {
       try {
-        const { data } = await useFetch(`/companies/${id}/logo`, {
+        const { data } = await useCustomFetch(`/companies/${id}/logo`, {
           method: "POST",
           body: formData,
         });
@@ -31,7 +31,7 @@ export const useCompanyStore = defineStore("company", {
 
     async fetchCompany(id) {
       try {
-        const { data } = await useFetch(`/companies/${id}`, {
+        const { data } = await useCustomFetch(`/companies/${id}`, {
           method: "GET",
         });
 
@@ -45,7 +45,7 @@ export const useCompanyStore = defineStore("company", {
       try {
         console.log(state);
         console.log(id);
-        const { data } = await useFetch(`/jobs/${id}`, {
+        const { data } = await useCustomFetch(`/jobs/${id}`, {
           method: "PUT",
           body: {
             title: state.title,
@@ -70,7 +70,7 @@ export const useCompanyStore = defineStore("company", {
 
     async getJob(id) {
       try {
-        const { data } = await useFetch(`/jobs/${id}`, {
+        const { data } = await useCustomFetch(`/jobs/${id}`, {
           method: "GET",
         });
 
@@ -82,7 +82,7 @@ export const useCompanyStore = defineStore("company", {
 
     async deleteJob(id, t, appToast) {
       try {
-        await useFetch(`/jobs/${id}`, {
+        await useCustomFetch(`/jobs/${id}`, {
           method: "DELETE",
         });
 
@@ -100,7 +100,7 @@ export const useCompanyStore = defineStore("company", {
 
     async updateCompany(state, id, t, appToast) {
       try {
-        await useFetch(`/companies/${id}`, {
+        await useCustomFetch(`/companies/${id}`, {
           method: "PUT",
           body: {
             title: state.title,
@@ -125,7 +125,7 @@ export const useCompanyStore = defineStore("company", {
 
     async deleteCompany(id, t, appToast) {
       try {
-        await useFetch(`/companies/${id}`, {
+        await useCustomFetch(`/companies/${id}`, {
           method: "DELETE",
         });
 
@@ -143,7 +143,7 @@ export const useCompanyStore = defineStore("company", {
 
     async removeImage(id, t, appToast) {
       try {
-        await useFetch(`/companies/image/${id}`, {
+        await useCustomFetch(`/companies/image/${id}`, {
           method: "DELETE",
         });
 
@@ -161,7 +161,7 @@ export const useCompanyStore = defineStore("company", {
 
     async addImage(formData, id, t, appToast) {
       try {
-        await useFetch(`/companies/${id}/images`, {
+        await useCustomFetch(`/companies/${id}/images`, {
           method: "POST",
           body: formData,
         });

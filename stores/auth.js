@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import useFetch from "@/composables/useFetch";
+import useCustomFetch from "@/composables/useCustomFetch";
 import { useUserStore } from "@/stores/user";
 
 export const useAuthStore = defineStore("auth", {
@@ -29,7 +29,7 @@ export const useAuthStore = defineStore("auth", {
     },
     async login(email, password, t, localeRoute, appToast) {
       try {
-        const data = await useFetch(`/login`, {
+        const data = await useCustomFetch(`/login`, {
           method: "POST",
           body: { email, password },
         });
@@ -84,7 +84,7 @@ export const useAuthStore = defineStore("auth", {
 
     async register(state, t, localeRoute, appToast) {
       try {
-        await useFetch(`/register`, {
+        await useCustomFetch(`/register`, {
           method: "POST",
           body: {
             name: state.name,
@@ -112,7 +112,7 @@ export const useAuthStore = defineStore("auth", {
 
     async fetchUser() {
       try {
-        const { data } = await useFetch(`/users/me`);
+        const { data } = await useCustomFetch(`/users/me`);
 
         this.setUser(data);
       } catch (e) {
@@ -122,7 +122,7 @@ export const useAuthStore = defineStore("auth", {
 
     async updatePassword(vars, t, appToast) {
       try {
-        await useFetch(`/change-password`, {
+        await useCustomFetch(`/change-password`, {
           method: "POST",
           body: {
             current_password: vars.oldPassword,
@@ -145,7 +145,7 @@ export const useAuthStore = defineStore("auth", {
 
     async forgotPassword(state, t, locale, appToast) {
       try {
-        await useFetch(`/forgot-password`, {
+        await useCustomFetch(`/forgot-password`, {
           method: "POST",
           body: {
             email: state.email,
@@ -167,7 +167,7 @@ export const useAuthStore = defineStore("auth", {
 
     async resetPassword(vars, t, localeRoute, appToast) {
       try {
-        await useFetch(`/reset-password`, {
+        await useCustomFetch(`/reset-password`, {
           method: "POST",
           body: {
             email: vars.email,

@@ -155,15 +155,18 @@ const companyJobsLink = (id) => {
 const getCompanies = async () => {
   try {
     loading.value = true;
-    const response = await useFetch(`/users/companies${searchStatus.value}`, {
-      query: {
-        q: search.value,
-        page: page.value,
-        per_page: pageCount.value,
-        sort: sort.value.column,
-        order: sort.value.direction,
-      },
-    });
+    const response = await useCustomFetch(
+      `/users/companies${searchStatus.value}`,
+      {
+        query: {
+          q: search.value,
+          page: page.value,
+          per_page: pageCount.value,
+          sort: sort.value.column,
+          order: sort.value.direction,
+        },
+      }
+    );
 
     pageTotal.value = response.meta.total;
 

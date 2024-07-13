@@ -112,7 +112,7 @@ const companyJobsApplications = (id) => {
 const getJobApplications = async () => {
   try {
     loading.value = true;
-    const response = await useFetch(
+    const response = await useCustomFetch(
       `/jobs/${route.params.jobid}/applicants`,
       {}
     );
