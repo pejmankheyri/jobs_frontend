@@ -21,6 +21,12 @@ export default defineNuxtConfig({
   colorMode: {
     classSuffix: "",
   },
+  nitro: {
+    prerender: {
+      concurrency: 250,
+      interval: 100,
+    },
+  },
   css: ["~/assets/css/main.scss"],
   plugins: [],
   i18n: {
