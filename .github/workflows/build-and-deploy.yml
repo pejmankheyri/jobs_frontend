@@ -1,10 +1,13 @@
 name: Build and Deploy
+
 on:
   push:
     branches:
       - master
+
 permissions:
   contents: write
+
 jobs:
   build-and-deploy:
     concurrency: ci-${{ github.ref }}
@@ -21,10 +24,24 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Install & Generate 🔧
-        run: |
-          npm install
-          npm run generate
+      - name: Cache Node.js modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies 🔧
+        run: npm ci
+
+      - name: Generate static site 📦
+        run: npm run generate
+        env:
+          NODE_OPTIONS: "--max_old_space_size=4096"
+
+      - name: List generated files 📂
+        run: ls -alh dist
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
