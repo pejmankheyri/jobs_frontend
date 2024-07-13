@@ -35,6 +35,13 @@ jobs:
       - name: Install dependencies 🔧
         run: npm install
 
+      - name: Verify pinia installation 🔍
+        run: |
+          if [ ! -f node_modules/pinia/dist/pinia.mjs ]; then
+            echo "Pinia module is missing!";
+            exit 1;
+          fi
+
       - name: Generate static site 📦
         run: npm run generate
         env:
