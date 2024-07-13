@@ -13,9 +13,9 @@ export default defineNuxtConfig({
   components: [{ path: "~/components", pathPrefix: false }],
   runtimeConfig: {
     public: {
-      apiBaseUrl: process.env.API_BASE_URL,
-      apiVersion: process.env.API_VERSION,
-      gtagId: process.env.GTAG_ID,
+      apiBaseUrl: process.env.API_BASE_URL || "https://pejmanz.xyz",
+      apiVersion: process.env.API_VERSION || "/api/v1",
+      gtagId: process.env.GTAG_ID || "",
     },
   },
   colorMode: {
