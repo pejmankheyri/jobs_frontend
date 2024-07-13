@@ -16,7 +16,8 @@
     "vue": "^3.4.27",
     "vue-router": "^4.3.2",
     "vue-toast-notification": "^3",
-    "yup": "^1.4.0"
+    "yup": "^1.4.0",
+    "pinia": "^2.0.0"
   },
   "devDependencies": {
     "@nuxtjs/color-mode": "^3.4.1",
