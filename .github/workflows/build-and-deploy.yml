@@ -23,7 +23,7 @@ jobs:
 
       - name: Install & Generate 🔧
         run: |
-          npm ci
+          npm install
           npm run generate
 
       - name: Deploy 🚀
