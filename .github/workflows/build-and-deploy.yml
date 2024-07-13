@@ -51,6 +51,9 @@ jobs:
         run: npm run generate
         env:
           NODE_OPTIONS: "--max_old_space_size=4096"
+          API_BASE_URL: ${{ secrets.API_BASE_URL }}
+          API_VERSION: ${{ secrets.API_VERSION }}
+          GTAG_ID: ${{ secrets.GTAG_ID }}
 
       - name: List generated files 📂
         run: ls -alh dist
