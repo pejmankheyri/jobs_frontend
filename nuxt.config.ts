@@ -25,6 +25,7 @@ export default defineNuxtConfig({
     prerender: {
       concurrency: 250,
       interval: 100,
+      routes: ["/"],
     },
   },
   css: ["~/assets/css/main.scss"],
