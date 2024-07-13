@@ -28,12 +28,12 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
 
       - name: Install dependencies 🔧
-        run: npm ci
+        run: npm install
 
       - name: Generate static site 📦
         run: npm run generate
@@ -47,3 +47,6 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: dist
+
+      - name: Clean up 🔥
+        run: rm -f package-lock.json
