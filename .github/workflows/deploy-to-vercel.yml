@@ -1,6 +1,6 @@
 name: Build and Deploy
 
-run-name: Deploying ${{ github.actor }}'s site to Vercel 🚀
+run-name: Deploying project to Vercel 🚀
 
 on:
   push:
