@@ -1,6 +1,6 @@
 name: Build and Deploy
 
-run-name: Deploying ${{ github.actor }}'s site to GitHub Pages 🚀
+run-name: Deploying ${{ github.actor }}'s site to Vercel 🚀
 
 on:
   push:
@@ -18,7 +18,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18]
+        node-version: [20]
 
     steps:
       - name: Checkout 🛎️
@@ -47,21 +47,13 @@ jobs:
             exit 1;
           fi
 
-      - name: Generate static site 📦
-        run: npm run generate
+      - name: Build the project 📦
+        run: npm run build
         env:
           NODE_OPTIONS: "--max_old_space_size=4096"
           API_BASE_URL: ${{ secrets.API_BASE_URL }}
           API_VERSION: ${{ secrets.API_VERSION }}
           GTAG_ID: ${{ secrets.GTAG_ID }}
-
-      - name: List generated files 📂
-        run: ls -alh dist
-
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: dist
 
       - name: Clean up 🔥
         run: rm -f package-lock.json
