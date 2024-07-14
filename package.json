@@ -3,11 +3,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node_modules/.bin/nuxt build",
-    "dev": "node_modules/.bin/nuxt dev",
-    "generate": "node_modules/.bin/nuxt generate --fail-on-error --verbose",
-    "preview": "node_modules/.bin/nuxt preview",
-    "postinstall": "node_modules/.bin/nuxt prepare"
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate --fail-on-error --verbose",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
   },
   "dependencies": {
     "@nuxt/ui": "^2.14.2",
