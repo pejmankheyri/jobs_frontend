@@ -1,4 +1,4 @@
-![deploy-to-github-pages](https://github.com/pejmankheyri/jobs_frontend/actions/workflows/deploy-to-github-pages/badge.svg)
+![deploy-to-github-pages](https://github.com/pejmankheyri/jobs_frontend/actions/workflows/deploy-to-github-pages.yml/badge.svg)
 
 ![deploy-to-vercel](https://github.com/pejmankheyri/jobs_frontend/actions/workflows/deploy-to-vercel.yml/badge.svg)
 
