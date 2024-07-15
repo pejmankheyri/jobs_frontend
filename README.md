@@ -1,6 +1,6 @@
 ![deploy-to-github-pages](https://github.com/pejmankheyri/jobs_frontend/actions/workflows/Deploy%20static%20content%20to%20Pages/badge.svg?branch=master)
 
-![deploy-to-vercel](https://github.com/pejmankheyri/jobs_frontend/actions/workflows/deploy-to-vercel/badge.svg?branch=master)
+![deploy-to-vercel](https://github.com/pejmankheyri/jobs_frontend/actions/workflows/deploy-to-vercel.yml/badge.svg?branch=master)
 
 # Nuxt 3 Minimal Starter
 
