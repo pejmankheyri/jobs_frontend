@@ -1,6 +1,6 @@
-![deploy-to-github-pages](https://github.com/github/docs/actions/workflows/deploy-to-github-pages.yml/badge.svg)
+![deploy-to-github-pages](https://github.com/github/docs/actions/workflows/deploy-to-github-pages.yml/badge.svg?branch=master)
 
-![deploy-to-vercel](https://github.com/github/docs/actions/workflows/deploy-to-vercel.yml/badge.svg)
+![deploy-to-vercel](https://github.com/github/docs/actions/workflows/deploy-to-vercel.yml/badge.svg?branch=master)
 
 # Nuxt 3 Minimal Starter
 
