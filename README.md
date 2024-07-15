@@ -1,4 +1,4 @@
-![deploy-to-github-pages](https://github.com/github/docs/actions/workflows/deploy-to-github-pages/badge.svg?branch=master)
+![deploy-to-github-pages](https://github.com/github/docs/actions/workflows/Deploy%20static%20content%20to%20Pages/badge.svg?branch=master)
 
 ![deploy-to-vercel](https://github.com/github/docs/actions/workflows/deploy-to-vercel/badge.svg?branch=master)
 
