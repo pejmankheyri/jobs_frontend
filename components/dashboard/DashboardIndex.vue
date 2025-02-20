@@ -88,7 +88,8 @@ onMounted(fetchJobs);
     <USkeleton v-else-if="loading" class="h-[100px] w-full mb-auto mt-16" />
     <p v-if="error">{{ error }}</p>
     <div
-      class="col-span-2 h-[85%] border border-1 rounded-md job-details border-indigo-500 relative hidden md:block"
+      class="col-span-2 h-[85%] rounded-md job-details relative hidden md:block"
+      :class="{ 'border-indigo-500 border-2': selectedJob }"
     >
       <JobDetails :selectedJob="selectedJob" />
     </div>

@@ -38,7 +38,7 @@ const selectJob = () => {
 
 <template>
   <div
-    class="p-4 mb-2 border rounded-md cursor-pointer border-1"
+    class="p-4 mb-2 border-2 rounded-md cursor-pointer"
     :class="{ 'border-indigo-500': selectedJob === job }"
     @click="selectJob"
   >

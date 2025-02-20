@@ -195,6 +195,7 @@ const getJobs = async () => {
       :rows="jobs"
       :columns="columnsTable"
       :loading="loading"
+      :progress="{ color: 'indigo', animation: 'carousel' }"
       sort-asc-icon="i-heroicons-arrow-up"
       sort-desc-icon="i-heroicons-arrow-down"
       sort-mode="manual"
@@ -209,7 +210,7 @@ const getJobs = async () => {
         <UBadge
           size="xs"
           :label="$t('APPLIED')"
-          color="emerald"
+          color="indigo"
           variant="subtle"
         />
       </template>

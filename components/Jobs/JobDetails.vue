@@ -187,7 +187,7 @@ const applyJobButtonTitle = computed(() => {
       />
     </div>
   </div>
-  <div class="bottom-0 block w-full border-t-2 lg:absolute">
+  <div class="bottom-0 block w-full border-t-2 border-indigo-500">
     <div class="p-8">
       <h2 class="text-2xl">{{ $t("COMPANY_DESCRIPTION") }}</h2>
       <div class="grid grid-cols-1 py-6 lg:grid-cols-2">

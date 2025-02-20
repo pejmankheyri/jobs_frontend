@@ -169,6 +169,7 @@ const getCompanyJobs = async () => {
         :rows="companies"
         :columns="columnsTable"
         :loading="loading"
+        :progress="{ color: 'indigo', animation: 'carousel' }"
         sort-asc-icon="i-heroicons-arrow-up"
         sort-desc-icon="i-heroicons-arrow-down"
         sort-mode="manual"

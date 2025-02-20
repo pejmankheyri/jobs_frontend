@@ -50,7 +50,7 @@ onMounted(() => {
     </UButton>
 
     <USkeleton v-if="loading" class="h-[100px] w-full mb-auto mt-16" />
-    <div v-else class="border border-indigo-500 rounded-md border-1">
+    <div v-else class="border-2 border-indigo-500 rounded-md">
       <JobDetails :selectedJob="selectedJob" />
     </div>
   </div>
