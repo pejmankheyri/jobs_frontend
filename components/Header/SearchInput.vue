@@ -38,11 +38,9 @@ const onInput = () => {
       @click="onInput"
       type="text"
       :placeholder="placeholder"
-      class="w-full p-2 pl-10 transition duration-300 ease-in-out border-2 border-indigo-500 focus:outline-none focus:border-indigo-400"
+      class="w-full p-1 pl-10 transition duration-300 ease-in-out border-2 border-indigo-500 focus:outline-none focus:border-indigo-400"
       :class="
-        classItems +
-        ' ' +
-        (type === 'jobs' ? 'rounded-l-full' : 'rounded-r-full')
+        classItems + ' ' + (type === 'jobs' ? 'rounded-l-md' : 'rounded-r-md')
       "
     />
   </div>

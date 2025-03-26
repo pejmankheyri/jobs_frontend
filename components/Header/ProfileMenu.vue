@@ -10,7 +10,7 @@ const isAuthenticated = computed(() => !!authStore.token);
 </script>
 
 <template>
-  <div class="flex items-center gap-3 place-items-center">
+  <div class="flex items-center gap-2 place-items-center">
     <ClientOnly>
       <ColorModeSelector />
     </ClientOnly>
@@ -21,7 +21,7 @@ const isAuthenticated = computed(() => !!authStore.token);
         <UButton color="indigo" variant="outline">
           <UIcon
             name="i-heroicons-arrow-right-end-on-rectangle"
-            class="px-2 py-3"
+            class="px-2 py-2"
           />
           <span v-if="$device.isDesktop">
             {{ $t("LOGIN") }}
@@ -30,7 +30,7 @@ const isAuthenticated = computed(() => !!authStore.token);
       </nuxt-link>
       <nuxt-link :to="localePath('/register')">
         <UButton color="indigo" variant="outline">
-          <UIcon name="i-heroicons-user-plus" class="px-2 py-3" />
+          <UIcon name="i-heroicons-user-plus" class="px-2 py-2" />
           <span v-if="$device.isDesktop">
             {{ $t("REGISTER") }}
           </span>

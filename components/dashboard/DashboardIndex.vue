@@ -14,6 +14,7 @@ const selectedJob = ref(null);
 
 // Fetch jobs data from API
 const fetchJobs = async () => {
+  if (loading.value) return;
   try {
     loading.value = true;
     const { data } = await useCustomFetch(`/jobs`, {
@@ -88,7 +89,7 @@ onMounted(fetchJobs);
     <USkeleton v-else-if="loading" class="h-[100px] w-full mb-auto mt-16" />
     <p v-if="error">{{ error }}</p>
     <div
-      class="col-span-2 h-[85%] rounded-md job-details relative hidden md:block"
+      class="relative hidden col-span-2 rounded-md job-details md:block"
       :class="{ 'border-indigo-500 border-2': selectedJob }"
     >
       <JobDetails :selectedJob="selectedJob" />
