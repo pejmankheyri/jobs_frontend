@@ -73,9 +73,9 @@ onMounted(fetchJobs);
 
 <template>
   <div
-    class="container grid items-center justify-center grid-cols-1 gap-4 align-middle sm:grid-cols-2 lg:grid-cols-3 place-items-center"
+    class="container grid items-center justify-center grid-cols-1 gap-4 pt-8 align-middle sm:grid-cols-2 lg:grid-cols-3 place-items-center"
   >
-    <div v-if="jobs.length" class="job-list h-[85%] scrollbar-hide px-4">
+    <div v-if="jobs.length" class="h-full job-list scrollbar-hide">
       <JobsList
         v-for="job in jobs"
         :key="job.id"
@@ -89,7 +89,7 @@ onMounted(fetchJobs);
     <USkeleton v-else-if="loading" class="h-[100px] w-full mb-auto mt-16" />
     <p v-if="error">{{ error }}</p>
     <div
-      class="relative hidden col-span-2 rounded-md job-details md:block"
+      class="relative hidden h-full col-span-2 rounded-md job-details md:block"
       :class="{ 'border-indigo-500 border-2': selectedJob }"
     >
       <JobDetails :selectedJob="selectedJob" />
