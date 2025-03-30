@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 const route = useRoute();
 const { t, localePath } = useI18n();
 
@@ -11,6 +11,11 @@ const error = ref("");
 const page = ref(1); // Track the current page
 const loading = ref(false);
 const selectedJob = ref(null);
+const itemsPerPage = 7;
+
+const displayedJobs = computed(() => {
+  return jobs.value;
+});
 
 // Fetch jobs data from API
 const fetchJobs = async () => {
@@ -20,13 +25,14 @@ const fetchJobs = async () => {
     const { data } = await useCustomFetch(`/jobs`, {
       params: {
         page: page.value,
+        per_page: itemsPerPage,
         q: route.query.q,
         location: route.query.location,
       },
     });
 
     jobs.value = [...jobs.value, ...data];
-    if (!selectedJob.value) selectedJob.value = data[0];
+    if (!selectedJob.value && data.length > 0) selectedJob.value = data[0];
     page.value++;
   } catch (error) {
     console.error(t("ERROR_FETCHING_JOBS") + ":", error);
@@ -53,19 +59,34 @@ onMounted(fetchJobs);
   <div
     class="container grid items-center justify-center grid-cols-1 gap-4 pt-8 align-middle sm:grid-cols-2 lg:grid-cols-3 place-items-center"
   >
-    <div v-if="jobs.length" class="h-full job-list scrollbar-hide">
-      <JobsList
-        v-for="job in jobs"
-        :key="job.id"
-        :job="job"
-        :loading="loading"
-        :error="error"
-        :selectedJob="selectedJob"
-        @select-job="selectedJob = $event"
-      />
+    <div v-if="displayedJobs.length" class="h-full job-list scrollbar-hide">
+      <div>
+        <JobsList
+          v-for="job in displayedJobs"
+          :key="job.id"
+          :job="job"
+          :loading="loading"
+          :error="error"
+          :selectedJob="selectedJob"
+          @select-job="selectedJob = $event"
+        />
+
+        <div class="flex justify-center my-4">
+          <UButton
+            color="black"
+            variant="outline"
+            @click="fetchJobs"
+            :loading="loading"
+            :disabled="loading"
+          >
+            {{ $t("LOAD_MORE") }}
+          </UButton>
+        </div>
+      </div>
     </div>
     <USkeleton v-else-if="loading" class="h-[100px] w-full mb-auto mt-16" />
-    <p v-if="error">{{ error }}</p>
+    <p v-else-if="error">{{ error }}</p>
+    <p v-else>{{ $t("NO_JOBS_FOUND") }}</p>
     <div
       class="relative hidden col-span-2 mb-auto rounded-md job-details md:block"
       :class="{ 'border-black border dark:border-gray-400': selectedJob }"
