@@ -1,0 +1,55 @@
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  gap: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.jobs-column {
+  width: 100%;
+  overflow-y: auto;
+}
+
+.job-list {
+  width: 100%;
+}
+
+.details-column {
+  width: 100%;
+  display: none;
+}
+
+.job-details {
+  height: 100%;
+  overflow-y: auto;
+}
+
+/* Media query for tablet and above */
+@media (min-width: 768px) {
+  .dashboard-container {
+    flex-direction: row;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .jobs-column {
+    width: 380px;
+    flex-shrink: 0;
+  }
+
+  .details-column {
+    flex: 1;
+    display: block;
+  }
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}

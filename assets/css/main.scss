@@ -1,3 +1,5 @@
+@use "./dashboard.scss";
+
 body {
   @apply dark:bg-gray-900 bg-white text-gray-900 dark:text-white;
 }
