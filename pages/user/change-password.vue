@@ -54,19 +54,23 @@ const onSubmit = async () => {
         <UFormGroup :label="$t('OLD_PASSWORD')" name="oldPassword">
           <UInput
             v-model="state.oldPassword"
-            color="indigo"
             type="password"
             size="sm"
             icon="i-heroicons-lock-closed"
+            :ui="{
+              base: 'border border-black !ring-transparent focus:border-black dark:border-gray-400 dark:focus:border-gray-400',
+            }"
           />
         </UFormGroup>
         <UFormGroup :label="$t('NEW_PASSWORD')" name="newPassword">
           <UInput
             v-model="state.newPassword"
-            color="indigo"
             type="password"
             size="sm"
             icon="i-heroicons-lock-closed"
+            :ui="{
+              base: 'border border-black !ring-transparent focus:border-black dark:border-gray-400 dark:focus:border-gray-400',
+            }"
           />
         </UFormGroup>
         <UFormGroup
@@ -75,14 +79,16 @@ const onSubmit = async () => {
         >
           <UInput
             v-model="state.confirmPassword"
-            color="indigo"
             type="password"
             size="sm"
             icon="i-heroicons-lock-closed"
+            :ui="{
+              base: 'border border-black !ring-transparent focus:border-black dark:border-gray-400 dark:focus:border-gray-400',
+            }"
           />
         </UFormGroup>
         <div class="pt-4">
-          <UButton type="submit" color="indigo" :loading="loading" block>
+          <UButton type="submit" color="black" :loading="loading" block>
             {{ $t("CHANGE_PASSWORD") }}
           </UButton>
         </div>

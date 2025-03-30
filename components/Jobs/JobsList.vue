@@ -38,8 +38,12 @@ const selectJob = () => {
 
 <template>
   <div
-    class="p-4 mb-2 border-2 rounded-md cursor-pointer"
-    :class="{ 'border-indigo-500': selectedJob === job }"
+    class="p-4 mb-2 border rounded-md cursor-pointer"
+    :class="[
+      selectedJob === job
+        ? 'border-black dark:border-gray-400'
+        : 'border-white dark:border-gray-900',
+    ]"
     @click="selectJob"
   >
     <div class="flex mb-2 place-items-center">

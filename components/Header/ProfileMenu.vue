@@ -18,10 +18,10 @@ const isAuthenticated = computed(() => !!authStore.token);
 
     <div v-if="!isAuthenticated" class="flex gap-2">
       <nuxt-link :to="localePath('/login')">
-        <UButton color="indigo" variant="outline">
+        <UButton color="black" variant="outline">
           <UIcon
             name="i-heroicons-arrow-right-end-on-rectangle"
-            class="px-2 py-2"
+            class="px-2 py-[11px]"
           />
           <span v-if="$device.isDesktop">
             {{ $t("LOGIN") }}
@@ -29,8 +29,8 @@ const isAuthenticated = computed(() => !!authStore.token);
         </UButton>
       </nuxt-link>
       <nuxt-link :to="localePath('/register')">
-        <UButton color="indigo" variant="outline">
-          <UIcon name="i-heroicons-user-plus" class="px-2 py-2" />
+        <UButton color="black" variant="outline">
+          <UIcon name="i-heroicons-user-plus" class="px-2 py-[11px]" />
           <span v-if="$device.isDesktop">
             {{ $t("REGISTER") }}
           </span>

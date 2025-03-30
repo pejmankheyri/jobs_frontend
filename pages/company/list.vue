@@ -207,7 +207,9 @@ const getCompanies = async () => {
       <UInput
         v-model="search"
         icon="i-heroicons-magnifying-glass-20-solid"
-        color="indigo"
+        :ui="{
+          base: 'border border-black !ring-transparent focus:border-black dark:border-gray-400 dark:focus:border-gray-400',
+        }"
         :placeholder="$t('SEARCH') + '...'"
       />
     </div>
@@ -220,7 +222,9 @@ const getCompanies = async () => {
         <USelect
           v-model="pageCount"
           :options="[3, 5, 10, 20, 30, 40]"
-          color="indigo"
+          :ui="{
+            base: 'border border-black !ring-transparent focus:border-black dark:border-gray-400 dark:focus:border-gray-400',
+          }"
           class="w-20 me-2"
           size="xs"
         />
@@ -233,14 +237,14 @@ const getCompanies = async () => {
       :rows="companies"
       :columns="columnsTable"
       :loading="loading"
-      :progress="{ color: 'indigo', animation: 'carousel' }"
+      :progress="{ color: 'black', animation: 'carousel' }"
       sort-asc-icon="i-heroicons-arrow-up"
       sort-desc-icon="i-heroicons-arrow-down"
       sort-mode="manual"
       class="w-full"
       :ui="{
         td: { base: 'max-w-[0] truncate' },
-        default: { checkbox: { color: 'indigo' } },
+        default: { checkbox: { color: 'black' } },
       }"
     >
       <template #location-data="{ row }">
@@ -265,7 +269,7 @@ const getCompanies = async () => {
             <UButton
               icon="i-heroicons-briefcase"
               size="2xs"
-              color="indigo"
+              color="black"
               variant="outline"
               :ui="{ rounded: 'rounded-full' }"
               @click="companyJobsLink(row.id)"
@@ -345,7 +349,7 @@ const getCompanies = async () => {
             default: {
               activeButton: {
                 variant: 'outline',
-                color: 'indigo',
+                color: 'black',
               },
             },
           }"

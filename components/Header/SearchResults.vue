@@ -33,7 +33,7 @@ const resultsBox = ref(null);
     <div
       v-for="result in results"
       :key="result.id"
-      class="px-2 py-4 border-b-2 cursor-pointer hover:bg-slate-200"
+      class="px-2 py-4 border-b cursor-pointer hover:bg-slate-200"
       @click="emit('selectedValue', { type, result })"
     >
       <h3>

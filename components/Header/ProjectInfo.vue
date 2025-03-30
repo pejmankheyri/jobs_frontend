@@ -30,7 +30,7 @@ const downloadJSON = () => {
               {{ $t("PROJECT_TECHNICAL_DETAILS") }}
             </h3>
             <UButton
-              color="indigo"
+              color="black"
               variant="ghost"
               icon="i-heroicons-x-mark-20-solid"
               class="-my-1"

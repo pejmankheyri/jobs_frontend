@@ -84,7 +84,7 @@ const removeImage = async (id) => {
           })
         )
       "
-      color="indigo"
+      color="black"
       variant="outline"
       icon="i-heroicons-arrow-left"
       class="mb-4"
@@ -95,7 +95,9 @@ const removeImage = async (id) => {
 
     <UInput
       v-model="state.image"
-      color="indigo"
+      :ui="{
+        base: 'border border-black !ring-transparent focus:border-black dark:border-gray-400 dark:focus:border-gray-400',
+      }"
       type="file"
       size="sm"
       icon="i-heroicons-folder"
@@ -103,7 +105,7 @@ const removeImage = async (id) => {
     />
     <UButton
       @click="onSubmit"
-      color="indigo"
+      color="black"
       block
       icon="i-heroicons-save"
       class="my-4"

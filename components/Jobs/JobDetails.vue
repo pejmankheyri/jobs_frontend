@@ -103,7 +103,7 @@ const applyJobButtonTitle = computed(() => {
     <div class="block pb-2 lg:flex lg:justify-between">
       <UButton
         v-if="isMobile"
-        color="indigo"
+        color="black"
         class="p-4 my-4 ml-auto truncate"
         :disabled="isJobApplyDisabled"
         block
@@ -129,7 +129,7 @@ const applyJobButtonTitle = computed(() => {
         <UTooltip :text="applyJobButtonTitle">
           <UButton
             v-if="isDesktop"
-            color="indigo"
+            color="black"
             class="p-4 ml-auto truncate"
             :disabled="isJobApplyDisabled"
             @click="isApplyBoxOpen = true"
@@ -139,7 +139,10 @@ const applyJobButtonTitle = computed(() => {
         <UModal v-model="isApplyBoxOpen">
           <div class="p-4">
             <UTextarea
-              color="indigo"
+              color="black"
+              :ui="{
+                base: 'border border-black !ring-transparent focus:border-black dark:border-gray-400 dark:focus:border-gray-400',
+              }"
               variant="outline"
               placeholder="Your cover letter"
               class="pb-4"
@@ -147,7 +150,7 @@ const applyJobButtonTitle = computed(() => {
             />
 
             <UButton
-              color="indigo"
+              color="black"
               class="p-4 ml-auto truncate"
               :disabled="!isAuthenticated"
               :loading="loading"
@@ -175,7 +178,14 @@ const applyJobButtonTitle = computed(() => {
 
     <div class="grid gap-2 overflow-hidden lg:flex">
       <div v-for="tag in selectedJob?.tags" :key="tag.id" class="">
-        <UBadge variant="subtle" color="indigo">{{ tag.name }}</UBadge>
+        <UBadge
+          variant="subtle"
+          color="black"
+          :ui="{
+            base: 'border border-black !ring-transparent focus:border-black dark:border-gray-400 dark:focus:border-gray-400',
+          }"
+          >{{ tag.name }}</UBadge
+        >
       </div>
     </div>
 
@@ -187,8 +197,8 @@ const applyJobButtonTitle = computed(() => {
       />
     </div>
   </div>
-  <div class="bottom-0 block w-full border-t-2 border-indigo-500">
-    <div class="p-8">
+  <div class="bottom-0 block w-full border-t border-black dark:border-gray-400">
+    <div class="px-8 py-4">
       <h2 class="text-2xl">{{ $t("COMPANY_DESCRIPTION") }}</h2>
       <div class="grid grid-cols-1 py-6 lg:grid-cols-2">
         <p>
@@ -200,7 +210,7 @@ const applyJobButtonTitle = computed(() => {
           <a
             :href="selectedJob?.company?.website"
             target="_blank"
-            class="text-indigo-500"
+            class="text-black dark:text-white hover:underline"
           >
             {{ selectedJob?.company?.website }}</a
           >

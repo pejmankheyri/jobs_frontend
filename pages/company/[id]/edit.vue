@@ -85,7 +85,7 @@ onMounted(() => {
           })
         )
       "
-      color="indigo"
+      color="black"
       variant="outline"
       icon="i-heroicons-arrow-left"
       class="mb-4"
@@ -107,20 +107,26 @@ onMounted(() => {
         <UInput
           v-model="state.title"
           icon="i-heroicons-briefcase"
-          color="indigo"
+          :ui="{
+            base: 'border border-black !ring-transparent focus:border-black dark:border-gray-400 dark:focus:border-gray-400',
+          }"
         />
       </UFormGroup>
       <UFormGroup :label="$t('JOB_DESCRIPTION')" name="description">
         <UTextarea
           v-model="state.description"
           icon="i-heroicons-document-text"
-          color="indigo"
+          :ui="{
+            base: 'border border-black !ring-transparent focus:border-black dark:border-gray-400 dark:focus:border-gray-400',
+          }"
         />
       </UFormGroup>
       <UFormGroup :label="$t('RATING')" name="rating">
         <USelect
           v-model="state.rating"
-          color="indigo"
+          :ui="{
+            base: 'border border-black !ring-transparent focus:border-black dark:border-gray-400 dark:focus:border-gray-400',
+          }"
           :options="ratingOptions"
         />
       </UFormGroup>
@@ -128,19 +134,23 @@ onMounted(() => {
         <UInput
           v-model="state.website"
           icon="i-heroicons-cursor-arrow-ripple"
-          color="indigo"
+          :ui="{
+            base: 'border border-black !ring-transparent focus:border-black dark:border-gray-400 dark:focus:border-gray-400',
+          }"
         />
       </UFormGroup>
       <UFormGroup :label="$t('EMPLOYEES')" name="employes">
         <UInput
           v-model="state.employes"
           icon="i-heroicons-users"
-          color="indigo"
+          :ui="{
+            base: 'border border-black !ring-transparent focus:border-black dark:border-gray-400 dark:focus:border-gray-400',
+          }"
         />
       </UFormGroup>
 
       <div class="pt-4">
-        <UButton type="submit" color="indigo" :loading="loadingSave" block>
+        <UButton type="submit" color="black" :loading="loadingSave" block>
           {{ $t("SAVE_CHANGES") }}
         </UButton>
       </div>

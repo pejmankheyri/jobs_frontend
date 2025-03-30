@@ -38,14 +38,16 @@ const onSubmit = async () => {
       <UFormGroup :label="$t('EMAIL')" name="email">
         <UInput
           v-model="state.email"
-          color="indigo"
+          :ui="{
+            base: 'border border-black !ring-transparent focus:border-black dark:border-gray-400 dark:focus:border-gray-400',
+          }"
           type="email"
           size="sm"
           icon="i-heroicons-envelope"
         />
       </UFormGroup>
       <div class="pt-4">
-        <UButton type="submit" color="indigo" :loading="loading" block>
+        <UButton type="submit" color="black" :loading="loading" block>
           {{ $t("SEND_RESET_LINK") }}
         </UButton>
       </div>

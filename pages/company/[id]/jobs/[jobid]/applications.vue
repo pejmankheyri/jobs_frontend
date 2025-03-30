@@ -143,7 +143,7 @@ const getUserAvatar = (avatar) => {
           })
         )
       "
-      color="indigo"
+      color="black"
       variant="outline"
       icon="i-heroicons-arrow-left"
       class="mt-8"
@@ -179,14 +179,14 @@ const getUserAvatar = (avatar) => {
         :rows="applications"
         :columns="columnsTable"
         :loading="loading"
-        :progress="{ color: 'indigo', animation: 'carousel' }"
+        :progress="{ color: 'black', animation: 'carousel' }"
         sort-asc-icon="i-heroicons-arrow-up"
         sort-desc-icon="i-heroicons-arrow-down"
         sort-mode="manual"
         class="w-full"
         :ui="{
           td: { base: 'max-w-[0] truncate' },
-          default: { checkbox: { color: 'indigo' } },
+          default: { checkbox: { color: 'black' } },
         }"
       >
         <template #location-data="{ row }">
@@ -221,7 +221,7 @@ const getUserAvatar = (avatar) => {
           <a
             :href="`${config.public.apiBaseUrl}${row.user.cv}`"
             target="_blank"
-            class="text-indigo-600"
+            class="text-black dark:text-white hover:underline"
             >{{ $t("DOWNLOAD_CV") }}</a
           >
         </template>

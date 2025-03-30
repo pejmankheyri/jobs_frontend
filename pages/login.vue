@@ -78,7 +78,9 @@ const submitAsCompany = () => {
         <UInput
           v-model="state.email"
           icon="i-heroicons-envelope"
-          color="indigo"
+          :ui="{
+            base: 'border border-black !ring-transparent focus:border-black dark:border-gray-400 dark:focus:border-gray-400',
+          }"
         />
       </UFormGroup>
 
@@ -87,16 +89,18 @@ const submitAsCompany = () => {
           v-model="state.password"
           type="password"
           icon="i-heroicons-key"
-          color="indigo"
+          :ui="{
+            base: 'border border-black !ring-transparent focus:border-black dark:border-gray-400 dark:focus:border-gray-400',
+          }"
         />
       </UFormGroup>
       <div class="pt-4">
-        <UButton type="submit" color="indigo" :loading="loading" block>
+        <UButton type="submit" color="black" :loading="loading" block>
           {{ $t("LOGIN") }}
         </UButton>
       </div>
       <div class="">
-        <ULink :to="localePath('/forgot-password')" color="indigo">
+        <ULink :to="localePath('/forgot-password')" color="black">
           {{ $t("FORGOT_PASSWORD") }}
         </ULink>
       </div>

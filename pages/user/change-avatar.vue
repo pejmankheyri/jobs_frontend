@@ -53,7 +53,9 @@ const userAvatar = computed(() => {
       <UFormGroup :label="$t('AVATAR')" name="avatar">
         <UInput
           v-model="state.avatar"
-          color="indigo"
+          :ui="{
+            base: 'border border-black !ring-transparent focus:border-black dark:border-gray-400 dark:focus:border-gray-400',
+          }"
           type="file"
           size="sm"
           icon="i-heroicons-folder"
@@ -61,7 +63,7 @@ const userAvatar = computed(() => {
         />
       </UFormGroup>
       <div class="pt-4">
-        <UButton type="submit" color="indigo" :loading="loading" block>
+        <UButton type="submit" color="black" :loading="loading" block>
           {{ $t("CHANGE_AVATAR") }}
         </UButton>
       </div>

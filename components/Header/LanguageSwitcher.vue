@@ -22,7 +22,10 @@ watch(lang, (newVal) => {
     <USelect
       icon="i-heroicons-globe-alt"
       :options="langOptions"
-      color="indigo"
+      color="black"
+      :ui="{
+        base: 'border border-black !ring-transparent focus:border-black dark:border-gray-400 dark:focus:border-gray-400',
+      }"
       class="w-full"
       v-model="lang"
     />

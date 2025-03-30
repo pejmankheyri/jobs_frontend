@@ -77,7 +77,7 @@ const companyLogoSrc = computed(() => {
           })
         )
       "
-      color="indigo"
+      color="black"
       variant="outline"
       icon="i-heroicons-arrow-left"
       class="mb-4"
@@ -91,7 +91,9 @@ const companyLogoSrc = computed(() => {
       <UFormGroup :label="$t('LOGO')" name="logo">
         <UInput
           v-model="state.logo"
-          color="indigo"
+          :ui="{
+            base: 'border border-black !ring-transparent focus:border-black dark:border-gray-400 dark:focus:border-gray-400',
+          }"
           type="file"
           size="sm"
           icon="i-heroicons-folder"
@@ -99,7 +101,7 @@ const companyLogoSrc = computed(() => {
         />
       </UFormGroup>
       <div class="pt-4">
-        <UButton type="submit" color="indigo" :loading="loading" block>
+        <UButton type="submit" color="black" :loading="loading" block>
           {{ $t("CHANGE_LOGO") }}
         </UButton>
       </div>

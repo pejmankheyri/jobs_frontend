@@ -43,7 +43,7 @@ const onSubmit = async () => {
       <a
         :href="`${config.public.apiBaseUrl}${user.cv}`"
         target="_blank"
-        class="text-indigo-600"
+        class="text-black"
         >{{ $t("DOWNLOAD_CV") }}</a
       >
     </div>
@@ -60,7 +60,9 @@ const onSubmit = async () => {
       <UFormGroup :label="$t('UPLOAD_NEW_CV')" name="cv">
         <UInput
           v-model="state.cv"
-          color="indigo"
+          :ui="{
+            base: 'border border-black !ring-transparent focus:border-black dark:border-gray-400 dark:focus:border-gray-400',
+          }"
           type="file"
           size="sm"
           icon="i-heroicons-folder"
@@ -68,7 +70,7 @@ const onSubmit = async () => {
         />
       </UFormGroup>
       <div class="pt-4">
-        <UButton type="submit" color="indigo" :loading="loading" block>
+        <UButton type="submit" color="black" :loading="loading" block>
           {{ $t("CHANGE_CV") }}
         </UButton>
       </div>

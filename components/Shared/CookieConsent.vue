@@ -27,7 +27,7 @@ onMounted(() => {
       </p>
     </div>
     <div>
-      <UButton @click="acceptCookies" color="indigo" variant="outline">
+      <UButton @click="acceptCookies" color="black" variant="outline">
         {{ $t("ALLOW_COOKIES") }}
       </UButton>
     </div>

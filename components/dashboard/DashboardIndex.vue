@@ -46,28 +46,6 @@ watch(
   { immediate: true }
 );
 
-// Detect scroll event and load more jobs if the user reaches the bottom of the page
-const handleScroll = () => {
-  if (
-    window.innerHeight + window.scrollY >= document.body.offsetHeight &&
-    !loading.value &&
-    !error.value
-  ) {
-    fetchJobs();
-  }
-};
-
-// Add event listener for scroll when the component is mounted
-onMounted(() => {
-  window.addEventListener("scroll", handleScroll);
-});
-
-// Remove event listener when the component is unmounted
-onUnmounted(() => {
-  window.removeEventListener("scroll", handleScroll);
-});
-
-// Fetch jobs data when the component is mounted
 onMounted(fetchJobs);
 </script>
 
@@ -89,8 +67,8 @@ onMounted(fetchJobs);
     <USkeleton v-else-if="loading" class="h-[100px] w-full mb-auto mt-16" />
     <p v-if="error">{{ error }}</p>
     <div
-      class="relative hidden h-full col-span-2 rounded-md job-details md:block"
-      :class="{ 'border-indigo-500 border-2': selectedJob }"
+      class="relative hidden col-span-2 mb-auto rounded-md job-details md:block"
+      :class="{ 'border-black border dark:border-gray-400': selectedJob }"
     >
       <JobDetails :selectedJob="selectedJob" />
     </div>

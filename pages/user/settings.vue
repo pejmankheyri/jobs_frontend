@@ -44,7 +44,13 @@ const onSubmit = async () => {
     <h1 class="mb-4 text-2xl font-bold">{{ $t("SETTINGS") }}</h1>
     <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
       <UFormGroup :label="$t('NAME')" name="name">
-        <UInput v-model="state.name" color="indigo" icon="i-heroicons-user" />
+        <UInput
+          v-model="state.name"
+          icon="i-heroicons-user"
+          :ui="{
+            base: 'border border-black !ring-transparent focus:border-black dark:border-gray-400 dark:focus:border-gray-400',
+          }"
+        />
       </UFormGroup>
 
       <UFormGroup :label="$t('EMAIL')" name="email">
@@ -52,14 +58,19 @@ const onSubmit = async () => {
       </UFormGroup>
 
       <UFormGroup :label="$t('PHONE')" name="phone">
-        <UInput v-model="state.phone" color="indigo" icon="i-heroicons-phone" />
+        <UInput
+          v-model="state.phone"
+          icon="i-heroicons-phone"
+          :ui="{
+            base: 'border border-black !ring-transparent focus:border-black dark:border-gray-400 dark:focus:border-gray-400',
+          }"
+        />
       </UFormGroup>
 
       <UFormGroup :label="$t('USER_ROLE')" name="role">
         <USelect
           icon="i-heroicons-users"
           :options="roleOptions"
-          color="indigo"
           class="w-full"
           v-model="state.role"
           disabled
@@ -67,7 +78,7 @@ const onSubmit = async () => {
       </UFormGroup>
 
       <div class="pt-4">
-        <UButton type="submit" color="indigo" :loading="loading" block>
+        <UButton type="submit" color="black" :loading="loading" block>
           {{ $t("SAVE_SETTINGS") }}
         </UButton>
       </div>

@@ -54,15 +54,33 @@ const onSubmit = async () => {
     <h1 class="mb-4 text-2xl font-bold">{{ $t("REGISTER") }}</h1>
     <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
       <UFormGroup :label="$t('NAME')" name="name">
-        <UInput v-model="state.name" color="indigo" icon="i-heroicons-user" />
+        <UInput
+          v-model="state.name"
+          :ui="{
+            base: 'border border-black !ring-transparent focus:border-black dark:border-gray-400 dark:focus:border-gray-400',
+          }"
+          icon="i-heroicons-user"
+        />
       </UFormGroup>
 
       <UFormGroup :label="$t('EMAIL')" name="email">
-        <UInput v-model="state.email" icon="i-heroicons-envelope" />
+        <UInput
+          v-model="state.email"
+          :ui="{
+            base: 'border border-black !ring-transparent focus:border-black dark:border-gray-400 dark:focus:border-gray-400',
+          }"
+          icon="i-heroicons-envelope"
+        />
       </UFormGroup>
 
       <UFormGroup :label="$t('PHONE')" name="phone">
-        <UInput v-model="state.phone" icon="i-heroicons-phone" />
+        <UInput
+          v-model="state.phone"
+          :ui="{
+            base: 'border border-black !ring-transparent focus:border-black dark:border-gray-400 dark:focus:border-gray-400',
+          }"
+          icon="i-heroicons-phone"
+        />
       </UFormGroup>
 
       <UFormGroup :label="$t('PASSWORD')" name="password">
@@ -70,7 +88,9 @@ const onSubmit = async () => {
           v-model="state.password"
           type="password"
           icon="i-heroicons-key"
-          color="indigo"
+          :ui="{
+            base: 'border border-black !ring-transparent focus:border-black dark:border-gray-400 dark:focus:border-gray-400',
+          }"
         />
       </UFormGroup>
       <UFormGroup
@@ -81,7 +101,9 @@ const onSubmit = async () => {
           v-model="state.password_confirmation"
           type="password"
           icon="i-heroicons-key"
-          color="indigo"
+          :ui="{
+            base: 'border border-black !ring-transparent focus:border-black dark:border-gray-400 dark:focus:border-gray-400',
+          }"
         />
       </UFormGroup>
 
@@ -89,13 +111,15 @@ const onSubmit = async () => {
         <USelect
           icon="i-heroicons-users"
           :options="roleOptions"
-          color="indigo"
+          :ui="{
+            base: 'border border-black !ring-transparent focus:border-black dark:border-gray-400 dark:focus:border-gray-400',
+          }"
           class="w-full"
           v-model="state.role"
         />
       </UFormGroup>
       <div class="pt-4">
-        <UButton type="submit" color="indigo" :loading="loading" block>
+        <UButton type="submit" color="black" :loading="loading" block>
           {{ $t("REGISTER") }}
         </UButton>
       </div>

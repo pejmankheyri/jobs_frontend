@@ -41,7 +41,7 @@ onMounted(() => {
   >
     <UButton
       @click="router.back()"
-      color="indigo"
+      color="black"
       variant="outline"
       icon="i-heroicons-arrow-left"
       class="mb-4"
@@ -50,7 +50,7 @@ onMounted(() => {
     </UButton>
 
     <USkeleton v-if="loading" class="h-[100px] w-full mb-auto mt-16" />
-    <div v-else class="border-2 border-indigo-500 rounded-md">
+    <div v-else class="border border-black rounded-md dark:border-gray-400">
       <JobDetails :selectedJob="selectedJob" />
     </div>
   </div>
