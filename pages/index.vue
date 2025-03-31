@@ -1,5 +1,5 @@
 <template>
-  <section class="mb-10">
+  <section class="mb-8">
     <DashboardIndex />
   </section>
 </template>

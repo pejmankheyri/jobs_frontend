@@ -8,7 +8,7 @@ const error = ref("");
 const page = ref(1);
 const loading = ref(false);
 const selectedJob = ref(null);
-const itemsPerPage = 7;
+const itemsPerPage = 6;
 
 const displayedJobs = computed(() => {
   return jobs.value;
