@@ -25,6 +25,17 @@ const companyLogoSrc = computed(() => {
   return runtimeConfig.public.apiBaseUrl + props.job.company.logo;
 });
 
+const formattedLocation = computed(() => {
+  const locations = props.job?.company?.location || [];
+  if (locations.length === 0) return "Remote";
+
+  const location = locations[0];
+  return `${location.state || ""}, ${location.country || ""}`.replace(
+    /^, /,
+    ""
+  );
+});
+
 const selectJob = () => {
   if (isDesktop) {
     emit("selectJob", props.job);
@@ -63,10 +74,7 @@ const selectJob = () => {
     </div>
     <p class="font-semibold">{{ job.title }}</p>
     <div class="flex justify-between">
-      <small
-        >{{ job.company.location[0].state }},
-        {{ job.company.location[0].country }}</small
-      >
+      <small>{{ formattedLocation }}</small>
       <small class="truncate">{{ job.create_dates.created_at_human }}</small>
     </div>
   </div>

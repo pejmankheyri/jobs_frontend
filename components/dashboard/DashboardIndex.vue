@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
 const route = useRoute();
+const router = useRouter();
 const { t } = useI18n();
 
 const jobs = ref([]);
@@ -10,6 +11,9 @@ const loading = ref(false);
 const selectedJob = ref(null);
 const itemsPerPage = 6;
 
+const selectedTagId = computed(() => route.query.tagId);
+const selectedTagName = computed(() => route.query.tagName);
+
 const displayedJobs = computed(() => {
   return jobs.value;
 });
@@ -18,7 +22,12 @@ const fetchJobs = async () => {
   if (loading.value) return;
   try {
     loading.value = true;
-    const { data } = await useCustomFetch(`/jobs`, {
+
+    const endpoint = selectedTagId.value
+      ? `/jobs/tags/${selectedTagId.value}`
+      : `/jobs`;
+
+    const { data } = await useCustomFetch(endpoint, {
       params: {
         page: page.value,
         per_page: itemsPerPage,
@@ -27,7 +36,12 @@ const fetchJobs = async () => {
       },
     });
 
-    jobs.value = [...jobs.value, ...data];
+    if (page.value === 1) {
+      jobs.value = [...data];
+    } else {
+      jobs.value = [...jobs.value, ...data];
+    }
+
     if (!selectedJob.value && data.length > 0) selectedJob.value = data[0];
     page.value++;
   } catch (error) {
@@ -37,14 +51,44 @@ const fetchJobs = async () => {
   }
 };
 
+const filterByTag = (tagId, tagName) => {
+  router.push({
+    query: {
+      ...route.query,
+      tagId,
+      tagName,
+    },
+  });
+};
+
+// Clear tag filter
+const clearTagFilter = () => {
+  const newQuery = { ...route.query };
+  delete newQuery.tagId;
+  delete newQuery.tagName;
+
+  router.push({
+    query: newQuery,
+  });
+};
+
+// Reset jobs list and fetch from beginning
+const resetJobsList = () => {
+  jobs.value = [];
+  page.value = 1;
+  fetchJobs();
+};
+
 watch(
   () => route.params,
-  () => {
-    jobs.value = [];
-    page.value = 1;
-    fetchJobs();
-  },
+  () => resetJobsList(),
   { immediate: true }
+);
+
+watch(
+  () => route.query,
+  () => resetJobsList(),
+  { deep: true }
 );
 
 onMounted(fetchJobs);
@@ -52,6 +96,22 @@ onMounted(fetchJobs);
 
 <template>
   <div v-if="displayedJobs.length" class="dashboard-container">
+    <!-- Active tag filter indicator -->
+    <div v-if="selectedTagId" class="px-4 py-2 mb-4">
+      <div class="flex items-center gap-2">
+        <span>{{ $t("FILTERING_BY_TAG") }}: </span>
+        <UBadge color="black" class="mr-2">{{ selectedTagName }}</UBadge>
+        <UButton
+          size="xs"
+          color="black"
+          variant="ghost"
+          icon="i-heroicons-x-mark"
+          @click="clearTagFilter"
+          :aria-label="$t('CLEAR_FILTER')"
+        />
+      </div>
+    </div>
+
     <div class="jobs-column scrollbar-hide">
       <div class="job-list scrollbar-hide">
         <JobsList
@@ -83,7 +143,7 @@ onMounted(fetchJobs);
         class="rounded-md job-details scrollbar-hide"
         :class="{ 'border-black border dark:border-gray-400': selectedJob }"
       >
-        <JobDetails :selectedJob="selectedJob" />
+        <JobDetails :selectedJob="selectedJob" @filter-by-tag="filterByTag" />
       </div>
     </div>
   </div>

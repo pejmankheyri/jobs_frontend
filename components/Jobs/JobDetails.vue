@@ -14,12 +14,16 @@ const isAuthenticated = computed(() => !!authStore.token);
 const isApplyBoxOpen = ref(false);
 const loading = ref(false);
 const coverLetter = ref("");
-const isOpen = ref(false);
-const imageSrc = ref("");
 
 const props = defineProps({
   selectedJob: Object,
 });
+
+const emit = defineEmits(["filter-by-tag"]);
+
+const handleTagClick = (tag) => {
+  emit("filter-by-tag", tag.id, tag.name);
+};
 
 const starIconColor = computed(() => {
   return colorMode.preference === "light" ? "#000000" : "#ffffff";
@@ -182,8 +186,9 @@ const applyJobButtonTitle = computed(() => {
           variant="subtle"
           color="black"
           :ui="{
-            base: 'border border-black !ring-transparent focus:border-black dark:border-gray-400 dark:focus:border-gray-400',
+            base: 'border border-black !ring-transparent focus:border-black dark:border-gray-400 dark:focus:border-gray-400 cursor-pointer',
           }"
+          @click="handleTagClick(tag)"
           >{{ tag.name }}</UBadge
         >
       </div>
