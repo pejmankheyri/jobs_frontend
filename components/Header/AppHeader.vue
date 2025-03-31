@@ -1,6 +1,6 @@
 <template>
   <header
-    class="flex justify-between items-center mt-10 px-4 place-items-center"
+    class="flex items-center justify-between px-4 mt-8 mb-4 place-items-center"
   >
     <SiteLogo />
     <SearchBox />

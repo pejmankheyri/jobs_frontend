@@ -78,9 +78,9 @@ onMounted(fetchJobs);
       </div>
     </div>
 
-    <div class="details-column">
+    <div class="details-column scrollbar-hide">
       <div
-        class="rounded-md job-details"
+        class="rounded-md job-details scrollbar-hide"
         :class="{ 'border-black border dark:border-gray-400': selectedJob }"
       >
         <JobDetails :selectedJob="selectedJob" />

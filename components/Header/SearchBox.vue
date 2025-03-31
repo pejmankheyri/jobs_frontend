@@ -148,7 +148,7 @@ onBeforeUnmount(() => {
         :placeholder="$t('SEARCH_FOR_JOBS')"
         :selectedValue="selectedJob"
         type="jobs"
-        classItems="!w-[350px]"
+        classItems="!w-[300px]"
         @update:query="performJobSearch"
       />
       <SearchResults

@@ -1,15 +1,17 @@
 .dashboard-container {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  /* Adjust height to account for header */
+  height: calc(100vh - var(--header-height, 120px));
   gap: 1rem;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+  padding: 1rem;
+  overflow: hidden; /* Prevent outer scrollbar */
 }
 
 .jobs-column {
   width: 100%;
-  overflow-y: auto;
+  overflow-y: auto; /* Allow scrolling within the jobs column */
+  max-height: 100%;
 }
 
 .job-list {
@@ -18,11 +20,15 @@
 
 .details-column {
   width: 100%;
+  overflow-y: auto; /* Allow scrolling within details */
+  max-height: 100%;
   display: none;
 }
 
 .job-details {
   height: 100%;
+  height: 100%;
+  padding: 1rem;
   overflow-y: auto;
 }
 
@@ -30,18 +36,21 @@
 @media (min-width: 768px) {
   .dashboard-container {
     flex-direction: row;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+    padding: 1rem;
   }
 
   .jobs-column {
     width: 380px;
     flex-shrink: 0;
+    max-height: calc(100vh - var(--header-height, 120px) - 2rem);
+    overflow-y: auto;
   }
 
   .details-column {
     flex: 1;
     display: block;
+    max-height: calc(100vh - var(--header-height, 120px) - 2rem);
+    overflow-y: hidden;
   }
 }
 

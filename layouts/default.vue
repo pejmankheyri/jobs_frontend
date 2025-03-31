@@ -3,7 +3,7 @@ const { t } = useI18n();
 
 // Link to Google Fonts
 useHead({
-  title: t("JOB_BOARD"),
+  title: t("SAMPLE_JOB_BOARD"),
   htmlAttrs: {
     lang: "en",
   },
@@ -26,9 +26,9 @@ useHead({
 </script>
 
 <template>
-  <div class="container mx-auto max-w-6xl">
+  <div class="container max-w-6xl mx-auto">
     <AppHeader />
-    <main class="px-4">
+    <main class="">
       <slot />
     </main>
   </div>

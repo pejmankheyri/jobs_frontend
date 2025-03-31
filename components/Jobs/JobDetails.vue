@@ -99,7 +99,7 @@ const applyJobButtonTitle = computed(() => {
 </script>
 
 <template>
-  <div class="relative block p-8">
+  <div class="relative block pb-4">
     <div class="block pb-2 lg:flex lg:justify-between">
       <UButton
         v-if="isMobile"
