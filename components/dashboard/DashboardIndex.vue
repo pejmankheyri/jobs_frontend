@@ -10,6 +10,7 @@ const page = ref(1);
 const loading = ref(false);
 const selectedJob = ref(null);
 const itemsPerPage = 6;
+const jobsTotal = ref(0);
 
 const selectedTagId = computed(() => route.query.tagId);
 const selectedTagName = computed(() => route.query.tagName);
@@ -27,7 +28,7 @@ const fetchJobs = async () => {
       ? `/jobs/tags/${selectedTagId.value}`
       : `/jobs`;
 
-    const { data } = await useCustomFetch(endpoint, {
+    const result = await useCustomFetch(endpoint, {
       params: {
         page: page.value,
         per_page: itemsPerPage,
@@ -36,13 +37,18 @@ const fetchJobs = async () => {
       },
     });
 
-    if (page.value === 1) {
-      jobs.value = [...data];
-    } else {
-      jobs.value = [...jobs.value, ...data];
+    if (result.meta) {
+      jobsTotal.value = result.meta.total;
     }
 
-    if (!selectedJob.value && data.length > 0) selectedJob.value = data[0];
+    if (page.value === 1) {
+      jobs.value = [...result.data];
+    } else {
+      jobs.value = [...jobs.value, ...result.data];
+    }
+
+    if (!selectedJob.value && result.data.length > 0)
+      selectedJob.value = result.data[0];
     page.value++;
   } catch (error) {
     console.error(t("ERROR_FETCHING_JOBS") + ":", error);
@@ -95,22 +101,21 @@ onMounted(fetchJobs);
 </script>
 
 <template>
+  <div v-if="selectedTagId" class="px-4">
+    <div class="flex items-center gap-2">
+      <span>{{ $t("FILTERING_BY_TAG") }}: </span>
+      <UBadge color="black" class="mr-2">{{ selectedTagName }}</UBadge>
+      <UButton
+        size="xs"
+        color="black"
+        variant="ghost"
+        icon="i-heroicons-x-mark"
+        @click="clearTagFilter"
+      />
+    </div>
+  </div>
   <div v-if="displayedJobs.length" class="dashboard-container">
     <!-- Active tag filter indicator -->
-    <div v-if="selectedTagId" class="px-4 py-2 mb-4">
-      <div class="flex items-center gap-2">
-        <span>{{ $t("FILTERING_BY_TAG") }}: </span>
-        <UBadge color="black" class="mr-2">{{ selectedTagName }}</UBadge>
-        <UButton
-          size="xs"
-          color="black"
-          variant="ghost"
-          icon="i-heroicons-x-mark"
-          @click="clearTagFilter"
-          :aria-label="$t('CLEAR_FILTER')"
-        />
-      </div>
-    </div>
 
     <div class="jobs-column scrollbar-hide">
       <div class="job-list scrollbar-hide">
@@ -124,7 +129,10 @@ onMounted(fetchJobs);
           @select-job="selectedJob = $event"
         />
 
-        <div class="flex justify-center my-4">
+        <div
+          v-if="displayedJobs.length < jobsTotal"
+          class="flex justify-center my-4"
+        >
           <UButton
             color="black"
             variant="outline"

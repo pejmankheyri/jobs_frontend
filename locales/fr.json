@@ -162,5 +162,7 @@
   "ALLOW_COOKIES": "Autorise les cookies",
   "LEARN_MORE": "En savoir plus",
   "THIS_WEBSITE_USES_COOKIES": "Ce site Web utilise des cookies pour garantir que vous obtenez la meilleure expérience sur notre site Web.",
-  "LOAD_MORE": "Charger plus"
+  "LOAD_MORE": "Charger plus",
+  "FILTERING_BY_TAG": "Filtrage par balise",
+  "NO_JOBS_FOUND": "Aucun emploi trouvé"
 }

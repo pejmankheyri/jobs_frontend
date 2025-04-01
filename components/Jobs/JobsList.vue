@@ -51,7 +51,7 @@ const selectJob = () => {
   <div
     class="p-4 mb-2 border rounded-md cursor-pointer"
     :class="[
-      selectedJob === job
+      selectedJob.id === job.id
         ? 'border-black dark:border-gray-400'
         : 'border-white dark:border-gray-900',
     ]"

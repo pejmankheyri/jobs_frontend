@@ -171,7 +171,7 @@ const applyJobButtonTitle = computed(() => {
         <h1 class="text-3xl">
           {{ selectedJob?.title }}
         </h1>
-        <span class="">
+        <span v-if="selectedJob?.company" class="">
           {{ selectedJob?.company?.location[0]?.state }},
           {{ selectedJob?.company?.location[0]?.country }}
         </span>
