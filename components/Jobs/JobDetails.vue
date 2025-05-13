@@ -29,9 +29,26 @@ const starIconColor = computed(() => {
   return colorMode.preference === "light" ? "#000000" : "#ffffff";
 });
 
-const getCompanyRating = (rating) => {
-  return rating + ".0";
-};
+const emptyStarColor = computed(() => {
+  return colorMode.preference === "light" ? "#cccccc" : "#555555";
+});
+
+const getCompanyRatingStars = computed(() => {
+  if (!props.selectedJob?.company?.rating) return [];
+
+  const rating = props.selectedJob.company.rating;
+  const stars = [];
+
+  // Create array of 5 stars with filled or empty state
+  for (let i = 1; i <= 5; i++) {
+    stars.push({
+      filled: i <= rating,
+      id: i,
+    });
+  }
+
+  return stars;
+});
 
 const applyJob = async (id, coverLetter) => {
   try {
@@ -124,9 +141,18 @@ const applyJobButtonTitle = computed(() => {
           {{ selectedJob?.company?.title }}
         </div>
 
-        <div class="flex items-center gap-1 text-sm font-thin">
-          {{ getCompanyRating(selectedJob?.company?.rating) }}
-          <Star class="" :color="starIconColor" />
+        <div class="flex items-center gap-1">
+          <span class="mr-1 text-sm font-thin">
+            {{ selectedJob?.company?.rating }}.0
+          </span>
+          <div class="flex">
+            <div v-for="star in getCompanyRatingStars" :key="star.id">
+              <Star
+                :color="star.filled ? starIconColor : emptyStarColor"
+                class="w-4 h-4"
+              />
+            </div>
+          </div>
         </div>
       </div>
       <div>

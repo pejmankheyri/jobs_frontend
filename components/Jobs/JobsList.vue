@@ -13,9 +13,27 @@ const colorMode = useColorMode();
 const { isMobile, isDesktop } = useDevice();
 const router = useRouter();
 
-const getCompanyRating = (rating) => {
-  return rating + ".0";
-};
+const emptyStarColor = computed(() => {
+  return colorMode.preference === "light" ? "#cccccc" : "#555555";
+});
+
+// Generate array of stars for company rating
+const getCompanyRatingStars = computed(() => {
+  if (!props.job?.company?.rating) return [];
+
+  const rating = props.job.company.rating;
+  const stars = [];
+
+  // Create array of 5 stars with filled or empty state
+  for (let i = 1; i <= 5; i++) {
+    stars.push({
+      filled: i <= rating,
+      id: i,
+    });
+  }
+
+  return stars;
+});
 
 const starIconColor = computed(() => {
   return colorMode.preference === "light" ? "#000000" : "#ffffff";
@@ -68,8 +86,15 @@ const selectJob = () => {
       </div>
 
       <div class="flex items-center gap-1 text-sm font-thin">
-        {{ getCompanyRating(job.company.rating) }}
-        <Star class="" :color="starIconColor" />
+        <span class="mr-1">{{ job.company.rating }}.0</span>
+        <div class="flex">
+          <div v-for="star in getCompanyRatingStars" :key="star.id">
+            <Star
+              :color="star.filled ? starIconColor : emptyStarColor"
+              class="w-3 h-3"
+            />
+          </div>
+        </div>
       </div>
     </div>
     <p class="font-semibold">{{ job.title }}</p>
