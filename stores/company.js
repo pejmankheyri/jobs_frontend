@@ -43,8 +43,6 @@ export const useCompanyStore = defineStore("company", {
 
     async editJob(state, id, t, localeRoute, appToast) {
       try {
-        console.log(state);
-        console.log(id);
         const { data } = await useCustomFetch(`/jobs/${id}`, {
           method: "PUT",
           body: {

@@ -1,9 +1,11 @@
 <script setup>
 import { computed, ref } from "vue";
 import { useAuthStore } from "@/stores/auth";
+import { useSavedJobsStore } from "@/stores/savedJobs";
 
 const config = useRuntimeConfig();
 const authStore = useAuthStore();
+const savedJobsStore = useSavedJobsStore();
 const colorMode = useColorMode();
 const { t } = useI18n();
 const appToast = useAppToast();
@@ -14,9 +16,15 @@ const isAuthenticated = computed(() => !!authStore.token);
 const isApplyBoxOpen = ref(false);
 const loading = ref(false);
 const coverLetter = ref("");
+const savingJob = ref(false);
 
 const props = defineProps({
   selectedJob: Object,
+});
+
+const isJobSaved = computed(() => {
+  if (!props.selectedJob) return false;
+  return savedJobsStore.isJobSaved(props.selectedJob.id);
 });
 
 const emit = defineEmits(["filter-by-tag"]);
@@ -49,6 +57,35 @@ const getCompanyRatingStars = computed(() => {
 
   return stars;
 });
+
+const toggleSaveJob = async () => {
+  if (!isAuthenticated.value) {
+    appToast.toastInfo({
+      title: t("LOGIN_REQUIRED"),
+      description: t("LOGIN_TO_SAVE_JOBS"),
+    });
+    return;
+  }
+
+  savingJob.value = true;
+  try {
+    if (isJobSaved.value) {
+      await savedJobsStore.unsaveJob(props.selectedJob.id);
+      appToast.toastSuccess({
+        title: t("SUCCESS"),
+        description: t("JOB_REMOVED_FROM_SAVED"),
+      });
+    } else {
+      await savedJobsStore.saveJob(props.selectedJob.id);
+      appToast.toastSuccess({
+        title: t("SUCCESS"),
+        description: t("JOB_SAVED_SUCCESSFULLY"),
+      });
+    }
+  } finally {
+    savingJob.value = false;
+  }
+};
 
 const applyJob = async (id, coverLetter) => {
   try {
@@ -155,7 +192,22 @@ const applyJobButtonTitle = computed(() => {
           </div>
         </div>
       </div>
-      <div>
+      <div class="flex gap-2">
+        <!-- Save/Unsave button -->
+        <UButton
+          v-if="selectedJob"
+          :icon="
+            isJobSaved ? 'i-heroicons-bookmark-solid' : 'i-heroicons-bookmark'
+          "
+          color="black"
+          variant="ghost"
+          :loading="savingJob"
+          :disabled="savingJob"
+          @click="toggleSaveJob"
+          :aria-label="isJobSaved ? $t('UNSAVE_JOB') : $t('SAVE_JOB')"
+        />
+
+        <!-- Apply button -->
         <UTooltip :text="applyJobButtonTitle">
           <UButton
             v-if="isDesktop"
@@ -166,6 +218,7 @@ const applyJobButtonTitle = computed(() => {
             >{{ $t("APPLY_THIS_JOB") }}</UButton
           >
         </UTooltip>
+
         <UModal v-model="isApplyBoxOpen">
           <div class="p-4">
             <UTextarea

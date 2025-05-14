@@ -164,5 +164,12 @@
   "THIS_WEBSITE_USES_COOKIES": "This website uses cookies to ensure you get the best experience on our website.",
   "LOAD_MORE": "Load More",
   "FILTERING_BY_TAG": "Filtering by tag",
-  "NO_JOBS_FOUND": "No jobs found"
+  "NO_JOBS_FOUND": "No jobs found",
+  "SAVE_JOB": "Save Job",
+  "UNSAVE_JOB": "Unsave Job",
+  "LOGIN_REQUIRED": "Login required",
+  "LOGIN_TO_SAVE_JOBS": "Login to save jobs",
+  "JOB_REMOVED_FROM_SAVED": "Job removed from saved",
+  "JOB_SAVED_SUCCESSFULLY": "Job saved successfully",
+  "SAVED_JOBS": "Saved Jobs"
 }

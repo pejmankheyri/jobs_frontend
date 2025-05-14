@@ -1,4 +1,7 @@
 <script setup>
+import { useSavedJobsStore } from "@/stores/savedJobs";
+import { useAuthStore } from "@/stores/auth";
+
 const props = defineProps({
   job: Object,
   loading: Boolean,
@@ -12,6 +15,17 @@ const runtimeConfig = useRuntimeConfig();
 const colorMode = useColorMode();
 const { isMobile, isDesktop } = useDevice();
 const router = useRouter();
+const { t } = useI18n();
+const appToast = useAppToast();
+const savedJobsStore = useSavedJobsStore();
+const authStore = useAuthStore();
+const savingJob = ref(false);
+
+const isAuthenticated = computed(() => !!authStore.token);
+
+const isJobSaved = computed(() => {
+  return savedJobsStore.isJobSaved(props.job.id);
+});
 
 const emptyStarColor = computed(() => {
   return colorMode.preference === "light" ? "#cccccc" : "#555555";
@@ -63,11 +77,43 @@ const selectJob = () => {
     });
   }
 };
+
+const toggleSaveJob = async (event) => {
+  // Prevent the click from selecting the job
+  event.stopPropagation();
+
+  if (!isAuthenticated.value) {
+    appToast.toastInfo({
+      title: t("LOGIN_REQUIRED"),
+      description: t("LOGIN_TO_SAVE_JOBS"),
+    });
+    return;
+  }
+
+  savingJob.value = true;
+  try {
+    if (isJobSaved.value) {
+      await savedJobsStore.unsaveJob(props.job.id);
+      appToast.toastSuccess({
+        title: t("SUCCESS"),
+        description: t("JOB_REMOVED_FROM_SAVED"),
+      });
+    } else {
+      await savedJobsStore.saveJob(props.job.id);
+      appToast.toastSuccess({
+        title: t("SUCCESS"),
+        description: t("JOB_SAVED_SUCCESSFULLY"),
+      });
+    }
+  } finally {
+    savingJob.value = false;
+  }
+};
 </script>
 
 <template>
   <div
-    class="p-4 mb-2 border rounded-md cursor-pointer"
+    class="relative p-4 mb-2 border rounded-md cursor-pointer"
     :class="[
       selectedJob.id === job.id
         ? 'border-black dark:border-gray-400'
@@ -75,6 +121,21 @@ const selectJob = () => {
     ]"
     @click="selectJob"
   >
+    <div class="absolute top-2 right-2">
+      <UButton
+        :icon="
+          isJobSaved ? 'i-heroicons-bookmark-solid' : 'i-heroicons-bookmark'
+        "
+        color="black"
+        variant="ghost"
+        size="xs"
+        :loading="savingJob"
+        :disabled="savingJob"
+        @click="toggleSaveJob"
+        :aria-label="isJobSaved ? $t('UNSAVE_JOB') : $t('SAVE_JOB')"
+      />
+    </div>
+
     <div class="flex mb-2 place-items-center">
       <div class="flex gap-2 pr-3 text-sm font-thin place-items-center">
         <img

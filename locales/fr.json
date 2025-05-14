@@ -164,5 +164,12 @@
   "THIS_WEBSITE_USES_COOKIES": "Ce site Web utilise des cookies pour garantir que vous obtenez la meilleure expérience sur notre site Web.",
   "LOAD_MORE": "Charger plus",
   "FILTERING_BY_TAG": "Filtrage par balise",
-  "NO_JOBS_FOUND": "Aucun emploi trouvé"
+  "NO_JOBS_FOUND": "Aucun emploi trouvé",
+  "SAVE_JOB": "Enregistrer l'emploi",
+  "UNSAVE_JOB": "Annuler l'enregistrement de l'emploi",
+  "LOGIN_REQUIRED": "Connexion requise",
+  "LOGIN_TO_SAVE_JOBS": "Connectez-vous pour enregistrer des emplois",
+  "JOB_REMOVED_FROM_SAVED": "Emploi retiré de la liste des emplois enregistrés",
+  "JOB_SAVED_SUCCESSFULLY": "Emploi enregistré avec succès",
+  "SAVED_JOBS": "Emplois enregistrés"
 }

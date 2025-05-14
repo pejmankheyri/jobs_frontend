@@ -57,6 +57,15 @@ const dropdownItemsArray = computed(() => [
       },
       isActive: isUser.value,
     },
+    {
+      label: t("SAVED_JOBS"),
+      icon: "i-heroicons-bookmark",
+      click: () => {
+        const route = localeRoute({ name: "user-saved" });
+        navigateTo(route.fullPath);
+      },
+      isActive: isUser.value,
+    },
 
     {
       label: t("YOUR_CV"),
