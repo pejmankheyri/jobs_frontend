@@ -171,5 +171,6 @@
   "LOGIN_TO_SAVE_JOBS": "Login to save jobs",
   "JOB_REMOVED_FROM_SAVED": "Job removed from saved",
   "JOB_SAVED_SUCCESSFULLY": "Job saved successfully",
-  "SAVED_JOBS": "Saved Jobs"
+  "SAVED_JOBS": "Saved Jobs",
+  "COMPANY_TITLE": "Company Title"
 }

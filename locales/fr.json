@@ -171,5 +171,6 @@
   "LOGIN_TO_SAVE_JOBS": "Connectez-vous pour enregistrer des emplois",
   "JOB_REMOVED_FROM_SAVED": "Emploi retiré de la liste des emplois enregistrés",
   "JOB_SAVED_SUCCESSFULLY": "Emploi enregistré avec succès",
-  "SAVED_JOBS": "Emplois enregistrés"
+  "SAVED_JOBS": "Emplois enregistrés",
+  "COMPANY_TITLE": "Titre de l'entreprise"
 }

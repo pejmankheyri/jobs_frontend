@@ -19,6 +19,16 @@ const columns = [
     sortable: true,
   },
   {
+    key: "company.title",
+    label: t("COMPANY_TITLE"),
+    sortable: true,
+  },
+  {
+    key: "description",
+    label: t("DESCRIPTION"),
+    sortable: true,
+  },
+  {
     key: "completed",
     label: t("STATUS"),
     sortable: false,
